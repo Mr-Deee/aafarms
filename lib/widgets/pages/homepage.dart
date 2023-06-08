@@ -8,14 +8,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../models/addedFarm.dart';
 import '../farm_group_card.dart';
-class homepages extends StatefulWidget {
-  const homepages({Key? key}) : super(key: key);
+class homepage extends StatefulWidget {
+  const homepage({Key? key}) : super(key: key);
 
   @override
-  State<homepages> createState() => _homepagesState();
+  State<homepage> createState() => _homepageState();
 }
 
-class _homepagesState extends State<homepages> {
+class _homepageState extends State<homepage> {
 
 
   final TextEditingController _newProductGroup = TextEditingController();
