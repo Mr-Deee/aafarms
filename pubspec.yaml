@@ -47,7 +47,7 @@ dependencies:
   cloud_firestore:
 
   firebase_messaging: any
-  firebase_auth: any
+  firebase_auth:
 
 dev_dependencies:
   flutter_test:

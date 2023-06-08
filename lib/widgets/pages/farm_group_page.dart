@@ -1,4 +1,6 @@
 
+import 'package:afarms/models/addedFarm.dart';
+import 'package:afarms/widgets/pages/farm_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -176,7 +178,7 @@ class FarmGroupPage extends StatelessWidget {
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     return FarmCard(
-                                    Product: addedProduct.fromMap( snapshot.data!.docs[index].data(),),
+                                    Farm: addedFarm.fromMap( snapshot.data!.docs[index].data(),),
                                     docID: snapshot.data!.docs[index].id,
                                     );
                                   },
