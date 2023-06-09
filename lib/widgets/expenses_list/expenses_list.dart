@@ -16,7 +16,7 @@ class ExpensesList extends StatelessWidget {
       itemBuilder: ((context, index) => Dismissible(
             background: Container(
               margin:
-                  Theme.of(context).cardTheme.margin!.add(const EdgeInsets.all(4)),
+                  Theme.of(context).cardTheme.margin?.add(const EdgeInsets.all(4)),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.5),
                 //shape: BoxShape.rectangle,

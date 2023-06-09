@@ -130,7 +130,7 @@ class _ExpensesState extends State<Expenses> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Expense Tracker',
+          'A-Farms',
           style: GoogleFonts.lato(
             fontWeight: FontWeight.w700,
             fontSize: 24,
