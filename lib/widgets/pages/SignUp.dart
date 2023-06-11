@@ -1,19 +1,26 @@
 import 'dart:ui';
+import 'package:afarms/models/farmdb.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../components/my_button.dart';
 import '../../components/my_textfield.dart';
+import '../../main.dart';
+import '../progressDialog.dart';
+import 'homepage.dart';
 import 'login.dart';
 
 
 
 class Signup extends StatelessWidget {
   Signup({super.key});
-
+  User?firebaseUser;
+  User? currentfirebaseUser;
   // text editing controllers
-  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
   double _sigmaX = 5; // from 0-10
@@ -105,7 +112,7 @@ class Signup extends StatelessWidget {
                                 const SizedBox(height: 30),
 
                                 MyTextField(
-                                  controller: usernameController,
+                                  controller: emailController,
                                   hintText: 'Email',
                                   obscureText: false,
                                 ),
@@ -174,4 +181,97 @@ class Signup extends StatelessWidget {
       ),
     );
   }
+
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+  Future<void> registerNewUser(BuildContext context) async {
+
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return ProgressDialog(
+            message: "Registering,Please wait.....",
+          );
+        });
+
+
+    firebaseUser = (await _firebaseAuth
+        .createUserWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text)
+        .catchError((errMsg) {
+      Navigator.pop(context);
+      displayToast("Error" + errMsg.toString(), context);
+    }))
+        .user;
+
+    if (firebaseUser != null) // user created
+
+        {
+
+
+
+      //save use into to database
+
+      Map userDataMap = {
+        // "time":time,
+        // "firstName": fname.text.trim(),
+        // "lastName": lname.text.trim(),
+        "email":emailController.text.trim(),
+        // "fullName":fname.text.trim() + lname.text.trim(),
+        // "phone": phone.text.trim(),
+        "Password": passwordController.text.trim(),
+        // "Dob":birthDate,
+        // "Gender":Gender,
+      };
+      Farms.child(firebaseUser!.uid).set(userDataMap);
+      // Admin.child(firebaseUser!.uid).set(userDataMap);
+
+      currentfirebaseUser = firebaseUser;
+      registerInfirestore(context);
+      displayToast("Congratulation, your account has been created", context);
+
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => LoginPage()),
+              (Route<dynamic> route) => false);
+    } else {
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) {
+      //     return login();
+      //   }),
+      // );      // Navigator.pop(context);
+      //error occured - display error
+      displayToast("user has not been created", context);
+    }
+  }
+
+  Future<void> registerInfirestore(BuildContext context) async {
+
+
+    User? user = FirebaseAuth.instance.currentUser;
+    if(firebaseUser!=null) {
+      FirebaseFirestore.instance.collection('users').doc(user?.uid).set({
+
+        // 'MobileNumber': _mobileNumber.toString().trim(),
+        // 'fullName':_firstName! +  _lastname!,
+        'Email': emailController.toString().trim(),
+        'Password':passwordController.toString().trim(),
+        // 'Gender': Gender,
+        // 'Date Of Birth': birthDate,
+      });
+    }
+    else
+      print("shit");
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) {
+    //     return SignInScreen();
+    //   }),
+    // );
+
+
+  }
+
 }

@@ -1,6 +1,7 @@
 import 'package:afarms/widgets/pages/SignUp.dart';
 import 'package:afarms/widgets/pages/homepage.dart';
 import 'package:afarms/widgets/pages/login.dart';
+import 'package:afarms/widgets/pages/welcome.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -34,15 +35,15 @@ class MyApp extends StatelessWidget {
 
 
         initialRoute: FirebaseAuth.instance.currentUser == null
-            ? '/SignIn'
+            ? '/OnBoarding'
             : '/Homepage',
         routes: {
 
           "/SignUP": (context) => Signup(),
-          "/OnBoarding": (context) => OnBoarding(),
+          "/OnBoarding": (context) => WelcomePage(),
           "/SignIn": (context) => LoginPage(),
           "/Homepage": (context) => homepage(),
-          "/addproduct":(context)=>addproduct()
+      //    "/addproduct":(context)=>addproduct()
         }
       //home: const MyHomePage(title: 'Flutter Demo Home Page'),
 
