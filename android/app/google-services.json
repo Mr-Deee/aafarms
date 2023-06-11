@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "212687920836",
+    "project_id": "afarms-75055",
+    "storage_bucket": "afarms-75055.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:212687920836:android:2bf27653a3a9ac94387391",
+        "android_client_info": {
+          "package_name": "com.example.afarms"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "212687920836-mirdsob83eegvj72kcpk057gu1rf4loo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt330Xn89F56m2n0CkrsWBZTfWche0_yw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "212687920836-mirdsob83eegvj72kcpk057gu1rf4loo.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "212687920836-k090mtf0k0hauqcinvu7p6gr13evelua.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.afarms"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
