@@ -164,11 +164,13 @@ class Signup extends StatelessWidget {
                                     MyButtonAgree(
                                       text: "Sign Up",
                                       onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    LoginPage()));
+                                        registerNewUser(context);
+                                        registerInfirestore(context);
+                                        // Navigator.push(
+                                        //     context,
+                                        //     MaterialPageRoute(
+                                        //         builder: (context) =>
+                                        //             LoginPage()));
                                       },
                                     ),
                                   ],

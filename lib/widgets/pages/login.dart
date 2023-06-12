@@ -89,11 +89,6 @@ class LoginPage extends StatelessWidget {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 25.0),
                                   child: Row(children: [
-                                    const CircleAvatar(
-                                      radius: 30,
-                                      backgroundImage: NetworkImage(
-                                          'https://anmg-production.anmg.xyz/yaza-co-za_sfja9J2vLAtVaGdUPdH5y7gA'),
-                                    ),
                                     SizedBox(
                                         width:
                                         MediaQuery.of(context).size.width *
@@ -103,16 +98,16 @@ class LoginPage extends StatelessWidget {
                                       CrossAxisAlignment.start,
                                       // ignore: prefer_const_literals_to_create_immutables
                                       children: [
-                                        Text("Jane Dow",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold)),
-                                        const SizedBox(height: 5),
-                                        Text("jane.doe@gmail.com",
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 18))
+                                        // Text("Jane Dow",
+                                        //     style: TextStyle(
+                                        //         color: Colors.white,
+                                        //         fontSize: 20,
+                                        //         fontWeight: FontWeight.bold)),
+                                        // const SizedBox(height: 5),
+                                        // Text("jane.doe@gmail.com",
+                                        //     style: const TextStyle(
+                                        //         color: Colors.white,
+                                        //         fontSize: 18))
                                       ],
                                     )
                                   ]),
@@ -122,8 +117,8 @@ class LoginPage extends StatelessWidget {
                                         0.03),
                                 MyTextField(
                                   controller: emailController,
-                                  hintText: 'Password',
-                                  obscureText: true,
+                                  hintText: 'email',
+                                  obscureText: false,
                                 ),
                                 SizedBox(
                                     height: MediaQuery.of(context).size.height *
@@ -139,10 +134,7 @@ class LoginPage extends StatelessWidget {
                                 MyButtonAgree(
                                   text: "Continue",
                                   onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => LoginPage()));
+                                    loginAndAuthenticateUser(context);
                                   },
                                 ),
                                 const SizedBox(height: 30),

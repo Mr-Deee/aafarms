@@ -33,12 +33,12 @@ class _homepageState extends State<homepage> {
           children: [
 
             const Text(
-              "Catalogue",
+              "A-fARMS",
               style: TextStyle(
                 fontFamily: "Nunito",
                 fontWeight: FontWeight.bold,
                 fontSize: 28,
-                color: Colors.white54,
+                color: Colors.black,
               ),
             ),
           ],
@@ -155,7 +155,7 @@ class _homepageState extends State<homepage> {
                               ),),
                               Padding(
                                 padding: const EdgeInsets.only(top:58.0),
-                                child: Text("Miss , Asheley"),
+                                child: Text("Welcome"),
                               ),
 
 
