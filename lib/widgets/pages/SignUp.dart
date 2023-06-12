@@ -49,12 +49,19 @@ class Signup extends StatelessWidget {
           child: Stack(
             alignment: Alignment.center,
             children: [
-              Image.network(
-                'https://anmg-production.anmg.xyz/yaza-co-za_sfja9J2vLAtVaGdUPdH5y7gA',
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                fit: BoxFit.cover,
+              Image(
+                image: AssetImage(
+                  'assets/backdrop.jpg',
+                ),
+                fit: BoxFit.fitHeight,
               ),
+
+              // Image.network(
+              //   'https://anmg-production.anmg.xyz/yaza-co-za_sfja9J2vLAtVaGdUPdH5y7gA',
+              //   width: MediaQuery.of(context).size.width,
+              //   height: MediaQuery.of(context).size.height,
+              //   fit: BoxFit.cover,
+              // ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -94,21 +101,21 @@ class Signup extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                const Text(
-                                    "Look like you don't have an account. Let's create a new account for",
-                                    // ignore: prefer_const_constructors
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20),
-                                    textAlign: TextAlign.start),
-                                // ignore: prefer_const_constructors
-                                const Text(
-                                  "jane.doe@gmail.com",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                  textAlign: TextAlign.start,
-                                ),
+                                // const Text(
+                                //     "Look like you don't have an account. Let's create a new account for",
+                                //     // ignore: prefer_const_constructors
+                                //     style: TextStyle(
+                                //         color: Colors.white, fontSize: 20),
+                                //     textAlign: TextAlign.start),
+                                // // ignore: prefer_const_constructors
+                                // const Text(
+                                //   "jane.doe@gmail.com",
+                                //   style: TextStyle(
+                                //       color: Colors.white,
+                                //       fontSize: 20,
+                                //       fontWeight: FontWeight.bold),
+                                //   textAlign: TextAlign.start,
+                                // ),
                                 const SizedBox(height: 30),
 
                                 MyTextField(
@@ -131,31 +138,31 @@ class Signup extends StatelessWidget {
                                   crossAxisAlignment:
                                   CrossAxisAlignment.stretch,
                                   children: [
-                                    RichText(
-                                      text: const TextSpan(
-                                        text: '',
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                            text:
-                                            'By selecting Agree & Continue below, I agree to our ',
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 20),
-                                          ),
-                                          TextSpan(
-                                              text:
-                                              'Terms of Service and Privacy Policy',
-                                              style: TextStyle(
-                                                  color: Color.fromARGB(
-                                                      255, 71, 233, 133),
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20)),
-                                        ],
-                                      ),
-                                    ),
+                                    // RichText(
+                                    //   text: const TextSpan(
+                                    //     text: '',
+                                    //     children: <TextSpan>[
+                                    //       TextSpan(
+                                    //         text:
+                                    //         'By selecting Agree & Continue below, I agree to our ',
+                                    //         style: TextStyle(
+                                    //             color: Colors.white,
+                                    //             fontSize: 20),
+                                    //       ),
+                                    //       TextSpan(
+                                    //           text:
+                                    //           'Terms of Service and Privacy Policy',
+                                    //           style: TextStyle(
+                                    //               color: Color.fromARGB(
+                                    //                   255, 71, 233, 133),
+                                    //               fontWeight: FontWeight.bold,
+                                    //               fontSize: 20)),
+                                    //     ],
+                                    //   ),
+                                    // ),
                                     const SizedBox(height: 10),
                                     MyButtonAgree(
-                                      text: "Agree and Continue",
+                                      text: "Sign Up",
                                       onTap: () {
                                         Navigator.push(
                                             context,
