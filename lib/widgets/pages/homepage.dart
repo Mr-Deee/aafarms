@@ -208,7 +208,7 @@ class _homepageState extends State<homepage> {
                                                   border: InputBorder.none,
                                                   hintText: "Product Group Name",
                                                   filled: true,
-                                                  fillColor: Colors.transparent,
+                                                  fillColor: Colors.black,
                                                   hintStyle: TextStyle(
                                                     fontFamily: "Nunito",
                                                     fontSize: 16,
@@ -229,7 +229,7 @@ class _homepageState extends State<homepage> {
                                                     final DocumentSnapshot<Map<String, dynamic>>
                                                     _doc = await _firestore
                                                         .collection("utils")
-                                                        .doc("productGroups")
+                                                        .doc("FarmGroups")
                                                         .get();
                                                     final List<dynamic> _tempList =
                                                     _doc.data()!['list'] as List<dynamic>;
@@ -239,7 +239,7 @@ class _homepageState extends State<homepage> {
                                                       _tempList.add(_newProductGroup.text);
                                                       _firestore
                                                           .collection('utils')
-                                                          .doc("productGroups")
+                                                          .doc("FarmGroups")
                                                           .update({'list': _tempList});
                                                       displayToast("Added Successfully",context,);
                                                     }
@@ -258,7 +258,7 @@ class _homepageState extends State<homepage> {
                                                 width: 90,
                                                 decoration: BoxDecoration(
                                                   borderRadius: BorderRadius.circular(20),
-                                                  color: Colors.white54,
+                                                  color: Colors.black,
                                                   boxShadow: [
                                                     BoxShadow(
                                                       offset: const Offset(0, 3),

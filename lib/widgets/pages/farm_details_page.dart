@@ -25,7 +25,7 @@ FarmDetailsPage({Key? key, this.farm, this.docID}) : super(key: key);
         child: FloatingActionButton(
           onPressed: () {
             _firestore
-                .collection("products")
+                .collection("Expenses")
                 .doc(docID)
                 .update(farm!.toMap())
                 .then((value) {

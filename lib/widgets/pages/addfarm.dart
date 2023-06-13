@@ -86,11 +86,11 @@ class _addfarmState extends State<addfarm> {
       appBar: AppBar(
         automaticallyImplyLeading: true,
         foregroundColor:  Color(0xff202020),
-        backgroundColor: Color(0xffE99E22),
+        backgroundColor: Colors.white54,
         title: Row(
           children: [
             const Text(
-              "New Product",
+              "New Expense",
               style: TextStyle(
                 fontFamily: "Nunito",
                 fontSize: 28,
@@ -116,15 +116,15 @@ class _addfarmState extends State<addfarm> {
                   );
                 });
          //   String? url = await  uploadImage(selectedImagePath!);
-            uploadsFile();
+         //    uploadsFile();
             //uploadImage(selectedImagePath!);
             Occupationdb();
             newProduct.group = group;
             _firestore
-                .collection("products")
+                .collection("Expenses")
                 .add({
-
-              'image': url,
+              //
+              // 'image': url,
               'name': newProduct.name.toString(),
               'description': newProduct.description.toString(),
               'group': newProduct.group.toString(),
@@ -136,29 +136,27 @@ class _addfarmState extends State<addfarm> {
             })
                 .then((value) {
               Navigator.of(context).pop();
+              Navigator.of(context).pop();
               showTextToast('Added Sucessfully!');
             }).catchError((e) {
-              if(url==null){
-                showTextToast('No Image!');
 
-              }
               showTextToast('Failed!');
             });
             // Navigator.of(context).pop();
           },
           splashColor: Colors.blue,
-          backgroundColor: Color(0xffE99E22),
+          backgroundColor: Colors.white54,
           child: const Icon(
             Icons.done,
-            color:  Color.fromRGBO(216, 78, 16, 1),
+            color:  Colors.black,
           ),
         ),
       ),
       body: Container(
-        color: Colors.blue,
+        color:      Colors.white54,
         child: SafeArea(
           child: Container(
-            color: Colors.blue,
+            color: Colors.white54,
             height: double.infinity,
             width: double.infinity,
             child: Column(
@@ -219,7 +217,7 @@ class _addfarmState extends State<addfarm> {
                                                   style: const TextStyle(
                                                     fontFamily: "Nunito",
                                                     fontSize: 17,
-                                                    color:Colors.blue,
+                                                    color:Colors.black,
                                                   ),
                                                 ),
                                               ),
@@ -232,20 +230,20 @@ class _addfarmState extends State<addfarm> {
 
 
 
-                                        DropdownButton<String>(
-                                          value: selectedImagePath,
-                                          onChanged: ( newValue) {
-                                            setState(() {
-                                              selectedImagePath = newValue;
-                                            });
-                                          },
-                                          items: imagePaths.map<DropdownMenuItem<String>>((String value) {
-                                            return DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(value),
-                                            );
-                                          }).toList(),
-                                        ),
+                                        // DropdownButton<String>(
+                                        //   value: selectedImagePath,
+                                        //   onChanged: ( newValue) {
+                                        //     setState(() {
+                                        //       selectedImagePath = newValue;
+                                        //     });
+                                        //   },
+                                        //   items: imagePaths.map<DropdownMenuItem<String>>((String value) {
+                                        //     return DropdownMenuItem<String>(
+                                        //       value: value,
+                                        //       child: Text(value),
+                                        //     );
+                                        //   }).toList(),
+                                        // ),
 
                                         SizedBox(height: 34,),
                                         Container(
@@ -476,7 +474,7 @@ class _addfarmState extends State<addfarm> {
                                         ),
                                         Container(
                                           decoration: BoxDecoration(
-                                            color:Colors.blue,
+                                            color:Colors.white54,
 
                                             borderRadius:
                                             BorderRadius.circular(12),
@@ -503,7 +501,7 @@ class _addfarmState extends State<addfarm> {
                                             style: const TextStyle(
                                               fontFamily: "Nunito",
                                               fontSize: 16,
-                                              color: ColorPalette.nileBlue,
+                                              color: Colors.black,
                                             ),
                                             decoration: InputDecoration(
                                               border: InputBorder.none,
@@ -513,8 +511,7 @@ class _addfarmState extends State<addfarm> {
                                               hintStyle: TextStyle(
                                                 fontFamily: "Nunito",
                                                 fontSize: 16,
-                                                color: ColorPalette.nileBlue
-                                                    .withOpacity(0.58),
+                                                color: Colors.black,
                                               ),
                                             ),
                                             cursorColor:

@@ -1,9 +1,7 @@
 import 'dart:ui';
-import 'package:afarms/models/farmdb.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../components/my_button.dart';
@@ -13,12 +11,12 @@ import '../progressDialog.dart';
 import 'homepage.dart';
 import 'login.dart';
 
-
-
 class Signup extends StatelessWidget {
   Signup({super.key});
-  User?firebaseUser;
+
+  User? firebaseUser;
   User? currentfirebaseUser;
+
   // text editing controllers
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -51,9 +49,11 @@ class Signup extends StatelessWidget {
             children: [
               Image(
                 image: AssetImage(
-                  'assets/backdrop.jpg',
+                  'assets/images/back.jpg',
                 ),
-                fit: BoxFit.fitHeight,
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                fit: BoxFit.cover,
               ),
 
               // Image.network(
@@ -70,7 +70,8 @@ class Signup extends StatelessWidget {
                     icon: const Icon(Icons.arrow_back_ios),
                     color: Colors.white,
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => LoginPage()));
                     },
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.26),
@@ -83,14 +84,14 @@ class Signup extends StatelessWidget {
                   ClipRect(
                     child: BackdropFilter(
                       filter:
-                      ImageFilter.blur(sigmaX: _sigmaX, sigmaY: _sigmaY),
+                          ImageFilter.blur(sigmaX: _sigmaX, sigmaY: _sigmaY),
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 10),
                         decoration: BoxDecoration(
                             color: const Color.fromRGBO(0, 0, 0, 1)
                                 .withOpacity(_opacity),
                             borderRadius:
-                            const BorderRadius.all(Radius.circular(30))),
+                                const BorderRadius.all(Radius.circular(30))),
                         width: MediaQuery.of(context).size.width * 0.9,
                         height: MediaQuery.of(context).size.height * 0.49,
                         child: Form(
@@ -136,7 +137,7 @@ class Signup extends StatelessWidget {
                                   mainAxisSize: MainAxisSize.min,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment:
-                                  CrossAxisAlignment.stretch,
+                                      CrossAxisAlignment.stretch,
                                   children: [
                                     // RichText(
                                     //   text: const TextSpan(
@@ -194,7 +195,6 @@ class Signup extends StatelessWidget {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   Future<void> registerNewUser(BuildContext context) async {
-
     showDialog(
         context: context,
         barrierDismissible: false,
@@ -204,12 +204,10 @@ class Signup extends StatelessWidget {
           );
         });
 
-
     firebaseUser = (await _firebaseAuth
-        .createUserWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text)
-        .catchError((errMsg) {
+            .createUserWithEmailAndPassword(
+                email: emailController.text, password: passwordController.text)
+            .catchError((errMsg) {
       Navigator.pop(context);
       displayToast("Error" + errMsg.toString(), context);
     }))
@@ -217,17 +215,14 @@ class Signup extends StatelessWidget {
 
     if (firebaseUser != null) // user created
 
-        {
-
-
-
+    {
       //save use into to database
 
       Map userDataMap = {
         // "time":time,
         // "firstName": fname.text.trim(),
         // "lastName": lname.text.trim(),
-        "email":emailController.text.trim(),
+        "email": emailController.text.trim(),
         // "fullName":fname.text.trim() + lname.text.trim(),
         // "phone": phone.text.trim(),
         "Password": passwordController.text.trim(),
@@ -243,7 +238,7 @@ class Signup extends StatelessWidget {
 
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => LoginPage()),
-              (Route<dynamic> route) => false);
+          (Route<dynamic> route) => false);
     } else {
       // Navigator.push(
       //   context,
@@ -257,21 +252,17 @@ class Signup extends StatelessWidget {
   }
 
   Future<void> registerInfirestore(BuildContext context) async {
-
-
     User? user = FirebaseAuth.instance.currentUser;
-    if(firebaseUser!=null) {
+    if (firebaseUser != null) {
       FirebaseFirestore.instance.collection('users').doc(user?.uid).set({
-
         // 'MobileNumber': _mobileNumber.toString().trim(),
         // 'fullName':_firstName! +  _lastname!,
         'Email': emailController.toString().trim(),
-        'Password':passwordController.toString().trim(),
+        'Password': passwordController.toString().trim(),
         // 'Gender': Gender,
         // 'Date Of Birth': birthDate,
       });
-    }
-    else
+    } else
       print("shit");
     // Navigator.push(
     //   context,
@@ -279,8 +270,5 @@ class Signup extends StatelessWidget {
     //     return SignInScreen();
     //   }),
     // );
-
-
   }
-
 }

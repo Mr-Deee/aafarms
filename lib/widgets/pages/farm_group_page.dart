@@ -141,7 +141,7 @@ class FarmGroupPage extends StatelessWidget {
                             ],
                           ),
                           const Text(
-                            "Products",
+                            "Expenses",
                             style: TextStyle(
                               color: ColorPalette.timberGreen,
                               fontSize: 20,
@@ -152,7 +152,7 @@ class FarmGroupPage extends StatelessWidget {
                           Expanded(
                             child: StreamBuilder(
                               stream: _firestore
-                                  .collection("products")
+                                  .collection("Expenses")
                                   .where("group", isEqualTo: name)
 
                                   .snapshots(),
