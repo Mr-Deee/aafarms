@@ -218,11 +218,9 @@ class LoginPage extends StatelessWidget {
       // } else
 
         if (firebaseUser != null) {
-        Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) {
-              return homepage();
-            }));
+          Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => homepage()),
+                  (Route<dynamic> route) => false);
         displayToast("Logged-in ", context);
       } else {
         displayToast("Error: Cannot be signed in", context);
