@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
 
         primarySwatch: Colors.blue,
       ),
-      home: const Expenses(),
+      // home: const Expenses(),
 
 
         initialRoute: FirebaseAuth.instance.currentUser == null

@@ -57,12 +57,15 @@ class _addfarmState extends State<addfarm> {
 
 
 
-
+  var currentSelectedValue;
+  var FARMCODE = ["NA-JNJ028(Nankese|Pesticide)",
+   " WN-JNJ029",
+    "TA-JNJ029",
+   " NA-JNJ029"
+  ];
   final storage = FirebaseStorage.instance;
   final storageReference = FirebaseStorage.instance.ref();
-  List<String> imagePaths = [
 
-  ];
   String ?selectedImagePath;
   String ?uploadedImageUrl;
   @override
@@ -172,7 +175,7 @@ class _addfarmState extends State<addfarm> {
                           Row(
                             children: const [
                               SizedBox(
-                                height: 20,
+                                height: 10,
                               ),
 
                             ],
@@ -213,7 +216,7 @@ class _addfarmState extends State<addfarm> {
                                                 padding: const EdgeInsets.only(
                                                   left: 8, bottom: 12,),
                                                 child: Text(
-                                                  "Product Group : $group",
+                                                  "Farm : $group",
                                                   style: const TextStyle(
                                                     fontFamily: "Nunito",
                                                     fontSize: 17,
@@ -228,23 +231,77 @@ class _addfarmState extends State<addfarm> {
                                           ),
                                         ),
 
+                                        DropdownButton(
+                                          value: FARMCODE.elementAt(0),
+                                          hint: new Text("ID"),
+                                          items: FARMCODE.map((String value) {
 
+                                            return new DropdownMenuItem(
+                                              value: value,
+                                              child: new Row(
+                                                children: <Widget>[
+                                                  new Icon(
+                                                    Icons.home_repair_service_rounded,
+                                                    color: Colors.green,
+                                                  ),
+                                                  new Text(value)
+                                                ],
+                                              ),
+                                            );
+                                          }).toList(),
+                                          onChanged: (value) {
+                                       setState(() {
 
-                                        // DropdownButton<String>(
-                                        //   value: selectedImagePath,
-                                        //   onChanged: ( newValue) {
-                                        //     setState(() {
-                                        //       selectedImagePath = newValue;
-                                        //     });
-                                        //   },
-                                        //   items: imagePaths.map<DropdownMenuItem<String>>((String value) {
-                                        //     return DropdownMenuItem<String>(
-                                        //       value: value,
-                                        //       child: Text(value),
-                                        //     );
-                                        //   }).toList(),
-                                        // ),
+                                       });
 
+                                          },
+                                        ),
+
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            color: ColorPalette.white,
+                                            borderRadius:
+                                            BorderRadius.circular(12),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                offset: const Offset(0, 3),
+                                                blurRadius: 6,
+                                                color: ColorPalette.nileBlue
+                                                    .withOpacity(0.1),
+                                              ),
+                                            ],
+                                          ),
+                                          height: 50,
+                                          child: TextFormField(
+                                            initialValue: newProduct.name ?? '',
+                                            onChanged: (value) {
+                                              newProduct.name = value;
+                                            },
+                                            textInputAction:
+                                            TextInputAction.next,
+                                            key: UniqueKey(),
+                                            keyboardType: TextInputType.text,
+                                            style: const TextStyle(
+                                              fontFamily: "Nunito",
+                                              fontSize: 16,
+                                              color:Colors.black,
+                                            ),
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              hintText: "Farm Code",
+                                              filled: true,
+                                              fillColor: Colors.transparent,
+                                              hintStyle: TextStyle(
+                                                fontFamily: "Nunito",
+                                                fontSize: 16,
+                                                color: Colors.blue,
+
+                                              ),
+                                            ),
+                                            cursorColor:
+                                            Colors.black,
+                                          ),
+                                        ),
                                         SizedBox(height: 34,),
                                         Container(
                                           decoration: BoxDecoration(

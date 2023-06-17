@@ -19,6 +19,19 @@ class _homepageState extends State<homepage> {
 
 
   final TextEditingController _newProductGroup = TextEditingController();
+  // var items = [
+  //   "NA-JNJ028",
+  //   "WN-JNJ029",
+  //   "TA-JNJ029",
+  //   "NA-JNJ029"
+  //
+  // ];
+
+  //
+  //
+  //
+  // String dropdownvalue = "NA-JNJ028";
+
 
   final addedFarm newfarm = addedFarm();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -172,15 +185,32 @@ class _homepageState extends State<homepage> {
                                 onTap: () {
                                   showDialog(
                                     context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        title: const Text(
-                                          "Add Product Group",
-                                          style: TextStyle(fontFamily: "Nunito"),
+                                    builder: (BuildContext context) {
+                                      return Dialog(
+
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                            BorderRadius.circular(20.0)), //this right here
+                                      child: Container(
+                                      height: 250,
+                                      child: Padding(
+                                      padding: const EdgeInsets.all(12.0),
+                                      child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                      const Text(
+                                          "Add A FARM",
+                                          style: TextStyle(fontFamily: "Nunito",fontSize: 35,fontWeight: FontWeight.bold),
                                         ),
-                                        content: Column(
+                                        SizedBox(
+                                          height: 30,
+                                        ),
+                                      Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
+
+
                                             Container(
                                               decoration: BoxDecoration(
                                                 color:Colors.white54,
@@ -282,7 +312,7 @@ class _homepageState extends State<homepage> {
                                             ),
                                           ],
                                         ),
-                                      );
+                                      ]))));
                                     },
                                   );
                                 },
