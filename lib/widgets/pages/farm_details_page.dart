@@ -99,7 +99,7 @@ FarmDetailsPage({Key? key, this.farm, this.docID}) : super(key: key);
                         ),
                         onPressed: () {
                           _firestore
-                              .collection("products")
+                              .collection("Expenses")
                               .doc(docID)
                               .delete()
                               .then((value) {

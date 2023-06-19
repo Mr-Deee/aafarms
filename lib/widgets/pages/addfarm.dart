@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:io' as io;
+import 'dart:math';
 import 'package:afarms/models/addedFarm.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -33,6 +34,11 @@ class _addfarmState extends State<addfarm> {
 
 
 
+  @override
+  void initState() {
+    super.initState();
+    generateCode();
+  }
   List<File> _image = [];
   String? _selectedImage;
   String? group;
@@ -48,18 +54,60 @@ class _addfarmState extends State<addfarm> {
   File? selectedfile;
 
 
-  void _selectImage1(String image) {
-    setState(() {
-      _selectedImage = image;
-      _selectedImage == selectedfile;
-    });
+  // void _selectImage1(String image) {
+  //   setState(() {
+  //     _selectedImage = image;
+  //     _selectedImage == selectedfile;
+  //   });
+  // }
+  String code = '';
+  void generateCode() {
+
+    // Generate a random 4-digit code
+    Random random = Random();
+    int randomNumber = random.nextInt(9000) + 1000;
+    if (group == "Winneba") {
+      code = "WN-" + randomNumber.toString();
+      setState(() {
+        // else if(newProduct.group=="Tachiam"){
+        //   code = "TA-"+randomNumber.toString();
+        // } else if(newProduct.group=="Nankese"){
+        //   code = "NA-"+randomNumber.toString();
+        // }
+        code = "WN-" + randomNumber.toString();
+      });
+    }
+    else
+    if (group == "Tachiam") {
+      code = "TA-" + randomNumber.toString();
+      setState(() {
+
+        // } else if(newProduct.group=="Nankese"){
+        //   code = "NA-"+randomNumber.toString();
+        // }
+        code = "TA-" + randomNumber.toString();
+      });
+    }
+    else
+    if (group == "Nankese") {
+      code = "NA-" + randomNumber.toString();
+      setState(() {
+
+        // } else if(newProduct.group=="Nankese"){
+        //   code = "NA-"+randomNumber.toString();
+        // }
+        code = "NA-" + randomNumber.toString();
+      });
+    }
   }
 
-
-
-  var currentSelectedValue;
-  var FARMCODE = ["NA-JNJ028(Nankese|Pesticide)",
-   " WN-JNJ029",
+  String ? currentSelectedValue;
+  List<String> FARMCODE = [
+    "NA-JNJ028(Nankese|Pesticide)",
+    "NA-JNJ025(Nankese|Fertilizer)",
+    "NA-JNJ026(Nankese|Transport)",
+    "WN-JNJ014(Winneba|Fuel)",
+        " WN-JNJ029()",
     "TA-JNJ029",
    " NA-JNJ029"
   ];
@@ -129,6 +177,8 @@ class _addfarmState extends State<addfarm> {
               //
               // 'image': url,
               'name': newProduct.name.toString(),
+              'FarmCodep': currentSelectedValue.toString(),
+              'FarmCodes':newProduct.farmcode.toString(),
               'description': newProduct.description.toString(),
               'group': newProduct.group.toString(),
               'Company': newProduct.company.toString(),
@@ -138,7 +188,7 @@ class _addfarmState extends State<addfarm> {
               //newProduct.toMap()
             })
                 .then((value) {
-              Navigator.of(context).pop();
+
               Navigator.of(context).pop();
               showTextToast('Added Sucessfully!');
             }).catchError((e) {
@@ -231,12 +281,13 @@ class _addfarmState extends State<addfarm> {
                                           ),
                                         ),
 
-                                        DropdownButton(
-                                          value: FARMCODE.elementAt(0),
-                                          hint: new Text("ID"),
-                                          items: FARMCODE.map((String value) {
+                                        DropdownButton<String>(
+                                          value: currentSelectedValue,
+                                          hint: new Text("Choose From this List"),
+                                          items: FARMCODE.map<DropdownMenuItem<String>>((String value) {
 
-                                            return new DropdownMenuItem(
+                                            return  DropdownMenuItem<String>(
+
                                               value: value,
                                               child: new Row(
                                                 children: <Widget>[
@@ -249,12 +300,18 @@ class _addfarmState extends State<addfarm> {
                                               ),
                                             );
                                           }).toList(),
-                                          onChanged: (value) {
+                                          onChanged: (newvalue) {
                                        setState(() {
-
-                                       });
+                                         currentSelectedValue=newvalue;
+                                         newvalue==newProduct.farmcode;
+                                       } );
 
                                           },
+                                        ),
+
+                                        Padding(
+                                          padding: const EdgeInsets.all(21.0),
+                                          child: Text("Or type your custom code (NA-3455|(Expense))",style: TextStyle(fontSize: 11),),
                                         ),
 
                                         Container(
@@ -288,13 +345,13 @@ class _addfarmState extends State<addfarm> {
                                             ),
                                             decoration: InputDecoration(
                                               border: InputBorder.none,
-                                              hintText: "Farm Code",
+                                              hintText: "${code}",
                                               filled: true,
                                               fillColor: Colors.transparent,
                                               hintStyle: TextStyle(
                                                 fontFamily: "Nunito",
                                                 fontSize: 16,
-                                                color: Colors.blue,
+                                                color: Colors.black,
 
                                               ),
                                             ),
@@ -340,7 +397,7 @@ class _addfarmState extends State<addfarm> {
                                               hintStyle: TextStyle(
                                                 fontFamily: "Nunito",
                                                 fontSize: 16,
-                                                color: Colors.blue,
+                                                color: Colors.grey,
 
                                               ),
                                             ),
@@ -517,7 +574,7 @@ class _addfarmState extends State<addfarm> {
                                               hintStyle: TextStyle(
                                                 fontFamily: "Nunito",
                                                 fontSize: 16,
-                                                color: Colors.blue,
+                                                color: Colors.grey,
 
                                               ),
                                             ),
@@ -568,7 +625,7 @@ class _addfarmState extends State<addfarm> {
                                               hintStyle: TextStyle(
                                                 fontFamily: "Nunito",
                                                 fontSize: 16,
-                                                color: Colors.black,
+                                                color: Colors.grey,
                                               ),
                                             ),
                                             cursorColor:
