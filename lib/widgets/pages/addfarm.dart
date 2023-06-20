@@ -179,7 +179,7 @@ class _addfarmState extends State<addfarm> {
               'name': newProduct.name.toString(),
 
               'FarmCodep': currentSelectedValue.toString(),
-              'FarmCodes':code.toString()+ "/"+newProduct.name.toString(),
+              'FarmCodes':code.toString()+ "|"+newProduct.name.toString(),
               'description': newProduct.description.toString(),
               'group': newProduct.group.toString(),
               'Company': newProduct.company.toString(),
