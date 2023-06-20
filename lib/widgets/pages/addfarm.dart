@@ -177,8 +177,9 @@ class _addfarmState extends State<addfarm> {
               //
               // 'image': url,
               'name': newProduct.name.toString(),
+
               'FarmCodep': currentSelectedValue.toString(),
-              'FarmCodes':newProduct.farmcode.toString(),
+              'FarmCodes':code.toString()+ "/"+newProduct.name.toString(),
               'description': newProduct.description.toString(),
               'group': newProduct.group.toString(),
               'Company': newProduct.company.toString(),
@@ -189,6 +190,7 @@ class _addfarmState extends State<addfarm> {
             })
                 .then((value) {
 
+              Navigator.of(context).pop();
               Navigator.of(context).pop();
               showTextToast('Added Sucessfully!');
             }).catchError((e) {
@@ -330,10 +332,12 @@ class _addfarmState extends State<addfarm> {
                                           ),
                                           height: 50,
                                           child: TextFormField(
-                                            initialValue: newProduct.name ?? '',
+                                            initialValue: code ?? '',
                                             onChanged: (value) {
-                                              newProduct.name = value;
+                                              code = value;
                                             },
+                                            readOnly: true,
+
                                             textInputAction:
                                             TextInputAction.next,
                                             key: UniqueKey(),
@@ -346,12 +350,14 @@ class _addfarmState extends State<addfarm> {
                                             decoration: InputDecoration(
                                               border: InputBorder.none,
                                               hintText: "${code}",
+
                                               filled: true,
                                               fillColor: Colors.transparent,
                                               hintStyle: TextStyle(
                                                 fontFamily: "Nunito",
                                                 fontSize: 16,
                                                 color: Colors.black,
+
 
                                               ),
                                             ),
@@ -387,7 +393,7 @@ class _addfarmState extends State<addfarm> {
                                             style: const TextStyle(
                                               fontFamily: "Nunito",
                                               fontSize: 16,
-                                              color:Colors.blue,
+                                              color:Colors.black,
                                             ),
                                             decoration: InputDecoration(
                                               border: InputBorder.none,
@@ -402,7 +408,7 @@ class _addfarmState extends State<addfarm> {
                                               ),
                                             ),
                                             cursorColor:
-                                            Colors.blue,
+                                            Colors.black,
                                           ),
                                         ),
                                         const SizedBox(
@@ -447,7 +453,7 @@ class _addfarmState extends State<addfarm> {
                                                     fontFamily: "Nunito",
                                                     fontSize: 16,
                                                     color:
-                                                    Colors.blue,
+                                                    Colors.black,
                                                   ),
                                                   decoration: InputDecoration(
                                                     border: InputBorder.none,

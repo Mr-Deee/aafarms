@@ -1,16 +1,15 @@
 import 'package:afarms/models/addedFarm.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../color_palette.dart';
 import 'homepage.dart';
 
-
 class FarmDetailsPage extends StatelessWidget {
   final addedFarm? farm;
   final String? docID;
-FarmDetailsPage({Key? key, this.farm, this.docID}) : super(key: key);
+
+  FarmDetailsPage({Key? key, this.farm, this.docID}) : super(key: key);
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -29,9 +28,9 @@ FarmDetailsPage({Key? key, this.farm, this.docID}) : super(key: key);
                 .doc(docID)
                 .update(farm!.toMap())
                 .then((value) {
-              displayToast('Updated Sucessfully!',context);
+              displayToast('Updated Sucessfully!', context);
             }).catchError((e) {
-              displayToast('Failed!',context);
+              displayToast('Failed!', context);
             });
             Navigator.of(context).pop();
           },
@@ -103,9 +102,9 @@ FarmDetailsPage({Key? key, this.farm, this.docID}) : super(key: key);
                               .doc(docID)
                               .delete()
                               .then((value) {
-                            displayToast('Deleted Sucessfully!',context);
+                            displayToast('Deleted Sucessfully!', context);
                           }).catchError((e) {
-                            displayToast('Failed!',context);
+                            displayToast('Failed!', context);
                           });
                           Navigator.of(context).pop();
                         },
@@ -148,7 +147,7 @@ FarmDetailsPage({Key? key, this.farm, this.docID}) : super(key: key);
                                   child: SingleChildScrollView(
                                     child: Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.only(
@@ -168,7 +167,7 @@ FarmDetailsPage({Key? key, this.farm, this.docID}) : super(key: key);
                                           decoration: BoxDecoration(
                                             color: ColorPalette.white,
                                             borderRadius:
-                                            BorderRadius.circular(12),
+                                                BorderRadius.circular(12),
                                             boxShadow: [
                                               BoxShadow(
                                                 offset: const Offset(0, 3),
@@ -185,7 +184,7 @@ FarmDetailsPage({Key? key, this.farm, this.docID}) : super(key: key);
                                               farm!.name = value;
                                             },
                                             textInputAction:
-                                            TextInputAction.next,
+                                                TextInputAction.next,
                                             key: UniqueKey(),
                                             keyboardType: TextInputType.text,
                                             style: const TextStyle(
@@ -206,7 +205,7 @@ FarmDetailsPage({Key? key, this.farm, this.docID}) : super(key: key);
                                               ),
                                             ),
                                             cursorColor:
-                                            ColorPalette.timberGreen,
+                                                ColorPalette.timberGreen,
                                           ),
                                         ),
                                         const SizedBox(
@@ -219,11 +218,11 @@ FarmDetailsPage({Key? key, this.farm, this.docID}) : super(key: key);
                                                 decoration: BoxDecoration(
                                                   color: ColorPalette.white,
                                                   borderRadius:
-                                                  BorderRadius.circular(12),
+                                                      BorderRadius.circular(12),
                                                   boxShadow: [
                                                     BoxShadow(
                                                       offset:
-                                                      const Offset(0, 3),
+                                                          const Offset(0, 3),
                                                       blurRadius: 6,
                                                       color: ColorPalette
                                                           .nileBlue
@@ -234,7 +233,7 @@ FarmDetailsPage({Key? key, this.farm, this.docID}) : super(key: key);
                                                 height: 50,
                                                 child: TextFormField(
                                                   initialValue: farm!.cost ==
-                                                      null
+                                                          null
                                                       ? ''
                                                       : farm!.cost.toString(),
                                                   onChanged: (value) {
@@ -242,22 +241,22 @@ FarmDetailsPage({Key? key, this.farm, this.docID}) : super(key: key);
                                                         int.parse(value);
                                                   },
                                                   textInputAction:
-                                                  TextInputAction.next,
+                                                      TextInputAction.next,
                                                   key: UniqueKey(),
                                                   keyboardType:
-                                                  TextInputType.number,
+                                                      TextInputType.number,
                                                   style: const TextStyle(
                                                     fontFamily: "Nunito",
                                                     fontSize: 16,
                                                     color:
-                                                    ColorPalette.nileBlue,
+                                                        ColorPalette.nileBlue,
                                                   ),
                                                   decoration: InputDecoration(
                                                     border: InputBorder.none,
                                                     hintText: "Cost",
                                                     filled: true,
                                                     fillColor:
-                                                    Colors.transparent,
+                                                        Colors.transparent,
                                                     hintStyle: TextStyle(
                                                       fontFamily: "Nunito",
                                                       fontSize: 16,
@@ -267,7 +266,7 @@ FarmDetailsPage({Key? key, this.farm, this.docID}) : super(key: key);
                                                     ),
                                                   ),
                                                   cursorColor:
-                                                  ColorPalette.timberGreen,
+                                                      ColorPalette.timberGreen,
                                                 ),
                                               ),
                                             ),
@@ -279,11 +278,11 @@ FarmDetailsPage({Key? key, this.farm, this.docID}) : super(key: key);
                                                 decoration: BoxDecoration(
                                                   color: ColorPalette.white,
                                                   borderRadius:
-                                                  BorderRadius.circular(12),
+                                                      BorderRadius.circular(12),
                                                   boxShadow: [
                                                     BoxShadow(
                                                       offset:
-                                                      const Offset(0, 3),
+                                                          const Offset(0, 3),
                                                       blurRadius: 6,
                                                       color: ColorPalette
                                                           .nileBlue
@@ -294,31 +293,31 @@ FarmDetailsPage({Key? key, this.farm, this.docID}) : super(key: key);
                                                 height: 50,
                                                 child: TextFormField(
                                                   initialValue:
-                                                  farm!.quantity == null
-                                                      ? ''
-                                                      : farm!.quantity
-                                                      .toString(),
+                                                      farm!.quantity == null
+                                                          ? ''
+                                                          : farm!.quantity
+                                                              .toString(),
                                                   onChanged: (value) {
                                                     farm!.quantity =
                                                         int.parse(value);
                                                   },
                                                   textInputAction:
-                                                  TextInputAction.next,
+                                                      TextInputAction.next,
                                                   key: UniqueKey(),
                                                   keyboardType:
-                                                  TextInputType.number,
+                                                      TextInputType.number,
                                                   style: const TextStyle(
                                                     fontFamily: "Nunito",
                                                     fontSize: 16,
                                                     color:
-                                                    ColorPalette.nileBlue,
+                                                        ColorPalette.nileBlue,
                                                   ),
                                                   decoration: InputDecoration(
                                                     border: InputBorder.none,
                                                     hintText: "Quantity",
                                                     filled: true,
                                                     fillColor:
-                                                    Colors.transparent,
+                                                        Colors.transparent,
                                                     hintStyle: TextStyle(
                                                       fontFamily: "Nunito",
                                                       fontSize: 16,
@@ -328,7 +327,7 @@ FarmDetailsPage({Key? key, this.farm, this.docID}) : super(key: key);
                                                     ),
                                                   ),
                                                   cursorColor:
-                                                  ColorPalette.timberGreen,
+                                                      ColorPalette.timberGreen,
                                                 ),
                                               ),
                                             ),
@@ -341,7 +340,7 @@ FarmDetailsPage({Key? key, this.farm, this.docID}) : super(key: key);
                                           decoration: BoxDecoration(
                                             color: ColorPalette.white,
                                             borderRadius:
-                                            BorderRadius.circular(12),
+                                                BorderRadius.circular(12),
                                             boxShadow: [
                                               BoxShadow(
                                                 offset: const Offset(0, 3),
@@ -353,12 +352,14 @@ FarmDetailsPage({Key? key, this.farm, this.docID}) : super(key: key);
                                           ),
                                           height: 50,
                                           child: TextFormField(
-                                            initialValue: farm!.company ?? '',
+                                            initialValue: farm!.company == null
+                                                ? ''
+                                                : farm!.company.toString(),
                                             onChanged: (value) {
                                               farm!.company = value;
                                             },
                                             textInputAction:
-                                            TextInputAction.next,
+                                                TextInputAction.next,
                                             key: UniqueKey(),
                                             keyboardType: TextInputType.text,
                                             style: const TextStyle(
@@ -379,7 +380,7 @@ FarmDetailsPage({Key? key, this.farm, this.docID}) : super(key: key);
                                               ),
                                             ),
                                             cursorColor:
-                                            ColorPalette.timberGreen,
+                                                ColorPalette.timberGreen,
                                           ),
                                         ),
                                         const SizedBox(
@@ -389,7 +390,7 @@ FarmDetailsPage({Key? key, this.farm, this.docID}) : super(key: key);
                                           decoration: BoxDecoration(
                                             color: ColorPalette.white,
                                             borderRadius:
-                                            BorderRadius.circular(12),
+                                                BorderRadius.circular(12),
                                             boxShadow: [
                                               BoxShadow(
                                                 offset: const Offset(0, 3),
@@ -402,12 +403,12 @@ FarmDetailsPage({Key? key, this.farm, this.docID}) : super(key: key);
                                           height: 50,
                                           child: TextFormField(
                                             initialValue:
-                                            farm!.description ?? '',
+                                                farm!.description ?? '',
                                             onChanged: (value) {
                                               farm!.description = value;
                                             },
                                             textInputAction:
-                                            TextInputAction.next,
+                                                TextInputAction.next,
                                             key: UniqueKey(),
                                             keyboardType: TextInputType.text,
                                             style: const TextStyle(
@@ -428,7 +429,7 @@ FarmDetailsPage({Key? key, this.farm, this.docID}) : super(key: key);
                                               ),
                                             ),
                                             cursorColor:
-                                            ColorPalette.timberGreen,
+                                                ColorPalette.timberGreen,
                                           ),
                                         ),
                                         const SizedBox(height: 20),
