@@ -35,8 +35,9 @@ class FarmGroupPage extends StatelessWidget {
               ),
             );
           },
-          splashColor: ColorPalette.bondyBlue,
-          backgroundColor: ColorPalette.pacificBlue,
+          splashColor: Colors.black,
+          backgroundColor: Colors.black,
+
           child: const Icon(
             Icons.add,
             color: ColorPalette.white,
@@ -44,7 +45,7 @@ class FarmGroupPage extends StatelessWidget {
         ),
       ),
       body: Container(
-        color: ColorPalette.pacificBlue,
+        color: ColorPalette.aquaHaze,
         child: SafeArea(
           child: Container(
             color: ColorPalette.aquaHaze,
@@ -61,7 +62,7 @@ class FarmGroupPage extends StatelessWidget {
                   width: double.infinity,
                   height: 90,
                   decoration: const BoxDecoration(
-                    color: ColorPalette.pacificBlue,
+                    color: ColorPalette.aquaHaze,
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(16),
                       bottomRight: Radius.circular(16),

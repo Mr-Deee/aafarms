@@ -34,8 +34,8 @@ class FarmDetailsPage extends StatelessWidget {
             });
             Navigator.of(context).pop();
           },
-          splashColor: ColorPalette.bondyBlue,
-          backgroundColor: ColorPalette.pacificBlue,
+          splashColor: Colors.black12,
+          backgroundColor: Colors.black,
           child: const Icon(
             Icons.done,
             color: ColorPalette.white,
@@ -43,7 +43,7 @@ class FarmDetailsPage extends StatelessWidget {
         ),
       ),
       body: Container(
-        color: ColorPalette.pacificBlue,
+        color: ColorPalette.aquaHaze,
         child: SafeArea(
           child: Container(
             color: ColorPalette.aquaHaze,
@@ -58,9 +58,9 @@ class FarmDetailsPage extends StatelessWidget {
                     right: 15,
                   ),
                   width: double.infinity,
-                  height: 90,
+                  height: 60,
                   decoration: const BoxDecoration(
-                    color: ColorPalette.pacificBlue,
+                    color: ColorPalette.aquaHaze,
                     borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(16),
                       bottomRight: Radius.circular(16),
@@ -134,7 +134,7 @@ class FarmDetailsPage extends StatelessWidget {
                                   width: double.infinity,
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 20,
-                                    vertical: 50,
+                                    vertical: 30,
                                   ),
                                   margin: const EdgeInsets.only(top: 75),
                                   decoration: const BoxDecoration(
@@ -156,6 +156,20 @@ class FarmDetailsPage extends StatelessWidget {
                                           ),
                                           child: Text(
                                             "Product Group : ${farm!.group}",
+                                            style: const TextStyle(
+                                              fontFamily: "Nunito",
+                                              fontSize: 17,
+                                              color: ColorPalette.nileBlue,
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                            left: 8,
+                                            bottom: 12,
+                                          ),
+                                          child: Text(
+                                            "ID : ${farm!.farmcode}",
                                             style: const TextStyle(
                                               fontFamily: "Nunito",
                                               fontSize: 17,
@@ -452,48 +466,7 @@ class FarmDetailsPage extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                                // Align(
-                                //   alignment: Alignment.topCenter,
-                                //   child: Padding(
-                                //     padding: const EdgeInsets.only(top: 10),
-                                //     child: SizedBox(
-                                //       height: 100,
-                                //       width: 100,
-                                //       child: ClipRRect(
-                                //         borderRadius: BorderRadius.circular(11),
-                                //         child: Container(
-                                //           color: ColorPalette.white,
-                                //           child: Container(
-                                //             color: ColorPalette.timberGreen
-                                //                 .withOpacity(0.1),
-                                //             child: (product!.image == null)
-                                //                 ? Center(
-                                //               child: Icon(
-                                //                 Icons.image,
-                                //                 color: ColorPalette
-                                //                     .nileBlue
-                                //                     .withOpacity(0.5),
-                                //               ),
-                                //             )
-                                //                 : CachedNetworkImage(
-                                //               fit: BoxFit.cover,
-                                //               imageUrl: product!.image!,
-                                //               errorWidget:
-                                //                   (context, s, a) {
-                                //                 return Icon(
-                                //                   Icons.image,
-                                //                   color: ColorPalette
-                                //                       .nileBlue
-                                //                       .withOpacity(0.5),
-                                //                 );
-                                //               },
-                                //             ),
-                                //           ),
-                                //         ),
-                                //       ),
-                                //     ),
-                                //   ),
-                                // ),
+
                               ],
                             ),
                           ),
