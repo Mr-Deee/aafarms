@@ -326,7 +326,6 @@ class _homepageState extends State<homepage> {
                           ),
 
 
-
                         ],
                       ),
 
@@ -334,6 +333,7 @@ class _homepageState extends State<homepage> {
                   ),
                 ],
               ),
+
               SizedBox(height: 39,),
               Expanded(
                 child: StreamBuilder(
@@ -379,7 +379,8 @@ class _homepageState extends State<homepage> {
                     }
                   },
                 ),
-              )
+              ),
+
             ],
           ),
         ),

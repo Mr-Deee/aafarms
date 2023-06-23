@@ -155,7 +155,7 @@ class FarmDetailsPage extends StatelessWidget {
                                             bottom: 12,
                                           ),
                                           child: Text(
-                                            "Product Group : ${farm!.group}",
+                                            "Farm : ${farm!.group}",
                                             style: const TextStyle(
                                               fontFamily: "Nunito",
                                               fontSize: 17,
