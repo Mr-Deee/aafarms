@@ -38,7 +38,7 @@ dependencies:
   uuid: ^3.0.7
   fluttertoast:
   firebase_storage: ^11.2.2
-
+  footer:
   intl: ^0.18.1
   google_fonts: ^4.0.4
   flutter_colorpicker: ^1.0.3
