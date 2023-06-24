@@ -1,50 +1,44 @@
 import 'dart:io';
 import 'dart:io' as io;
 import 'dart:math';
+
 import 'package:afarms/models/addedFarm.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/services.dart' show ByteData, Uint8List, rootBundle;
-import 'package:path/path.dart' as Path;
-
-import 'package:afarms/models/Users.dart';
-
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
 import 'package:path/path.dart';
-
 import '../../color_palette.dart';
 import '../../main.dart';
 import '../../toast.dart';
 import '../progressDialog.dart';
+
 class addfarm extends StatefulWidget {
-  const addfarm({Key? key, this.group}) : super(key: key);
-  final  String? group;
+  const addfarm({Key? key, this.group, this.Farm}) : super(key: key);
+  final String? group;
+  final String? Farm;
+
   @override
-  State<addfarm> createState() => _addfarmState( group);
+  State<addfarm> createState() => _addfarmState(group, Farm);
 }
 
-
 class _addfarmState extends State<addfarm> {
-
-
-
-
-
-
   @override
   void initState() {
     super.initState();
     generateCode();
   }
+
   List<File> _image = [];
   String? _selectedImage;
   String? group;
-  _addfarmState(this.group);
+  String? farm;
+
+  _addfarmState(this.group, this.farm);
+
   // final picker = ImagePicker();
   double val = 0;
+
   // final ImagePicker imagePicker = ImagePicker();
   bool uploading = false;
   final addedFarm newProduct = addedFarm();
@@ -53,7 +47,6 @@ class _addfarmState extends State<addfarm> {
   firebase_storage.Reference? ref;
   File? selectedfile;
 
-
   // void _selectImage1(String image) {
   //   setState(() {
   //     _selectedImage = image;
@@ -61,13 +54,14 @@ class _addfarmState extends State<addfarm> {
   //   });
   // }
   String code = '';
-  void generateCode() {
 
+  void generateCode() {
     // Generate a random 4-digit code
     Random random = Random();
     int randomNumber = random.nextInt(9000) + 1000;
-    if (group == "Winneba") {
+    if (farm == "Winneba") {
       code = "WN-" + randomNumber.toString();
+
       setState(() {
         // else if(newProduct.group=="Tachiam"){
         //   code = "TA-"+randomNumber.toString();
@@ -76,23 +70,17 @@ class _addfarmState extends State<addfarm> {
         // }
         code = "WN-" + randomNumber.toString();
       });
-    }
-    else
-    if (group == "Tachiam") {
+    } else if (farm == "Tachiam") {
       code = "TA-" + randomNumber.toString();
       setState(() {
-
         // } else if(newProduct.group=="Nankese"){
         //   code = "NA-"+randomNumber.toString();
         // }
         code = "TA-" + randomNumber.toString();
       });
-    }
-    else
-    if (group == "Nankese") {
+    } else if (farm == "Nankese") {
       code = "NA-" + randomNumber.toString();
       setState(() {
-
         // } else if(newProduct.group=="Nankese"){
         //   code = "NA-"+randomNumber.toString();
         // }
@@ -101,42 +89,34 @@ class _addfarmState extends State<addfarm> {
     }
   }
 
-  String ? currentSelectedValue;
+  String? currentSelectedValue;
   List<String> FARMCODE = [
     "NA-JNJ028(Nankese|Pesticide)",
     "NA-JNJ025(Nankese|Fertilizer)",
     "NA-JNJ026(Nankese|Transport)",
     "WN-JNJ014(Winneba|Fuel)",
-        " WN-JNJ029()",
+    " WN-JNJ029()",
     "TA-JNJ029",
-   " NA-JNJ029"
+    " NA-JNJ029"
   ];
   final storage = FirebaseStorage.instance;
   final storageReference = FirebaseStorage.instance.ref();
 
-  String ?selectedImagePath;
-  String ?uploadedImageUrl;
+  String? selectedImagePath;
+  String? uploadedImageUrl;
+
   @override
   Widget build(BuildContext context) {
-
     // var firstname = Provider
     //     .of<Users>(context)
     //     .userInfo
     //     ?.id!;
-    var newprojectname=  newProduct.name;
-
-
-
-
-
-
-
-
+    var newprojectname = newProduct.name;
 
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
-        foregroundColor:  Color(0xff202020),
+        foregroundColor: Color(0xff202020),
         backgroundColor: Colors.white54,
         title: Row(
           children: [
@@ -157,7 +137,7 @@ class _addfarmState extends State<addfarm> {
           right: 10,
         ),
         child: FloatingActionButton(
-          onPressed: () async{
+          onPressed: () async {
             showDialog(
                 context: context,
                 barrierDismissible: false,
@@ -166,20 +146,18 @@ class _addfarmState extends State<addfarm> {
                     message: "Adding New Product,Please wait.....",
                   );
                 });
-         //   String? url = await  uploadImage(selectedImagePath!);
-         //    uploadsFile();
+            //   String? url = await  uploadImage(selectedImagePath!);
+            //    uploadsFile();
             //uploadImage(selectedImagePath!);
             Occupationdb();
             newProduct.group = group;
-            _firestore
-                .collection("Expenses")
-                .add({
+            _firestore.collection("Expenses").add({
               //
               // 'image': url,
               'name': newProduct.name.toString(),
 
               'FarmCodep': currentSelectedValue.toString(),
-              'FarmCodes':code.toString()+ "|"+newProduct.name.toString(),
+              'FarmCodes': code.toString() + "|" + newProduct.name.toString(),
               'description': newProduct.description.toString(),
               'group': newProduct.group.toString(),
               'Company': newProduct.company.toString(),
@@ -187,14 +165,11 @@ class _addfarmState extends State<addfarm> {
               'location': newProduct.location,
               'quantity': newProduct.quantity,
               //newProduct.toMap()
-            })
-                .then((value) {
-
+            }).then((value) {
               Navigator.of(context).pop();
               Navigator.of(context).pop();
               showTextToast('Added Sucessfully!');
             }).catchError((e) {
-
               showTextToast('Failed!');
             });
             // Navigator.of(context).pop();
@@ -203,12 +178,12 @@ class _addfarmState extends State<addfarm> {
           backgroundColor: Colors.white54,
           child: const Icon(
             Icons.done,
-            color:  Colors.black,
+            color: Colors.black,
           ),
         ),
       ),
       body: Container(
-        color:      Colors.white54,
+        color: Colors.white54,
         child: SafeArea(
           child: Container(
             color: Colors.white54,
@@ -216,7 +191,6 @@ class _addfarmState extends State<addfarm> {
             width: double.infinity,
             child: Column(
               children: [
-
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -229,7 +203,6 @@ class _addfarmState extends State<addfarm> {
                               SizedBox(
                                 height: 10,
                               ),
-
                             ],
                           ),
                           Expanded(
@@ -253,7 +226,7 @@ class _addfarmState extends State<addfarm> {
                                   child: SingleChildScrollView(
                                     child: Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.only(
@@ -262,39 +235,38 @@ class _addfarmState extends State<addfarm> {
                                           ),
                                           child: Column(
                                             children: [
-
-
                                               Padding(
                                                 padding: const EdgeInsets.only(
-                                                  left: 8, bottom: 12,),
+                                                  left: 8,
+                                                  bottom: 12,
+                                                ),
                                                 child: Text(
-                                                  "Farm : $group",
+                                                  "ITEM : $group",
                                                   style: const TextStyle(
                                                     fontFamily: "Nunito",
                                                     fontSize: 17,
-                                                    color:Colors.black,
+                                                    color: Colors.black,
                                                   ),
                                                 ),
                                               ),
-
-
-
                                             ],
                                           ),
                                         ),
 
                                         DropdownButton<String>(
                                           value: currentSelectedValue,
-                                          hint: new Text("Choose From this List"),
-                                          items: FARMCODE.map<DropdownMenuItem<String>>((String value) {
-
-                                            return  DropdownMenuItem<String>(
-
+                                          hint:
+                                              new Text("Choose From this List"),
+                                          items: FARMCODE
+                                              .map<DropdownMenuItem<String>>(
+                                                  (String value) {
+                                            return DropdownMenuItem<String>(
                                               value: value,
                                               child: new Row(
                                                 children: <Widget>[
                                                   new Icon(
-                                                    Icons.home_repair_service_rounded,
+                                                    Icons
+                                                        .home_repair_service_rounded,
                                                     color: Colors.green,
                                                   ),
                                                   new Text(value)
@@ -303,24 +275,26 @@ class _addfarmState extends State<addfarm> {
                                             );
                                           }).toList(),
                                           onChanged: (newvalue) {
-                                       setState(() {
-                                         currentSelectedValue=newvalue;
-                                         newvalue==newProduct.farmcode;
-                                       } );
-
+                                            setState(() {
+                                              currentSelectedValue = newvalue;
+                                              newvalue == newProduct.farmcode;
+                                            });
                                           },
                                         ),
 
                                         Padding(
                                           padding: const EdgeInsets.all(21.0),
-                                          child: Text("Or type your custom code (NA-3455|(Expense))",style: TextStyle(fontSize: 11),),
+                                          child: Text(
+                                            "Or type your custom code (NA-3455|(Expense))",
+                                            style: TextStyle(fontSize: 11),
+                                          ),
                                         ),
 
                                         Container(
                                           decoration: BoxDecoration(
                                             color: ColorPalette.white,
                                             borderRadius:
-                                            BorderRadius.circular(12),
+                                                BorderRadius.circular(12),
                                             boxShadow: [
                                               BoxShadow(
                                                 offset: const Offset(0, 3),
@@ -337,40 +311,37 @@ class _addfarmState extends State<addfarm> {
                                               code = value;
                                             },
                                             readOnly: true,
-
                                             textInputAction:
-                                            TextInputAction.next,
+                                                TextInputAction.next,
                                             key: UniqueKey(),
                                             keyboardType: TextInputType.text,
                                             style: const TextStyle(
                                               fontFamily: "Nunito",
                                               fontSize: 16,
-                                              color:Colors.black,
+                                              color: Colors.black,
                                             ),
                                             decoration: InputDecoration(
                                               border: InputBorder.none,
                                               hintText: "${code}",
-
                                               filled: true,
                                               fillColor: Colors.transparent,
                                               hintStyle: TextStyle(
                                                 fontFamily: "Nunito",
                                                 fontSize: 16,
                                                 color: Colors.black,
-
-
                                               ),
                                             ),
-                                            cursorColor:
-                                            Colors.black,
+                                            cursorColor: Colors.black,
                                           ),
                                         ),
-                                        SizedBox(height: 34,),
+                                        SizedBox(
+                                          height: 34,
+                                        ),
                                         Container(
                                           decoration: BoxDecoration(
                                             color: ColorPalette.white,
                                             borderRadius:
-                                            BorderRadius.circular(12),
+                                                BorderRadius.circular(12),
                                             boxShadow: [
                                               BoxShadow(
                                                 offset: const Offset(0, 3),
@@ -387,13 +358,13 @@ class _addfarmState extends State<addfarm> {
                                               newProduct.name = value;
                                             },
                                             textInputAction:
-                                            TextInputAction.next,
+                                                TextInputAction.next,
                                             key: UniqueKey(),
                                             keyboardType: TextInputType.text,
                                             style: const TextStyle(
                                               fontFamily: "Nunito",
                                               fontSize: 16,
-                                              color:Colors.black,
+                                              color: Colors.black,
                                             ),
                                             decoration: InputDecoration(
                                               border: InputBorder.none,
@@ -404,11 +375,9 @@ class _addfarmState extends State<addfarm> {
                                                 fontFamily: "Nunito",
                                                 fontSize: 16,
                                                 color: Colors.grey,
-
                                               ),
                                             ),
-                                            cursorColor:
-                                            Colors.black,
+                                            cursorColor: Colors.black,
                                           ),
                                         ),
                                         const SizedBox(
@@ -421,11 +390,11 @@ class _addfarmState extends State<addfarm> {
                                                 decoration: BoxDecoration(
                                                   color: ColorPalette.white,
                                                   borderRadius:
-                                                  BorderRadius.circular(12),
+                                                      BorderRadius.circular(12),
                                                   boxShadow: [
                                                     BoxShadow(
                                                       offset:
-                                                      const Offset(0, 3),
+                                                          const Offset(0, 3),
                                                       blurRadius: 6,
                                                       color: ColorPalette
                                                           .nileBlue
@@ -436,31 +405,30 @@ class _addfarmState extends State<addfarm> {
                                                 height: 50,
                                                 child: TextFormField(
                                                   initialValue:
-                                                  newProduct.cost == null
-                                                      ? ''
-                                                      : newProduct.cost
-                                                      .toString(),
+                                                      newProduct.cost == null
+                                                          ? ''
+                                                          : newProduct.cost
+                                                              .toString(),
                                                   onChanged: (value) {
                                                     newProduct.cost =
                                                         int.parse(value);
                                                   },
                                                   textInputAction:
-                                                  TextInputAction.next,
+                                                      TextInputAction.next,
                                                   key: UniqueKey(),
                                                   keyboardType:
-                                                  TextInputType.number,
+                                                      TextInputType.number,
                                                   style: const TextStyle(
                                                     fontFamily: "Nunito",
                                                     fontSize: 16,
-                                                    color:
-                                                    Colors.black,
+                                                    color: Colors.black,
                                                   ),
                                                   decoration: InputDecoration(
                                                     border: InputBorder.none,
                                                     hintText: "Cost",
                                                     filled: true,
                                                     fillColor:
-                                                    Colors.transparent,
+                                                        Colors.transparent,
                                                     hintStyle: TextStyle(
                                                       fontFamily: "Nunito",
                                                       fontSize: 16,
@@ -469,9 +437,7 @@ class _addfarmState extends State<addfarm> {
                                                           .withOpacity(0.58),
                                                     ),
                                                   ),
-                                                  cursorColor:
-                                                  Colors.green,
-
+                                                  cursorColor: Colors.green,
                                                 ),
                                               ),
                                             ),
@@ -483,11 +449,11 @@ class _addfarmState extends State<addfarm> {
                                                 decoration: BoxDecoration(
                                                   color: ColorPalette.white,
                                                   borderRadius:
-                                                  BorderRadius.circular(12),
+                                                      BorderRadius.circular(12),
                                                   boxShadow: [
                                                     BoxShadow(
                                                       offset:
-                                                      const Offset(0, 3),
+                                                          const Offset(0, 3),
                                                       blurRadius: 6,
                                                       color: ColorPalette
                                                           .nileBlue
@@ -498,32 +464,32 @@ class _addfarmState extends State<addfarm> {
                                                 height: 50,
                                                 child: TextFormField(
                                                   initialValue:
-                                                  newProduct.quantity ==
-                                                      null
-                                                      ? ''
-                                                      : newProduct.quantity
-                                                      .toString(),
+                                                      newProduct.quantity ==
+                                                              null
+                                                          ? ''
+                                                          : newProduct.quantity
+                                                              .toString(),
                                                   onChanged: (value) {
                                                     newProduct.quantity =
                                                         int.parse(value);
                                                   },
                                                   textInputAction:
-                                                  TextInputAction.next,
+                                                      TextInputAction.next,
                                                   key: UniqueKey(),
                                                   keyboardType:
-                                                  TextInputType.number,
+                                                      TextInputType.number,
                                                   style: const TextStyle(
                                                     fontFamily: "Nunito",
                                                     fontSize: 16,
                                                     color:
-                                                    ColorPalette.nileBlue,
+                                                        ColorPalette.nileBlue,
                                                   ),
                                                   decoration: InputDecoration(
                                                     border: InputBorder.none,
                                                     hintText: "Quantity",
                                                     filled: true,
                                                     fillColor:
-                                                    Colors.transparent,
+                                                        Colors.transparent,
                                                     hintStyle: TextStyle(
                                                       fontFamily: "Nunito",
                                                       fontSize: 16,
@@ -533,7 +499,7 @@ class _addfarmState extends State<addfarm> {
                                                     ),
                                                   ),
                                                   cursorColor:
-                                                  ColorPalette.timberGreen,
+                                                      ColorPalette.timberGreen,
                                                 ),
                                               ),
                                             ),
@@ -546,7 +512,7 @@ class _addfarmState extends State<addfarm> {
                                           decoration: BoxDecoration(
                                             color: ColorPalette.white,
                                             borderRadius:
-                                            BorderRadius.circular(12),
+                                                BorderRadius.circular(12),
                                             boxShadow: [
                                               BoxShadow(
                                                 offset: const Offset(0, 3),
@@ -559,12 +525,12 @@ class _addfarmState extends State<addfarm> {
                                           height: 50,
                                           child: TextFormField(
                                             initialValue:
-                                            newProduct.company ?? '',
+                                                newProduct.company ?? '',
                                             onChanged: (value) {
                                               newProduct.company = value;
                                             },
                                             textInputAction:
-                                            TextInputAction.next,
+                                                TextInputAction.next,
                                             key: UniqueKey(),
                                             keyboardType: TextInputType.text,
                                             style: const TextStyle(
@@ -581,12 +547,9 @@ class _addfarmState extends State<addfarm> {
                                                 fontFamily: "Nunito",
                                                 fontSize: 16,
                                                 color: Colors.grey,
-
                                               ),
                                             ),
-                                            cursorColor:
-                                            Colors.blue,
-
+                                            cursorColor: Colors.blue,
                                           ),
                                         ),
                                         const SizedBox(
@@ -594,10 +557,9 @@ class _addfarmState extends State<addfarm> {
                                         ),
                                         Container(
                                           decoration: BoxDecoration(
-                                            color:Colors.white54,
-
+                                            color: Colors.white54,
                                             borderRadius:
-                                            BorderRadius.circular(12),
+                                                BorderRadius.circular(12),
                                             boxShadow: [
                                               BoxShadow(
                                                 offset: const Offset(0, 3),
@@ -610,12 +572,12 @@ class _addfarmState extends State<addfarm> {
                                           height: 50,
                                           child: TextFormField(
                                             initialValue:
-                                            newProduct.description ?? '',
+                                                newProduct.description ?? '',
                                             onChanged: (value) {
                                               newProduct.description = value;
                                             },
                                             textInputAction:
-                                            TextInputAction.next,
+                                                TextInputAction.next,
                                             key: UniqueKey(),
                                             keyboardType: TextInputType.text,
                                             style: const TextStyle(
@@ -635,7 +597,7 @@ class _addfarmState extends State<addfarm> {
                                               ),
                                             ),
                                             cursorColor:
-                                            ColorPalette.timberGreen,
+                                                ColorPalette.timberGreen,
                                           ),
                                         ),
                                         const SizedBox(height: 20),
@@ -655,8 +617,6 @@ class _addfarmState extends State<addfarm> {
                                         ),
                                         //LocationDD(product: newProduct),
 
-
-
                                         // Container(
                                         //   padding: EdgeInsets.all(8), // Border width
                                         //   decoration: BoxDecoration(color: Colors.transparent, shape: BoxShape.circle),
@@ -667,10 +627,6 @@ class _addfarmState extends State<addfarm> {
                                         //     ),
                                         //   ),
                                         // ),
-
-
-
-
 
                                         // ListView(
                                         //   shrinkWrap: true,
@@ -695,7 +651,6 @@ class _addfarmState extends State<addfarm> {
                                   ),
                                 ),
                                 if (selectedImagePath != null)
-
                                   Align(
                                     alignment: Alignment.topCenter,
                                     child: Padding(
@@ -704,8 +659,8 @@ class _addfarmState extends State<addfarm> {
                                         height: 100,
                                         width: 100,
                                         child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(11),
-
+                                          borderRadius:
+                                              BorderRadius.circular(11),
                                           child: Container(
                                             color: Colors.transparent,
                                             child: SizedBox(
@@ -714,30 +669,27 @@ class _addfarmState extends State<addfarm> {
                                                 elevation: 8,
                                                 shadowColor: Colors.grey,
                                                 shape:
-                                                const RoundedRectangleBorder(
-                                                    borderRadius:
-                                                    BorderRadius.all(
-                                                      Radius.circular(20),
-                                                    ),
-                                                    side: BorderSide(
-                                                        width: 2,
-                                                        color:
-                                                        Colors.black)),
+                                                    const RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                          Radius.circular(20),
+                                                        ),
+                                                        side: BorderSide(
+                                                            width: 2,
+                                                            color:
+                                                                Colors.black)),
                                                 child: Container(
                                                   padding: EdgeInsets.all(4),
-
-                                                  child:
-                                                  CircleAvatar(
-                                                    backgroundColor: Colors.transparent,
+                                                  child: CircleAvatar(
+                                                    backgroundColor:
+                                                        Colors.transparent,
                                                     radius: 100,
-                                                    backgroundImage: AssetImage(selectedImagePath!),
-
+                                                    backgroundImage: AssetImage(
+                                                        selectedImagePath!),
                                                   ),
                                                 ),
                                               ),
                                             ),
-
-
                                           ),
                                         ),
                                       ),
@@ -746,8 +698,6 @@ class _addfarmState extends State<addfarm> {
                               ],
                             ),
                           ),
-
-
                         ],
                       ),
                     ),
@@ -760,6 +710,7 @@ class _addfarmState extends State<addfarm> {
       ),
     );
   }
+
   Future<String?> uploadsFile() async {
     int i = 1;
 
@@ -783,7 +734,9 @@ class _addfarmState extends State<addfarm> {
 
     return downloadUrl;
   }
+
   io.File? image;
+
   Future<String> uploadFile(io.File image) async {
     // showDialog(
     //     context: context,
@@ -794,9 +747,8 @@ class _addfarmState extends State<addfarm> {
     //     }
     // );
 
-
- //   final FirebaseAuth auth = FirebaseAuth.instance;
-   // final User? user = auth.currentUser;
+    //   final FirebaseAuth auth = FirebaseAuth.instance;
+    // final User? user = auth.currentUser;
     //final myUid = user?.uid;
 
     // final userId = currentfirebaseUser?.email;
@@ -806,15 +758,12 @@ class _addfarmState extends State<addfarm> {
 
     //upload to firebase storage
 
-    Reference ref = FirebaseStorage.instance
-        .ref()
-        .child("$group/${basename(image.path)}");
+    Reference ref =
+        FirebaseStorage.instance.ref().child("$group/${basename(image.path)}");
 
     await ref.putFile(image);
 
-
     downloadUrl = await ref.getDownloadURL();
-
 
     return downloadUrl;
   }
@@ -867,7 +816,6 @@ class _addfarmState extends State<addfarm> {
   //
   // }
 
-
   Occupationdb() async {
     //String? url = await  uploadImage(selectedImagePath!);
     Map userDataMap = {
@@ -883,25 +831,25 @@ class _addfarmState extends State<addfarm> {
 
     Farms.child("Farm").set(userDataMap);
   }
-  // chooseImage() async {
-  //   final pickedFile = await picker.getImage(source: ImageSource.gallery);
-  //   setState(() {
-  //     _image.add(File(pickedFile!.path));
-  //   });
-  //   if (pickedFile!.path == null) retrieveLostData();
-  // }
-  //
-  // Future<void> retrieveLostData() async {
-  //   final LostData response = await picker.getLostData();
-  //   if (response.isEmpty) {
-  //     return;
-  //   }
-  //   if (response.file != null) {
-  //     setState(() {
-  //       _image.add(File(response.file!.path));
-  //     });
-  //   } else {
-  //     print(response.file);
-  //   }
-  // }
+// chooseImage() async {
+//   final pickedFile = await picker.getImage(source: ImageSource.gallery);
+//   setState(() {
+//     _image.add(File(pickedFile!.path));
+//   });
+//   if (pickedFile!.path == null) retrieveLostData();
+// }
+//
+// Future<void> retrieveLostData() async {
+//   final LostData response = await picker.getLostData();
+//   if (response.isEmpty) {
+//     return;
+//   }
+//   if (response.file != null) {
+//     setState(() {
+//       _image.add(File(response.file!.path));
+//     });
+//   } else {
+//     print(response.file);
+//   }
+// }
 }
