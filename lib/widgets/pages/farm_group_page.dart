@@ -1,4 +1,6 @@
 
+import 'dart:ui';
+
 import 'package:afarms/models/addedFarm.dart';
 import 'package:afarms/widgets/pages/farm_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,38 +24,26 @@ class FarmGroupPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+
+    double _sigmaX = 5; // from 0-10
+    double _sigmaY = 5; // from 0-10
+    double _opacity = 0.2;
+    double _width = 350;
+    double _height = 300;
     return Scaffold(
-      // floatingActionButton: Padding(
-      //   padding: const EdgeInsets.only(
-      //     bottom: 10,
-      //     right: 10,
-      //   ),
-      //   child: FloatingActionButton(
-      //     onPressed: () {
-      //       Navigator.of(context).push(
-      //         MaterialPageRoute(
-      //           builder: (context) {
-      //             return addfarm(
-      //               group: name,
-      //             );
-      //           },
-      //         ),
-      //       );
-      //     },
-      //     splashColor: Colors.black,
-      //     backgroundColor: Colors.black,
-      //
-      //     child: const Icon(
-      //       Icons.add,
-      //       color: ColorPalette.white,
-      //     ),
-      //   ),
-      // ),
+
       body:      SafeArea(
         child: Container(
-          color: Colors.white54,
+
           height: double.infinity,
           width: double.infinity,
+          decoration: BoxDecoration(
+
+              image: DecorationImage(
+                image: AssetImage('assets/images/backdrop.png'), // Replace with your image path
+                fit: BoxFit.cover,
+              ),),
           child: Column(
               children: [
           Row(
@@ -74,7 +64,7 @@ class FarmGroupPage extends StatelessWidget {
             height: 160,
 
             decoration:  BoxDecoration(
-              color:  Colors.white54,
+              color:  Colors.white38.withOpacity(0.56),
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(16),
                 topRight: Radius.circular(16),
@@ -96,14 +86,11 @@ class FarmGroupPage extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    Text("Hi",style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold
 
-                    ),),
                     Padding(
-                      padding: const EdgeInsets.only(top:58.0),
-                      child: Text("Welcome"),
+                      padding: const EdgeInsets.only(top:18.0),
+                      child: Text("Create Expense\nCategory",
+                      style: TextStyle(fontSize: 19,fontWeight: FontWeight.bold,color: Colors.black),),
                     ),
 
 
@@ -264,7 +251,8 @@ class FarmGroupPage extends StatelessWidget {
                       //
                       // },
                       child: Icon(Icons.add,
-                        color:   Color.fromRGBO(216, 78, 16, 1),)),
+                        color:   Color.fromRGBO(216, 78, 16, 1),
+                      size: 50,)),
                 ),
 
 
@@ -280,7 +268,7 @@ class FarmGroupPage extends StatelessWidget {
         Row(
             children: [
               Padding(
-                padding: const EdgeInsets.only(
+                padding:  EdgeInsets.only(
                     top:10.0,
                     left: 10,
                     right:10),
@@ -289,78 +277,108 @@ class FarmGroupPage extends StatelessWidget {
 
                   // ),
 
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
 
-                          Padding(
-                            padding: const EdgeInsets.only(top:18.0),
-                            child: Text(name!+" -Farm"),
-                          ),
-
-
-
-                        ],
-                      ),
-
-
-
-                    ],
-                  ),
 
                 ),
+              ClipRect(
+                child: BackdropFilter(
+                  filter:
+                  ImageFilter.blur(sigmaX: _sigmaX, sigmaY: _sigmaY),
 
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      decoration: BoxDecoration(
+                          color: Color.fromRGBO(0, 0, 0, 1)
+                              .withOpacity(_opacity),
+                          borderRadius:
+                          const BorderRadius.all(Radius.circular(30))),
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      height: MediaQuery.of(context).size.height * 0.6,
+                  child:    Container(
+                    height :MediaQuery.of(context).size.height * 0.6,
+                    child: StreamBuilder(
+                      stream:
+                      _firestore.collection("ExpenceList").snapshots(),
+                      builder: (
+                          BuildContext context,
+                          AsyncSnapshot<
+                              QuerySnapshot<Map<String, dynamic>>>
+                          snapshot,
+                          ) {
+                        if (snapshot.hasData) {
+                          final List<dynamic> _productGroups =
+                          snapshot.data!.docs[0].data()['List']
+                          as List<dynamic>;
+                          _productGroups.sort();
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: GridView.builder(
+                              gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 1,
+                                crossAxisSpacing: 10,
+                                mainAxisSpacing: 10,
+                              ),
+                              itemCount: _productGroups.length,
+                              itemBuilder: (context, index) {
+                                return farmExpensesCard(
+                                  name: _productGroups[index] as String,
+                                  key: UniqueKey(),
+                                  Farm: name,
+
+                                );
+                              },
+                            ),
+                          );
+                        } else {
+                          return const Center(
+                            child: SizedBox(
+                              height: 40,
+                              width: 40,
+                              child: CircularProgressIndicator(
+                                color: Colors.blue,
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  ),
+
+
+
+
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     Column(
+                  //       children: [
+                  //
+                  //         Padding(
+                  //           padding: const EdgeInsets.only(top:18.0),
+                  //           child: Text(name!+" -Farm"),
+                  //         ),
+                  //
+                  //         Column(
+                  //           children: [
+                  //
+                  //           ],
+                  //         ),
+                  //
+                  //       ],
+                  //     ),
+                  //
+                  //
+                  //
+                  //   ],
+                  // ),
+    )
+                ),
+              ),
             ],),
 
-      Expanded(
-        child: StreamBuilder(
-          stream:
-          _firestore.collection("ExpenceList").snapshots(),
-          builder: (
-              BuildContext context,
-              AsyncSnapshot<
-                  QuerySnapshot<Map<String, dynamic>>>
-              snapshot,
-              ) {
-            if (snapshot.hasData) {
-              final List<dynamic> _productGroups =
-              snapshot.data!.docs[0].data()['List']
-              as List<dynamic>;
-              _productGroups.sort();
-              return GridView.builder(
-                gridDelegate:
-                const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 2,
-                  crossAxisSpacing: 20,
-                  mainAxisSpacing: 20,
-                ),
-                itemCount: _productGroups.length,
-                itemBuilder: (context, index) {
-                  return farmExpensesCard(
-                    name: _productGroups[index] as String,
-                    key: UniqueKey(),
-                      Farm: name,
 
-                                                    );
-                },
-              );
-            } else {
-              return const Center(
-                child: SizedBox(
-                  height: 40,
-                  width: 40,
-                  child: CircularProgressIndicator(
-                    color: Colors.blue,
-                  ),
-                ),
-              );
-            }
-          },
-        ),
-      ),
 
 
 

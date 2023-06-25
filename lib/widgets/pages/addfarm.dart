@@ -181,10 +181,20 @@ class _addfarmState extends State<addfarm> {
         ),
       ),
       body: Container(
-        color: Colors.white54,
+
+
+        height: double.infinity,
+        width: double.infinity,
+        decoration: BoxDecoration(
+
+          image: DecorationImage(
+            image: AssetImage('assets/images/backdrop.png'), // Replace with your image path
+            fit: BoxFit.cover,
+          ),),
+
         child: SafeArea(
           child: Container(
-            color: Colors.white54,
+
             height: double.infinity,
             width: double.infinity,
             child: Column(
@@ -236,10 +246,10 @@ class _addfarmState extends State<addfarm> {
                                               Padding(
                                                 padding: const EdgeInsets.only(
                                                   left: 8,
-                                                  bottom: 12,
+                                                  bottom: 1,
                                                 ),
                                                 child: Text(
-                                                  "ITEM : $group",
+                                                  "Expense : $group",
                                                   style: const TextStyle(
                                                     fontFamily: "Nunito",
                                                     fontSize: 17,
@@ -275,42 +285,42 @@ class _addfarmState extends State<addfarm> {
                                           ),
                                         ),
 
-                                        DropdownButton<String>(
-                                          value: currentSelectedValue,
-                                          hint:
-                                              new Text("Choose From this List"),
-                                          items: FARMCODE
-                                              .map<DropdownMenuItem<String>>(
-                                                  (String value) {
-                                            return DropdownMenuItem<String>(
-                                              value: value,
-                                              child: new Row(
-                                                children: <Widget>[
-                                                  new Icon(
-                                                    Icons
-                                                        .home_repair_service_rounded,
-                                                    color: Colors.green,
-                                                  ),
-                                                  new Text(value)
-                                                ],
-                                              ),
-                                            );
-                                          }).toList(),
-                                          onChanged: (newvalue) {
-                                            setState(() {
-                                              currentSelectedValue = newvalue;
-                                              newvalue == newProduct.farmcode;
-                                            });
-                                          },
-                                        ),
+                                        // DropdownButton<String>(
+                                        //   value: currentSelectedValue,
+                                        //   hint:
+                                        //       new Text("Choose From this List"),
+                                        //   items: FARMCODE
+                                        //       .map<DropdownMenuItem<String>>(
+                                        //           (String value) {
+                                        //     return DropdownMenuItem<String>(
+                                        //       value: value,
+                                        //       child: new Row(
+                                        //         children: <Widget>[
+                                        //           new Icon(
+                                        //             Icons
+                                        //                 .home_repair_service_rounded,
+                                        //             color: Colors.green,
+                                        //           ),
+                                        //           new Text(value)
+                                        //         ],
+                                        //       ),
+                                        //     );
+                                        //   }).toList(),
+                                        //   onChanged: (newvalue) {
+                                        //     setState(() {
+                                        //       currentSelectedValue = newvalue;
+                                        //       newvalue == newProduct.farmcode;
+                                        //     });
+                                        //   },
+                                        // ),
 
-                                        Padding(
-                                          padding: const EdgeInsets.all(21.0),
-                                          child: Text(
-                                            "Or type your custom code (NA-3455|(Expense))",
-                                            style: TextStyle(fontSize: 11),
-                                          ),
-                                        ),
+                                        // Padding(
+                                        //   padding: const EdgeInsets.all(21.0),
+                                        //   child: Text(
+                                        //     "Or type your custom code (NA-3455|(Expense))",
+                                        //     style: TextStyle(fontSize: 11),
+                                        //   ),
+                                        // ),
 
                                         Container(
                                           decoration: BoxDecoration(
@@ -357,7 +367,7 @@ class _addfarmState extends State<addfarm> {
                                           ),
                                         ),
                                         SizedBox(
-                                          height: 34,
+                                          height: 10,
                                         ),
                                     // Container(
                                     //       decoration: BoxDecoration(
@@ -579,7 +589,7 @@ class _addfarmState extends State<addfarm> {
                                         ),
                                         Container(
                                           decoration: BoxDecoration(
-                                            color: Colors.white54,
+                                            color: Colors.white70,
                                             borderRadius:
                                                 BorderRadius.circular(12),
                                             boxShadow: [
@@ -623,51 +633,7 @@ class _addfarmState extends State<addfarm> {
                                           ),
                                         ),
                                         const SizedBox(height: 20),
-                                        // const Padding(
-                                        //   padding: EdgeInsets.only(
-                                        //     left: 8,
-                                        //     bottom: 5,
-                                        //   ),
-                                        //   child: Text(
-                                        //     "Location",
-                                        //     style: TextStyle(
-                                        //       fontFamily: "Nunito",
-                                        //       fontSize: 14,
-                                        //       color: ColorPalette.nileBlue,
-                                        //     ),
-                                        //   ),
-                                        // ),
-                                        //LocationDD(product: newProduct),
 
-                                        // Container(
-                                        //   padding: EdgeInsets.all(8), // Border width
-                                        //   decoration: BoxDecoration(color: Colors.transparent, shape: BoxShape.circle),
-                                        //   child: ClipOval(
-                                        //     child: SizedBox.fromSize(
-                                        //       size: Size.fromRadius(48), // Image radius
-                                        //       child: Image.asset(_selectedImage??"assets/user.jpg", fit: BoxFit.cover),
-                                        //     ),
-                                        //   ),
-                                        // ),
-
-                                        // ListView(
-                                        //   shrinkWrap: true,
-                                        //   //crossAxisCount: 3,
-                                        //   children: _images.map((image) {
-                                        //     return GestureDetector(
-                                        //       onTap: () => _selectImage1(image as String),
-                                        //       child: Container(
-                                        //         decoration: BoxDecoration(
-                                        //           border: Border.all(
-                                        //             color: _selectedImage == image ? Colors.blue : Colors.grey,
-                                        //             width: 2,
-                                        //           ),
-                                        //         ),
-                                        //         // child: Image.asset(image.toString()),
-                                        //       ),
-                                        //     );
-                                        //   }).toList(),
-                                        // ),
                                       ],
                                     ),
                                   ),

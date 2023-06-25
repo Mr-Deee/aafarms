@@ -280,6 +280,8 @@ class  _ExpenseGroupPageState extends State<ExpenseGroupPage> {
                                               ),
                                             ],
                                           ),
+
+
                                           const Text(
                                             "Expenses",
                                             style: TextStyle(
