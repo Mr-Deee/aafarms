@@ -27,6 +27,8 @@ class _addfarmState extends State<addfarm> {
   void initState() {
     super.initState();
     generateCode();
+    generatedCode = generateCode();
+
   }
 
   List<File> _image = [];
@@ -54,41 +56,35 @@ class _addfarmState extends State<addfarm> {
   //   });
   // }
   String code = '';
+  String randomCode = '';
 
-  void generateCode() {
-    // Generate a random 4-digit code
+  String generatedCode = '';
+
+
+
+  String generateCode() {
+    // Retrieve farm type and group type from Firestore
+    String? farmType = group; // Replace with Firestore document instance
+    String? groupType = farm; // Replace with Firestore document instance
+
+    // Extract first and third letters of farm type
+    String firstLetter = farmType!.substring(0, 1);
+    String thirdLetter = farmType.substring(2, 3).toUpperCase();
+    String firsttwo=groupType!.substring(0,2).toUpperCase();
+
+    // Generate random code
     Random random = Random();
-    int randomNumber = random.nextInt(9000) + 1000;
-    if (farm == "Winneba") {
-      code = "WN-$randomNumber";
-
-      setState(() {
-        // else if(newProduct.group=="Tachiam"){
-
-        //   code = "TA-"+randomNumber.toString();
-        // } else if(newProduct.group=="Nankese"){
-        //   code = "NA-"+randomNumber.toString();
-        // }
-        code = "WN-" + randomNumber.toString();
-      });
-    } else if (farm == "Tachiam") {
-      code = "TA-" + randomNumber.toString();
-      setState(() {
-        // } else if(newProduct.group=="Nankese"){
-        //   code = "NA-"+randomNumber.toString();
-        // }
-        code = "TA-" + randomNumber.toString();
-      });
-    } else if (farm == "Nankese") {
-      code = "NA-" + randomNumber.toString();
-      setState(() {
-        // } else if(newProduct.group=="Nankese"){
-        //   code = "NA-"+randomNumber.toString();
-        // }
-        code = "NA-" + randomNumber.toString();
-      });
+    String randomCode = '';
+    for (int i = 0; i < 4; i++) {
+      randomCode += random.nextInt(10).toString();
     }
+
+    // Concatenate farm type letters, random code, and group type
+    String finalCode =firsttwo+"-"+ firstLetter + thirdLetter + randomCode  ;
+
+    return finalCode;
   }
+
 
   String? currentSelectedValue;
   List<String> FARMCODE = [
@@ -157,7 +153,7 @@ class _addfarmState extends State<addfarm> {
               // 'image': url,
               'ExpenseType': group,
               'FarmCodep': currentSelectedValue.toString(),
-              'FarmCodes': code.toString() + "|" + group!,
+              'FarmCodes': generatedCode.toString() + "|" + group!,
 
                   //newProduct.name.toString(),
               'description': newProduct.description.toString(),
@@ -332,9 +328,9 @@ class _addfarmState extends State<addfarm> {
                                           ),
                                           height: 50,
                                           child: TextFormField(
-                                            initialValue: code ?? '',
+                                            initialValue: generatedCode ?? '',
                                             onChanged: (value) {
-                                              code = value;
+                                              generatedCode = value;
                                             },
                                             readOnly: true,
                                             textInputAction:
