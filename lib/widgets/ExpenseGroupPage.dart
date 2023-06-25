@@ -159,6 +159,14 @@ class ExpenseGroupPage extends StatelessWidget {
                                               fontFamily: "Nunito",
                                             ),
                                           ),
+                                           Text(
+                                            farm!,
+                                            style: TextStyle(
+                                              color: ColorPalette.timberGreen,
+                                              fontSize: 20,
+                                              fontFamily: "Nunito",
+                                            ),
+                                          ),
                                           const SizedBox(height: 20),
 
                                           // Text("${newProduct.farmcode}"),
@@ -167,7 +175,7 @@ class ExpenseGroupPage extends StatelessWidget {
                                             child: StreamBuilder(
                                               stream: _firestore
                                                   .collection("Expenses")
-                                                  .where("group", isEqualTo: farm)
+                                                  .where("Farm", isEqualTo: farm).where("ExpenseType",isEqualTo:name)
 
                                                   .snapshots(),
                                               builder: (

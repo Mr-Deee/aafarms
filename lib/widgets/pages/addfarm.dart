@@ -60,10 +60,11 @@ class _addfarmState extends State<addfarm> {
     Random random = Random();
     int randomNumber = random.nextInt(9000) + 1000;
     if (farm == "Winneba") {
-      code = "WN-" + randomNumber.toString();
+      code = "WN-$randomNumber";
 
       setState(() {
         // else if(newProduct.group=="Tachiam"){
+
         //   code = "TA-"+randomNumber.toString();
         // } else if(newProduct.group=="Nankese"){
         //   code = "NA-"+randomNumber.toString();
@@ -154,15 +155,16 @@ class _addfarmState extends State<addfarm> {
             _firestore.collection("Expenses").add({
               //
               // 'image': url,
-              'name': newProduct.name.toString(),
-
+              'ExpenseType': group,
               'FarmCodep': currentSelectedValue.toString(),
-              'FarmCodes': code.toString() + "|" + newProduct.name.toString(),
+              'FarmCodes': code.toString() + "|" + group!,
+
+                  //newProduct.name.toString(),
               'description': newProduct.description.toString(),
-              'group': newProduct.group.toString(),
+              'Farm': farm,
               'Company': newProduct.company.toString(),
               'Cost': newProduct.cost,
-              'location': newProduct.location,
+              'location': farm,
               'quantity': newProduct.quantity,
               //newProduct.toMap()
             }).then((value) {
@@ -242,6 +244,30 @@ class _addfarmState extends State<addfarm> {
                                                 ),
                                                 child: Text(
                                                   "ITEM : $group",
+                                                  style: const TextStyle(
+                                                    fontFamily: "Nunito",
+                                                    fontSize: 17,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                            left: 8,
+                                            bottom: 12,
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                  left: 8,
+                                                  bottom: 12,
+                                                ),
+                                                child: Text(
+                                                  "Farm : $farm",
                                                   style: const TextStyle(
                                                     fontFamily: "Nunito",
                                                     fontSize: 17,
@@ -337,49 +363,49 @@ class _addfarmState extends State<addfarm> {
                                         SizedBox(
                                           height: 34,
                                         ),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            color: ColorPalette.white,
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                offset: const Offset(0, 3),
-                                                blurRadius: 6,
-                                                color: ColorPalette.nileBlue
-                                                    .withOpacity(0.1),
-                                              ),
-                                            ],
-                                          ),
-                                          height: 50,
-                                          child: TextFormField(
-                                            initialValue: newProduct.name ?? '',
-                                            onChanged: (value) {
-                                              newProduct.name = value;
-                                            },
-                                            textInputAction:
-                                                TextInputAction.next,
-                                            key: UniqueKey(),
-                                            keyboardType: TextInputType.text,
-                                            style: const TextStyle(
-                                              fontFamily: "Nunito",
-                                              fontSize: 16,
-                                              color: Colors.black,
-                                            ),
-                                            decoration: InputDecoration(
-                                              border: InputBorder.none,
-                                              hintText: "Product Name",
-                                              filled: true,
-                                              fillColor: Colors.transparent,
-                                              hintStyle: TextStyle(
-                                                fontFamily: "Nunito",
-                                                fontSize: 16,
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                            cursorColor: Colors.black,
-                                          ),
-                                        ),
+                                    // Container(
+                                    //       decoration: BoxDecoration(
+                                    //         color: ColorPalette.white,
+                                    //         borderRadius:
+                                    //             BorderRadius.circular(12),
+                                    //         boxShadow: [
+                                    //           BoxShadow(
+                                    //             offset: const Offset(0, 3),
+                                    //             blurRadius: 6,
+                                    //             color: ColorPalette.nileBlue
+                                    //                 .withOpacity(0.1),
+                                    //           ),
+                                    //         ],
+                                    //       ),
+                                    //       height: 50,
+                                    //       child: TextFormField(
+                                    //         initialValue: newProduct.name ?? '',
+                                    //         onChanged: (value) {
+                                    //           newProduct.name = value;
+                                    //         },
+                                    //         textInputAction:
+                                    //             TextInputAction.next,
+                                    //         key: UniqueKey(),
+                                    //         keyboardType: TextInputType.text,
+                                    //         style: const TextStyle(
+                                    //           fontFamily: "Nunito",
+                                    //           fontSize: 16,
+                                    //           color: Colors.black,
+                                    //         ),
+                                    //         decoration: InputDecoration(
+                                    //           border: InputBorder.none,
+                                    //           hintText: "Product Name",
+                                    //           filled: true,
+                                    //           fillColor: Colors.transparent,
+                                    //           hintStyle: TextStyle(
+                                    //             fontFamily: "Nunito",
+                                    //             fontSize: 16,
+                                    //             color: Colors.grey,
+                                    //           ),
+                                    //         ),
+                                    //         cursorColor: Colors.black,
+                                    //       ),
+                                    //     ),
                                         const SizedBox(
                                           height: 20,
                                         ),
@@ -601,20 +627,20 @@ class _addfarmState extends State<addfarm> {
                                           ),
                                         ),
                                         const SizedBox(height: 20),
-                                        const Padding(
-                                          padding: EdgeInsets.only(
-                                            left: 8,
-                                            bottom: 5,
-                                          ),
-                                          child: Text(
-                                            "Location",
-                                            style: TextStyle(
-                                              fontFamily: "Nunito",
-                                              fontSize: 14,
-                                              color: ColorPalette.nileBlue,
-                                            ),
-                                          ),
-                                        ),
+                                        // const Padding(
+                                        //   padding: EdgeInsets.only(
+                                        //     left: 8,
+                                        //     bottom: 5,
+                                        //   ),
+                                        //   child: Text(
+                                        //     "Location",
+                                        //     style: TextStyle(
+                                        //       fontFamily: "Nunito",
+                                        //       fontSize: 14,
+                                        //       color: ColorPalette.nileBlue,
+                                        //     ),
+                                        //   ),
+                                        // ),
                                         //LocationDD(product: newProduct),
 
                                         // Container(
@@ -820,7 +846,8 @@ class _addfarmState extends State<addfarm> {
     //String? url = await  uploadImage(selectedImagePath!);
     Map userDataMap = {
       'ProductImage': url.toString(),
-      'name': newProduct.name.toString(),
+      'name':group,
+      //newProduct.name.toString(),
       'description': newProduct.description.toString(),
       'group': newProduct.group.toString(),
       'Company': newProduct.company.toString(),

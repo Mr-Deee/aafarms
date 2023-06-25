@@ -22,7 +22,7 @@ class addedFarm{
   String? description;
 
   factory addedFarm.fromMap(Map<String, dynamic> json) => addedFarm(
-    name: json["name"] as String?,
+    name: json["ExpenseType"] as String?,
     farmcode: json["FarmCodes"] as String?,
     cost: json["Cost"] as int?,
     group: json["group"] as String?,
@@ -34,7 +34,7 @@ class addedFarm{
   );
 
   Map<String, dynamic> toMap() => {
-    "name": name,
+    "ExpenseType": name,
     "farmcodes": farmcode,
     "Cost": cost,
     "group": group,
