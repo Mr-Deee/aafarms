@@ -14,12 +14,13 @@ import '../../toast.dart';
 import '../progressDialog.dart';
 
 class addfarm extends StatefulWidget {
-  const addfarm({Key? key, this.group, this.Farm}) : super(key: key);
+  const addfarm({Key? key, this.group, this.Farm,this.FinalCode}) : super(key: key);
   final String? group;
+  final String? FinalCode;
   final String? Farm;
 
   @override
-  State<addfarm> createState() => _addfarmState(group, Farm);
+  State<addfarm> createState() => _addfarmState(group, Farm,FinalCode);
 }
 
 class _addfarmState extends State<addfarm> {
@@ -27,16 +28,18 @@ class _addfarmState extends State<addfarm> {
   void initState() {
     super.initState();
     generateCode();
-    generatedCode = generateCode();
+    FinalCode;
 
   }
+
+  String? FinalCode;
 
   List<File> _image = [];
   String? _selectedImage;
   String? group;
   String? farm;
 
-  _addfarmState(this.group, this.farm);
+  _addfarmState(this.group, this.farm,this.FinalCode);
 
   // final picker = ImagePicker();
   double val = 0;
@@ -152,8 +155,8 @@ class _addfarmState extends State<addfarm> {
               //
               // 'image': url,
               'ExpenseType': group,
-              'FarmCodep': currentSelectedValue.toString(),
-              'FarmCodes': generatedCode.toString() + "|" + group!,
+              //'FarmCodep': currentSelectedValue.toString(),
+               'FarmCodes':FinalCode,
 
                   //newProduct.name.toString(),
               'description': newProduct.description.toString(),
@@ -338,9 +341,9 @@ class _addfarmState extends State<addfarm> {
                                           ),
                                           height: 50,
                                           child: TextFormField(
-                                            initialValue: generatedCode ?? '',
+                                            initialValue: FinalCode ?? '',
                                             onChanged: (value) {
-                                              generatedCode = value;
+                                              FinalCode = value;
                                             },
                                             readOnly: true,
                                             textInputAction:
@@ -354,7 +357,7 @@ class _addfarmState extends State<addfarm> {
                                             ),
                                             decoration: InputDecoration(
                                               border: InputBorder.none,
-                                              hintText: "${code}",
+                                              hintText: "${FinalCode}",
                                               filled: true,
                                               fillColor: Colors.transparent,
                                               hintStyle: TextStyle(

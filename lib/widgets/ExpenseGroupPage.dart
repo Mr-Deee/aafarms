@@ -42,6 +42,7 @@ class _ExpenseGroupPageState extends State<ExpenseGroupPage> {
   void initState() {
     super.initState();
     genCode();
+    finalCode;
     fetchData();
   }
   void fetchData() async {
@@ -151,6 +152,7 @@ class _ExpenseGroupPageState extends State<ExpenseGroupPage> {
                     return addfarm(
                       group: name,
                       Farm: farm,
+                        FinalCode :finalCode
                     );
                   },
                 ),
@@ -320,7 +322,7 @@ class _ExpenseGroupPageState extends State<ExpenseGroupPage> {
                                       "bnn$finalCode",
                                       style: TextStyle(
                                         color: ColorPalette.timberGreen,
-                                        fontSize: 20,
+                                        fontSize: 10,
                                         fontFamily: "Nunito",
                                       ),
                                     ),

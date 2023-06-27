@@ -104,23 +104,26 @@ class FarmCard extends StatelessWidget {
                   //   ],
                   // ),
                   //
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.qr_code_sharp,
-                        size: 14,
-                        color: ColorPalette.timberGreen.withOpacity(0.44),
-                      ),
-                      Text(
-                        Farm!.farmcode ?? '-',
-                        maxLines: 1,
-                        style: const TextStyle(
-                          fontFamily: "Nunito",
-                          fontSize: 12,
-                          color: ColorPalette.timberGreen,
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.qr_code_sharp,
+                          size: 14,
+                          color: ColorPalette.timberGreen.withOpacity(0.44),
                         ),
-                      ),
-                    ],
+                        Text(
+                          Farm!.farmcode ?? '-',
+                          maxLines: 1,
+                          style: const TextStyle(
+                            fontFamily: "Nunito",
+                            fontSize: 12,
+                            color: ColorPalette.timberGreen,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(
                     height: 5,
