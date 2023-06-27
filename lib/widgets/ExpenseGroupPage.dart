@@ -319,7 +319,7 @@ class _ExpenseGroupPageState extends State<ExpenseGroupPage> {
 
 
                                     Text(
-                                      "bnn$finalCode",
+                                      "$finalCode",
                                       style: TextStyle(
                                         color: ColorPalette.timberGreen,
                                         fontSize: 10,
