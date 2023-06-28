@@ -4,6 +4,8 @@ import 'dart:ui';
 import 'package:afarms/models/addedFarm.dart';
 import 'package:afarms/widgets/pages/addfarm.dart';
 import 'package:afarms/widgets/pages/farm_card.dart';
+import 'package:afarms/widgets/pages/farm_group_page.dart';
+import 'package:afarms/widgets/pages/homepage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -12,29 +14,67 @@ import '../../color_palette.dart';
 class ExpenseGroupPage extends StatefulWidget {
   final String? name;
   final String? farm;
-
-  ExpenseGroupPage({Key? key, this.name, this.farm}) : super(key: key);
+  final String? finalCode;
+  ExpenseGroupPage({Key? key, this.name, this.finalCode,this.farm}) : super(key: key);
 
   final TextEditingController _newExpenseGroup = TextEditingController();
   final addedFarm newProduct = addedFarm();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  String? docID;
 
   @override
-  State<ExpenseGroupPage> createState() => _ExpenseGroupPageState(name, farm);
+  State<ExpenseGroupPage> createState() => _ExpenseGroupPageState(name, farm,docID,finalCode);
 }
 
 class _ExpenseGroupPageState extends State<ExpenseGroupPage> {
   String? name;
   String? farm;
 
-  _ExpenseGroupPageState(this.name, this.farm);
 
+   String? docID;
+  _ExpenseGroupPageState(this.name, this.farm, this.docID,this.finalCode);
+  var field1;
+  var field2;
   String code = '';
+  String farmcode="";
 
   @override
   void initState() {
     super.initState();
-    generatedCode = generateCode();
+    genCode();
+    fetchData();
+  }
+  void fetchData() async {
+    FirebaseFirestore.instance
+        .collection('FarmCode')
+        .get()
+        .then((QuerySnapshot<Map<String, dynamic>> snapshot) {
+      if (snapshot.size > 0) {
+        // Iterate over the list of documents
+        for (var doc in snapshot.docs) {
+          var documentData = doc.data();
+          // Access the fields within the documentData map
+           field1 = documentData['ExpenseName'];
+           field2 = documentData['FarmCode'];
+          // Do something with the retrieved document fields
+          print('Field 1: $field1');
+          print('Field 2: $field2');
+
+
+
+          if(field1==name){
+            setState(() {
+              finalCode=field2;
+            });
+
+          }
+        }
+      } else {
+        print('No documents found in the collection.');
+      }
+    }).catchError((error) {
+      print('Error getting documents: $error');
+    });
   }
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -65,78 +105,26 @@ class _ExpenseGroupPageState extends State<ExpenseGroupPage> {
 
     return finalCode;
   }
+  String? finalCode;
+  String? genCode() {
 
-  // void LoadCode()  async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   String? storedCode = prefs.getString('randomCode');
-  //   // Generate a random 4-digit code
-  //
-  //   if (storedCode != null) {
-  //     setState(() {
-  //       randomCode = storedCode;
-  //     });
-  //   }
-  //   else {
-  //     String newRandomCode = _generateRandomCode();
-  //     setState(() {
-  //       randomCode = newRandomCode;
-  //     });
-  //
-  //     await prefs.setString('randomCode', newRandomCode);
-  //   }
-  // }
-  //
-  //
-  //   String _generateRandomCode() {
-  //
-  //   String code = '';
-  //
-  //
-  //   Random random = Random();
-  //   int randomNumber = random.nextInt(9000) + 1000;
-  //   const int codeLength = 10;
-  //   const String chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  //
-  //   for (int i = 0; i < codeLength; i++) {
-  //   code += chars[random.nextInt(chars.length)];
-  //
-  //
-  //
-  //   if (farm == "Winneba") {
-  //     code = "WN-$randomNumber";
-  //
-  //     setState(() {
-  //       // else if(newProduct.group=="Tachiam"){
-  //
-  //       //   code = "TA-"+randomNumber.toString();
-  //       // } else if(newProduct.group=="Nankese"){
-  //       //   code = "NA-"+randomNumber.toString();
-  //       // }
-  //       code = "WN-" + randomNumber.toString();
-  //     });
-  //   } else if (farm == "Tachiam") {
-  //     code = "TA-" + randomNumber.toString();
-  //     setState(() {
-  //       // } else if(newProduct.group=="Nankese"){
-  //       //   code = "NA-"+randomNumber.toString();
-  //       // }
-  //       code = "TA-" + randomNumber.toString();
-  //     });
-  //   } else if (farm == "Nankese") {
-  //     code = "NA-" + randomNumber.toString();
-  //     setState(() {
-  //       // } else if(newProduct.group=="Nankese"){
-  //       //   code = "NA-"+randomNumber.toString();
-  //       // }
-  //       code = "NA-" + randomNumber.toString();
-  //     });
-  //   }
-  //   }
-  //
-  //   return code;
-  //
-  //
-  // }
+
+    if(field1==name){
+
+    setState(() {
+      finalCode=field2;
+    });
+    return finalCode;
+
+  }
+    // Generate random code
+
+
+    // Concatenate farm type letters, random code, and group type
+
+
+  }
+
   @override
   Widget build(BuildContext context) {
     double _sigmaX = 5; // from 0-10
@@ -176,6 +164,9 @@ class _ExpenseGroupPageState extends State<ExpenseGroupPage> {
             ),
           ),
         ),
+
+
+
         body: Container(
             color: ColorPalette.aquaHaze,
             child: SafeArea(
@@ -235,30 +226,42 @@ class _ExpenseGroupPageState extends State<ExpenseGroupPage> {
                               ),
                               Row(
                                 children: [
-                                  IconButton(
-                                    splashColor: ColorPalette.timberGreen,
-                                    icon: const Icon(
-                                      Icons.search,
-                                      color: ColorPalette.timberGreen,
-                                    ),
-                                    onPressed: () {
-                                      // Navigator.of(context).push(
-                                      //   MaterialPageRoute(
-                                      //     builder: (context) =>
-                                      //         SearchProductInGroupPage(
-                                      //       name: name,
-                                      //     ),
-                                      //),
-                                      //);
-                                    },
-                                  ),
+                                  // IconButton(
+                                  //   splashColor: ColorPalette.timberGreen,
+                                  //   icon: const Icon(
+                                  //     Icons.search,
+                                  //     color: ColorPalette.timberGreen,
+                                  //   ),
+                                  //   onPressed: () {
+                                  //     // Navigator.of(context).push(
+                                  //     //   MaterialPageRoute(
+                                  //     //     builder: (context) =>
+                                  //     //         SearchProductInGroupPage(
+                                  //     //       name: name,
+                                  //     //     ),
+                                  //     //),
+                                  //     //);
+                                  //   },
+                                  // ),
                                   IconButton(
                                     icon: const Icon(
                                       Icons.delete,
                                       color: ColorPalette.timberGreen,
                                     ),
                                     onPressed: () {
-                                      //TODO
+
+
+
+                                      _firestore
+                                          .collection("ExpenseList")
+                                          .doc("ExpenseGroup").collection("List").doc(docID)
+                                          .delete()
+                                          .then((value) {
+                                        displayToast('Deleted Sucessfully!', context);
+                                      }).catchError((e) {
+                                        displayToast('Failed!', context);
+                                      });
+                                      Navigator.of(context).pop();
                                     },
                                   ),
                                 ],
@@ -303,8 +306,18 @@ class _ExpenseGroupPageState extends State<ExpenseGroupPage> {
                                         fontFamily: "Nunito",
                                       ),
                                     ),
+                                    // Text(
+                                    //   farm!,
+                                    //   style: TextStyle(
+                                    //     color: ColorPalette.timberGreen,
+                                    //     fontSize: 20,
+                                    //     fontFamily: "Nunito",
+                                    //   ),
+                                    // ),
+
+
                                     Text(
-                                      farm!,
+                                      "bnn$finalCode",
                                       style: TextStyle(
                                         color: ColorPalette.timberGreen,
                                         fontSize: 20,
@@ -381,4 +394,6 @@ class _ExpenseGroupPageState extends State<ExpenseGroupPage> {
               ),
             );
   }
+
+
 }

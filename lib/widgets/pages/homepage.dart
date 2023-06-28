@@ -275,7 +275,7 @@ class _homepageState extends State<homepage> {
                                                                       fontSize:
                                                                           16,
                                                                       color: Colors
-                                                                          .white54,
+                                                                          .black,
                                                                     ),
                                                                     decoration:
                                                                         InputDecoration(
@@ -286,8 +286,8 @@ class _homepageState extends State<homepage> {
                                                                       filled:
                                                                           true,
                                                                       fillColor:
-                                                                          Colors
-                                                                              .black,
+                                                                          Colors.white54
+                                                                              ,
                                                                       hintStyle:
                                                                           TextStyle(
                                                                         fontFamily:
@@ -295,7 +295,7 @@ class _homepageState extends State<homepage> {
                                                                         fontSize:
                                                                             16,
                                                                         color: Colors
-                                                                            .white54,
+                                                                            .black,
                                                                       ),
                                                                     ),
                                                                     cursorColor:
