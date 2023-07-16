@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:afarms/widgets/pages/allexpenses.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -155,7 +156,7 @@ class _homepageState extends State<homepage> {
                             left: 10,
                             right: 15,
                           ),
-                          width: 170,
+                          width: 150,
                           height: 160,
                           decoration: BoxDecoration(
                             color: Colors.white54,
@@ -424,6 +425,64 @@ class _homepageState extends State<homepage> {
                                     )),
                               ),
                             ],
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: (){
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) {
+          return allexpenses();
+                        }));},
+
+
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 10.0, left: 10, right: 10),
+                          child: Container(
+                            padding: const EdgeInsets.only(
+                              top: 0,
+                              left: 10,
+                              right: 15,
+                            ),
+                            width: 150,
+                            height: 160,
+                            decoration: BoxDecoration(
+                              color: Colors.white54,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(16),
+                                topRight: Radius.circular(16),
+                                bottomLeft: Radius.circular(16),
+                                bottomRight: Radius.circular(16),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  offset: Offset(0, 5),
+                                  blurRadius: 6,
+                                  color: Color(0xff000000).withOpacity(0.16),
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  children: [
+                                    // Text(
+                                    //   "",
+                                    //   style: TextStyle(
+                                    //       fontSize: 30,
+                                    //       fontWeight: FontWeight.bold),
+                                    // ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 58.0),
+                                      child: Text("EXPENSES",style: TextStyle(fontSize: 24),),
+                                    ),
+                                  ],
+                                ),
+
+                              ],
+                            ),
                           ),
                         ),
                       ),

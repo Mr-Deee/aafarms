@@ -41,7 +41,8 @@ class _ExpenseGroupPageState extends State<ExpenseGroupPage> {
   @override
   void initState() {
     super.initState();
-    genCode();
+  
+    generateCode();
     finalCode;
     fetchData();
   }
