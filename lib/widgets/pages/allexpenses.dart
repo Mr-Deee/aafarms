@@ -16,7 +16,9 @@ class allexpenses extends StatefulWidget {
 
 class _allexpensesState extends State<allexpenses> {
   late CollectionReference<Map<String, dynamic>> _expensesRef;  List<Expense> expenses = [];
-  String selectedGroup = 'Group A';
+  String selectedGroup = '';
+  String selectedExpense = '';
+
 
 
 
@@ -31,6 +33,8 @@ class _allexpensesState extends State<allexpenses> {
           .toList();
       setState(() {
         expenses = expenseList;
+        selectedGroup = expenses.isNotEmpty ? expenses[0].group : '';
+        selectedExpense = expenses.isNotEmpty ? expenses[0].group : '';
       });
     });
   }
@@ -49,28 +53,61 @@ class _allexpensesState extends State<allexpenses> {
       ),
       body: Column(
         children: [
-          DropdownButtonFormField<String>(
-            value: selectedGroup,
-            onChanged: (String? newValue) {
-              setState(() {
-                selectedGroup = newValue!;
-              });
-            },
-            items: expenses
-                .map((expense) => expense.group)
-                .toSet()
-                .toList()
-                .map((group) => DropdownMenuItem<String>(
-              value: group,
-              child: Text(group),
-            ))
-                .toList(),
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: DropdownButtonFormField<String>(
+                  value: selectedGroup,
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      selectedGroup = newValue!;
+                    });
+                  },
+                  items: expenses
+                      .map((expense) => expense.group)
+                      .toSet()
+                      .toList()
+                      .map((group) => DropdownMenuItem<String>(
+                    value: group,
+                    child: Text(group),
+                  ))
+                      .toList(),
+                ),
+              ),
+            ],
           ),
           SizedBox(height: 16),
           Text(
             'Total Cost: \$${getTotalCost().toStringAsFixed(2)}',
             style: TextStyle(fontSize: 18),
           ),
+
+      Column(
+        children: [
+
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: DropdownButtonFormField<String>(
+              value: selectedGroup,
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedGroup = newValue!;
+                });
+              },
+              items: expenses
+                  .map((expense) => expense.group)
+                  .toSet()
+                  .toList()
+                  .map((group) => DropdownMenuItem<String>(
+                value: group,
+                child: Text(group),
+              ))
+                  .toList(),
+            ),
+          ),
+
+        ]),
         ],
       ),
     );
@@ -80,8 +117,16 @@ class _allexpensesState extends State<allexpenses> {
 class Expense {
   final String group;
   final double cost;
+  String? name;
+  String? farmcode;
 
-  Expense({required this.group, required this.cost});
+  String? location;
+  String? company;
+  int? quantity;
+  String? image;
+  String? description;
+
+  Expense({required this.group, this.location,this.farmcode,this.quantity,this.name, required this.cost});
 
   factory Expense.fromMap(Map<dynamic, dynamic> map) {
     return Expense(
