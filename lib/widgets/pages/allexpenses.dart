@@ -15,7 +15,7 @@ class allexpenses extends StatefulWidget {
 }
 
 class _allexpensesState extends State<allexpenses> {
-  late CollectionReference<Map<String, dynamic>> _expensesRef;  List<Expense> expenses = [];
+   CollectionReference<Map<String, dynamic>>? _expensesRef;  List<Expense> expenses = [];
   String selectedGroup = '';
   String selectedExpense = '';
 
@@ -27,14 +27,14 @@ class _allexpensesState extends State<allexpenses> {
   void initState() {
     super.initState();
     _expensesRef = FirebaseFirestore.instance.collection('Expenses');
-    _expensesRef.get().then((querySnapshot) {
+    _expensesRef!.get().then((querySnapshot) {
       final expenseList = querySnapshot.docs
           .map((doc) => Expense.fromMap(doc.data()))
           .toList();
       setState(() {
         expenses = expenseList;
         selectedGroup = expenses.isNotEmpty ? expenses[0].group : '';
-        selectedExpense = expenses.isNotEmpty ? expenses[0].group : '';
+        selectedExpense = expenses.isNotEmpty ? expenses[0].farmcode : '';
       });
     });
   }
@@ -89,19 +89,19 @@ class _allexpensesState extends State<allexpenses> {
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: DropdownButtonFormField<String>(
-              value: selectedGroup,
-              onChanged: (String? newValue) {
+              value: selectedExpense,
+              onChanged: (String? newVal) {
                 setState(() {
-                  selectedGroup = newValue!;
+                  selectedExpense = newVal!;
                 });
               },
               items: expenses
-                  .map((expense) => expense.group)
+                  .map((expense) => expense.farmcode)
                   .toSet()
                   .toList()
-                  .map((group) => DropdownMenuItem<String>(
-                value: group,
-                child: Text(group),
+                  .map((farmcode) => DropdownMenuItem<String>(
+                value: farmcode,
+                child: Text(farmcode),
               ))
                   .toList(),
             ),
@@ -118,7 +118,7 @@ class Expense {
   final String group;
   final double cost;
   String? name;
-  String? farmcode;
+  String farmcode;
 
   String? location;
   String? company;
@@ -126,12 +126,13 @@ class Expense {
   String? image;
   String? description;
 
-  Expense({required this.group, this.location,this.farmcode,this.quantity,this.name, required this.cost});
+  Expense({required this.group, this.location, required this.farmcode,this.quantity,this.name, required this.cost});
 
   factory Expense.fromMap(Map<dynamic, dynamic> map) {
     return Expense(
       group: map['Farm'],
       cost: map['Cost'].toDouble(),
+      farmcode: map["FarmCodes"]
     );
   }
 }
