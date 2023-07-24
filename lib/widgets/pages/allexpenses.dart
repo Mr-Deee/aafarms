@@ -15,10 +15,14 @@ class allexpenses extends StatefulWidget {
 }
 
 class _allexpensesState extends State<allexpenses> {
-   CollectionReference<Map<String, dynamic>>? _expensesRef;  List<Expense> expenses = [];
+   CollectionReference<Map<String, dynamic>>? _expensesRef;
+   late CollectionReference<Map<String, dynamic>> _farmCodesRef;
+   List<Expense> expenses = [];
   String selectedGroup = '';
   String selectedExpense = '';
-
+   List<FarmCode> farmCodes = [];
+   String selectedFarmCode = '';
+   double farmCodeCost = 0.0;
 
 
 
@@ -26,6 +30,10 @@ class _allexpensesState extends State<allexpenses> {
   @override
   void initState() {
     super.initState();
+getexpenseTotalCost();
+getSelectedExpenses();
+
+    _farmCodesRef = FirebaseFirestore.instance.collection('farmCodes');
     _expensesRef = FirebaseFirestore.instance.collection('Expenses');
     _expensesRef!.get().then((querySnapshot) {
       final expenseList = querySnapshot.docs
@@ -37,7 +45,21 @@ class _allexpensesState extends State<allexpenses> {
         selectedExpense = expenses.isNotEmpty ? expenses[0].farmcode : '';
       });
     });
+
+
+    _farmCodesRef.get().then((querySnapshot) {
+      final farmCodeList = querySnapshot.docs
+          .map((doc) => FarmCode.fromMap(doc.data()))
+          .toList();
+      setState(() {
+        farmCodes = farmCodeList;
+        selectedFarmCode = farmCodes.isNotEmpty ? farmCodes[0].code : '';
+        farmCodeCost = farmCodes.isNotEmpty ? farmCodes[0].cost : 0.0;
+      });
+    });
   }
+
+
 
   double getTotalCost() {
     return expenses
@@ -45,6 +67,23 @@ class _allexpensesState extends State<allexpenses> {
         .map((expense) => expense.cost)
         .fold(0, (previous, current) => previous + current);
   }
+
+   List<Expense> getSelectedExpenses() {
+     return expenses.where((expense) => expense.farmcode == selectedFarmCode).toList();
+   }
+
+   double getexpenseTotalCost() {
+     double totalCost = 0.0;
+     print('Selected Farm Code: $selectedExpense');
+     for (var expense in expenses) {
+       print('Expense - Farm Code: ${expense.farmcode}, Cost: ${expense.cost}');
+       if (expense.farmcode == selectedExpense) {
+         totalCost += expense.cost;
+       }
+     }
+     print('Total Expense Cost: $totalCost');
+     return totalCost;
+   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,7 +118,7 @@ class _allexpensesState extends State<allexpenses> {
           ),
           SizedBox(height: 16),
           Text(
-            'Total Cost: \$${getTotalCost().toStringAsFixed(2)}',
+            'Total Cost: \GHS${getTotalCost().toStringAsFixed(2)}',
             style: TextStyle(fontSize: 18),
           ),
 
@@ -107,13 +146,44 @@ class _allexpensesState extends State<allexpenses> {
             ),
           ),
 
-        ]),
+          Text(
+            'Total Cost: \GHS${getexpenseTotalCost().toStringAsFixed(2)}',
+            style: TextStyle(fontSize: 18),
+          ),
+        ]
+      ),
+
+          // Container(
+          //   height: 200,
+          //   child: ListView.builder(
+          //     itemCount: getSelectedExpenses().length,
+          //     itemBuilder: (context, index) {
+          //       final expense = getSelectedExpenses()[index];
+          //       return ListTile(
+          //         title: Text(expense.farmcode),
+          //         subtitle: Text('Cost: \$${expense.cost.toStringAsFixed(2)}'),
+          //       );
+          //     },
+          //   ),
+          // ),
         ],
       ),
     );
   }
 }
+class FarmCode {
+  final String code;
+  final double cost;
 
+  FarmCode({required this.code, required this.cost});
+
+  factory FarmCode.fromMap(Map<String, dynamic> map) {
+    return FarmCode(
+      code: map['code'],
+      cost: map['cost'].toDouble(),
+    );
+  }
+}
 class Expense {
   final String group;
   final double cost;
