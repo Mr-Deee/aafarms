@@ -36,9 +36,9 @@ List<String> FARMCODE = [
   "TA-JNJ022(Tachiam|Fuel)",
 
 
-  " WN-JNJ029()",
-  "TA-JNJ029",
-  " NA-JNJ029"
+  // " WN-JNJ029()",
+  // "TA-JNJ029",
+  // " NA-JNJ029"
 ];
 
 final addedFarm newProduct = addedFarm();

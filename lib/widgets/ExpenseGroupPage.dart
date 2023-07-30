@@ -29,22 +29,22 @@ class ExpenseGroupPage extends StatefulWidget {
 class _ExpenseGroupPageState extends State<ExpenseGroupPage> {
   String? name;
   String? farm;
-
-
-   String? docID;
-  _ExpenseGroupPageState(this.name, this.farm, this.docID,this.finalCode);
   var field1;
   var field2;
   String code = '';
   String farmcode="";
 
+
+   String? docID;
+  _ExpenseGroupPageState(this.name, this.farm, this.docID,this.finalCode);
+
   @override
   void initState() {
     super.initState();
-  
+    fetchData();
     generateCode();
     finalCode;
-    fetchData();
+
   }
   void fetchData() async {
     FirebaseFirestore.instance
@@ -57,6 +57,7 @@ class _ExpenseGroupPageState extends State<ExpenseGroupPage> {
           var documentData = doc.data();
           // Access the fields within the documentData map
            field1 = documentData['ExpenseName'];
+           // field1 = documentData['ExpenseName'];
            field2 = documentData['FarmCode'];
           // Do something with the retrieved document fields
           print('Field 1: $field1');
