@@ -33,6 +33,7 @@ class _ExpenseGroupPageState extends State<ExpenseGroupPage> {
   String? farm;
   var field1;
   var field2;
+  var field3;
   String code = '';
   String farmcode = "";
 
@@ -58,12 +59,16 @@ class _ExpenseGroupPageState extends State<ExpenseGroupPage> {
           var documentData = doc.data();
           // Access the fields within the documentData map
           field1 = documentData['ExpenseName'];
+          field3 = documentData['FarmName'];
           // field1 = documentData['ExpenseName'];
           field2 = documentData['FarmCode'];
           // Do something with the retrieved document fields
           print('Field 1: $field1');
           print('Field 2: $field2');
-          if (field1 == farm && field2 == name) {
+          print('Field 3: $field3');
+          print('Farm: $farm');
+          print('Name: $name');
+          if (field3 == farm && field1 == name) {
             setState(() {
               finalCode = field2;
               print('finalCode: $finalCode');
@@ -293,14 +298,14 @@ class _ExpenseGroupPageState extends State<ExpenseGroupPage> {
                                   fontFamily: "Nunito",
                                 ),
                               ),
-                              // Text(
-                              //   farm!,
-                              //   style: TextStyle(
-                              //     color: ColorPalette.timberGreen,
-                              //     fontSize: 20,
-                              //     fontFamily: "Nunito",
-                              //   ),
-                              // ),
+                              Text(
+                                farm!,
+                                style: TextStyle(
+                                  color: ColorPalette.white,
+                                  fontSize: 20,
+                                  fontFamily: "Nunito",
+                                ),
+                              ),
 
                               Text(
                                 "$finalCode",

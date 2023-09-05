@@ -131,6 +131,7 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                   ),
                                 ],
                               ),
+                              Text(name!),
                               Padding(
                                 padding: const EdgeInsets.all(24.0),
                                 child: GestureDetector(
@@ -422,7 +423,7 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                     child: Icon(
                                       Icons.add,
                                       color: Color.fromRGBO(216, 78, 16, 1),
-                                      size: 50,
+                                      size: 20,
                                     )),
                               ),
                             ],
