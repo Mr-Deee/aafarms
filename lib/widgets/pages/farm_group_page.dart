@@ -35,7 +35,6 @@ List<String> FARMCODE = [
   "TA-JNJ021(Tachiam|Fertilizer)",
   "TA-JNJ022(Tachiam|Fuel)",
 
-
   // " WN-JNJ029()",
   // "TA-JNJ029",
   // " NA-JNJ029"
@@ -72,6 +71,20 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                   ),
                 ),
                 child: Column(children: [
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon(
+                          Icons.chevron_left_rounded,
+                          color: Colors.white,
+                          size: 35,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  ),
                   Row(
                     children: [
                       Padding(
@@ -158,53 +171,66 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                             SizedBox(
                                                               height: 10,
                                                             ),
-                                                        StatefulBuilder(builder:
-                                                                  (BuildContext
-                                                                          context,
-                                                                      StateSetter
-                                                                          setState) {
-                                                                return    Container(
-                                                                  decoration: BoxDecoration(
-                                                                    color: Colors.white54,
-                                                                    borderRadius: BorderRadius.circular(30)
+                                                            StatefulBuilder(builder:
+                                                                (BuildContext
+                                                                        context,
+                                                                    StateSetter
+                                                                        setState) {
+                                                              return Container(
+                                                                decoration: BoxDecoration(
+                                                                    color: Colors
+                                                                        .white54,
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            30)),
+                                                                child:
+                                                                    DropdownButtonHideUnderline(
+                                                                        child: DropdownButton<
+                                                                            String>(
+                                                                  icon: Visibility(
+                                                                      visible:
+                                                                          false,
+                                                                      child: Icon(
+                                                                          Icons
+                                                                              .arrow_downward)),
+                                                                  iconSize: 4,
+                                                                  elevation:
+                                                                      16, // game changer
+                                                                  hint: Padding(
+                                                                    padding:
+                                                                        const EdgeInsets.all(
+                                                                            8.0),
+                                                                    child: const Text(
+                                                                        "Select A Code"),
                                                                   ),
-                                                                  child: DropdownButtonHideUnderline (
-
-                                                                   child: DropdownButton<String>(
-                                                                       icon: Visibility (visible:false, child: Icon(Icons.arrow_downward)),
-                                                                       iconSize: 4,
-                                                                       elevation: 16,// game changer
-                                                                    hint: Padding(
-                                                                      padding: const EdgeInsets.all(8.0),
-                                                                      child: const Text("Select A Code"),
-                                                                    ),
-                                                                    value:
-                                                                        currentSelectedValue,
-                                                                    onChanged: (String?
-                                                                        newValue) {
-                                                                      setState(() {
-                                                                        currentSelectedValue =
-                                                                            newValue;
-                                                                        newValue =
-                                                                            newProduct
-                                                                                .farmcode;
-                                                                      });
-                                                                    },
-                                                                    items: FARMCODE.map<
-                                                                        DropdownMenuItem<
-                                                                            String>>((String
-                                                                        value) {
-                                                                      return DropdownMenuItem<
-                                                                              String>(
-                                                                          value:
-                                                                              value,
-                                                                          child: Text(
-                                                                              value));
-                                                                    }).toList(),
-                                                                  )),
-                                                                );
-                                                              }),
-
+                                                                  value:
+                                                                      currentSelectedValue,
+                                                                  onChanged:
+                                                                      (String?
+                                                                          newValue) {
+                                                                    setState(
+                                                                        () {
+                                                                      currentSelectedValue =
+                                                                          newValue;
+                                                                      newValue =
+                                                                          newProduct
+                                                                              .farmcode;
+                                                                    });
+                                                                  },
+                                                                  items: FARMCODE.map<
+                                                                      DropdownMenuItem<
+                                                                          String>>((String
+                                                                      value) {
+                                                                    return DropdownMenuItem<
+                                                                            String>(
+                                                                        value:
+                                                                            value,
+                                                                        child: Text(
+                                                                            value));
+                                                                  }).toList(),
+                                                                )),
+                                                              );
+                                                            }),
                                                             Column(
                                                               mainAxisSize:
                                                                   MainAxisSize
