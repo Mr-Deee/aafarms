@@ -178,6 +178,17 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                             SizedBox(
                                                               height: 10,
                                                             ),
+                                                            Text("To"),
+                                                            Text(
+                                                              name!,
+                                                              style: TextStyle(
+                                                                  fontFamily:
+                                                                      "Nunito",
+                                                                  fontSize: 15,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold),
+                                                            ),
                                                             StatefulBuilder(builder:
                                                                 (BuildContext
                                                                         context,
@@ -334,10 +345,25 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                                 as List<dynamic>;
                                                                         if (_tempList
                                                                             .contains(_newExpenseGroup.text)) {
+                                                                          // _tempList
+                                                                          //     .add(_newExpenseGroup.text);
+                                                                          _firestore
+                                                                              .collection(
+                                                                                  'ExpenseList')
+                                                                              .doc(
+                                                                                  "ExpenseGroup")
+                                                                              .update({
+                                                                            'List':
+                                                                                _tempList
+                                                                          });
                                                                           displayToast(
-                                                                            "Group Name already created",
+                                                                            "Added Successfully",
                                                                             context,
                                                                           );
+                                                                          // displayToast(
+                                                                          //   "Group Name already created",
+                                                                          //   context,
+                                                                          // );
                                                                         } else {
                                                                           _tempList
                                                                               .add(_newExpenseGroup.text);
@@ -524,19 +550,20 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                   ),
                 ]))));
   }
-}
 
-codefordb() {
-  FirebaseFirestore.instance.collection('FarmCode').doc().set({
-    // 'MobileNumber': _mobileNumber.toString().trim(),
-    // 'fullName':_firstName! +  _lastname!,
-    'FarmCode': currentSelectedValue,
-    'ExpenseName': _newExpenseGroup.text,
-    // 'Gender': Gender,
-    // 'Date Of Birth': birthDate,
-  });
+  codefordb() {
+    FirebaseFirestore.instance.collection('FarmCode').doc().set({
+      // 'MobileNumber': _mobileNumber.toString().trim(),
+      // 'fullName':_firstName! +  _lastname!,
+      'FarmCode': currentSelectedValue,
+      'ExpenseName': _newExpenseGroup.text,
+      'FarmName': name!,
+      // 'Gender': Gender,
+      // 'Date Of Birth': birthDate,
+    });
 
-  //String? url = await  uploadImage(selectedImagePath!);
+    //String? url = await  uploadImage(selectedImagePath!);
 
-  // Farms.child("Farm").set(userDataMap);
+    // Farms.child("Farm").set(userDataMap);
+  }
 }
