@@ -102,11 +102,12 @@ class _allexpensesState extends State<allexpenses> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(12.0),
+              padding: const EdgeInsets.all(25.0),
               child: Container(
                 height: 430,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     BoxShadow(
                       offset: Offset(0, 5),
@@ -160,11 +161,12 @@ class _allexpensesState extends State<allexpenses> {
                       padding: const EdgeInsets.only(top: 10.0),
                       child: Text(
                         'Total Cost: \GHS${getTotalCost().toStringAsFixed(2)}',
-                        style: TextStyle(fontSize: 18),
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                     ),
                     SizedBox(
-                      height: 100,
+                      height: 250,
                       child: Expanded(
                         child: StreamBuilder<QuerySnapshot>(
                           stream: firestore
@@ -189,6 +191,11 @@ class _allexpensesState extends State<allexpenses> {
 
                             return Column(
                               children: [
+                                Divider(),
+                                Text(
+                                  "Cost Per Item",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
                                 Expanded(
                                   child: ListView.builder(
                                     shrinkWrap: true,
@@ -199,13 +206,16 @@ class _allexpensesState extends State<allexpenses> {
                                         child: ListTile(
                                           title: Text(expenseItems[index].name),
                                           subtitle: Text(
-                                              'Cost: \$${expenseItems[index].cost}'),
+                                              'Cost: \GHS${expenseItems[index].cost}'),
                                         ),
                                       );
                                     },
                                   ),
                                 ),
-                                Text('Total Cost: \$${totalCost.toString()}'),
+                                Text(
+                                  'Total Cost: \GHS${totalCost.toString()}',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
                               ],
                             );
                           },
@@ -216,57 +226,13 @@ class _allexpensesState extends State<allexpenses> {
                 ),
               ),
             ),
-
-            // Expanded(
-            //   child: StreamBuilder<QuerySnapshot>(
-            //     stream: firestore
-            //         .collection('Expenses')
-            //         .where('farm', isEqualTo: selectedGroup)
-            //         .snapshots(),
-            //     builder: (context, snapshot) {
-            //       if (!snapshot.hasData) {
-            //         return CircularProgressIndicator();
-            //       }
-
-            //       List<ExpenseItem> expenseItems = [];
-            //       int totalCost = 0;
-
-            //       snapshot.data!.docs.forEach((doc) {
-            //         final expenseName = doc['name'];
-            //         final cost = doc['cost'];
-            //         totalCost += int.parse(cost);
-
-            //         expenseItems.add(ExpenseItem(expenseName, cost));
-            //       });
-
-            //       return Column(
-            //         children: [
-            //           Expanded(
-            //             child: ListView.builder(
-            //               shrinkWrap: true,
-            //               itemExtent: 50.0,
-            //               itemCount: expenseItems.length,
-            //               itemBuilder: (context, index) {
-            //                 return ListTile(
-            //                   title: Text(expenseItems[index].name),
-            //                   subtitle:
-            //                       Text('Cost: \$${expenseItems[index].cost}'),
-            //                 );
-            //               },
-            //             ),
-            //           ),
-            //           Text('Total Cost: \$${totalCost.toString()}'),
-            //         ],
-            //       );
-            //     },
-            //   ),
-            // ),
             Padding(
-              padding: const EdgeInsets.all(12.0),
+              padding: const EdgeInsets.all(22.0),
               child: Container(
                 height: 230,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     BoxShadow(
                       offset: Offset(0, 5),
@@ -306,51 +272,11 @@ class _allexpensesState extends State<allexpenses> {
                   ),
                   Text(
                     'Total Cost: \GHS${getexpenseTotalCost().toStringAsFixed(2)}',
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ]),
               ),
             ),
-            Column(children: [
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: DropdownButtonFormField<String>(
-                  value: selectedExpense,
-                  onChanged: (String? newVal) {
-                    setState(() {
-                      selectedExpense = newVal!;
-                    });
-                  },
-                  items: expenses
-                      .map((expense) => expense.farmcode)
-                      .toSet()
-                      .toList()
-                      .map((farmcode) => DropdownMenuItem<String>(
-                            value: farmcode,
-                            child: Text(farmcode),
-                          ))
-                      .toList(),
-                ),
-              ),
-              Text(
-                'Total Expense Cost: \GHS${getexpenseTotalCost().toStringAsFixed(2)}',
-                style: TextStyle(fontSize: 18),
-              ),
-            ]),
-            // Container(
-            //   height: 200,
-            //   child: ListView.builder(
-            //     itemCount: getSelectedExpenses().length,
-            //     itemBuilder: (context, index) {
-            //       final expense = getSelectedExpenses()[index];
-            //       return ListTile(
-            //         title: Text(expense.farmcode),
-            //         subtitle: Text('Cost: \$${expense.cost.toStringAsFixed(2)}'),
-            //       );
-            //     },
-            //   ),
-            // ),
-            //
           ],
         ),
       ),
