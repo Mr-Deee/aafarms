@@ -15,37 +15,34 @@ class allexpenses extends StatefulWidget {
 }
 
 class _allexpensesState extends State<allexpenses> {
-   CollectionReference<Map<String, dynamic>>? _expensesRef;
-   late CollectionReference<Map<String, dynamic>> _farmCodesRef;
-   List<Expense> expenses = [];
+  CollectionReference<Map<String, dynamic>>? _expensesRef;
+  late CollectionReference<Map<String, dynamic>> _farmCodesRef;
+  List<Expense> expenses = [];
   String selectedGroup = '';
   String selectedExpense = '';
-   List<FarmCode> farmCodes = [];
-   String selectedFarmCode = '';
-   double farmCodeCost = 0.0;
-
-
-
+  List<FarmCode> farmCodes = [];
+  String selectedFarmCode = '';
+  double farmCodeCost = 0.0;
 
   @override
   void initState() {
     super.initState();
-getexpenseTotalCost();
-getSelectedExpenses();
+
+    getexpenseTotalCost();
+    getSelectedExpenses();
 
     _farmCodesRef = FirebaseFirestore.instance.collection('farmCodes');
     _expensesRef = FirebaseFirestore.instance.collection('Expenses');
+
     _expensesRef!.get().then((querySnapshot) {
-      final expenseList = querySnapshot.docs
-          .map((doc) => Expense.fromMap(doc.data()))
-          .toList();
+      final expenseList =
+          querySnapshot.docs.map((doc) => Expense.fromMap(doc.data())).toList();
       setState(() {
         expenses = expenseList;
         selectedGroup = expenses.isNotEmpty ? expenses[0].group : '';
         selectedExpense = expenses.isNotEmpty ? expenses[0].farmcode : '';
       });
     });
-
 
     _farmCodesRef.get().then((querySnapshot) {
       final farmCodeList = querySnapshot.docs
@@ -59,8 +56,6 @@ getSelectedExpenses();
     });
   }
 
-
-
   double getTotalCost() {
     return expenses
         .where((expense) => expense.group == selectedGroup)
@@ -68,109 +63,301 @@ getSelectedExpenses();
         .fold(0, (previous, current) => previous + current);
   }
 
-   List<Expense> getSelectedExpenses() {
-     return expenses.where((expense) => expense.farmcode == selectedFarmCode).toList();
-   }
+  List<Expense> getSelectedExpenses() {
+    return expenses
+        .where((expense) => expense.farmcode == selectedFarmCode)
+        .toList();
+  }
 
-   double getexpenseTotalCost() {
-     double totalCost = 0.0;
-     print('Selected Farm Code: $selectedExpense');
-     for (var expense in expenses) {
-       print('Expense - Farm Code: ${expense.farmcode}, Cost: ${expense.cost}');
-       if (expense.farmcode == selectedExpense) {
-         totalCost += expense.cost;
-       }
-     }
-     print('Total Expense Cost: $totalCost');
-     return totalCost;
-   }
+  double getExpenseTotalCost() {
+    return expenses
+        .where((expense) => expense.farmcode == selectedExpense)
+        .map((expense) => expense.cost)
+        .fold(0, (previous, current) => previous + current);
+  }
+
+  double getexpenseTotalCost() {
+    double totalCost = 0.0;
+    print('Selected Farm Code: $selectedExpense');
+    for (var expense in expenses) {
+      print('Expense - Farm Code: ${expense.farmcode}, Cost: ${expense.cost}');
+      if (expense.farmcode == selectedExpense) {
+        totalCost += expense.cost;
+      }
+    }
+    print('Total Expense Cost: $totalCost');
+    return totalCost;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.black,
         title: Text('Expense Tracker'),
+        centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Column(
-            children: [
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Container(
+                height: 430,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  boxShadow: [
+                    BoxShadow(
+                      offset: Offset(0, 5),
+                      blurRadius: 6,
+                      color: Color(0xff000000).withOpacity(0.16),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 19.0),
+                      child: Text(
+                        "FARM TOTAL",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text(
+                        "Select from the drop down to select Farm ",
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(top: 20.0, left: 20, right: 20),
+                      child: DropdownButtonFormField<String>(
+                        value: selectedGroup,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            selectedGroup = newValue!;
+                          });
+                        },
+                        items: expenses
+                            .map((expense) => expense.group)
+                            .toSet()
+                            .toList()
+                            .map((group) => DropdownMenuItem<String>(
+                                  value: group,
+                                  child: Text(group),
+                                ))
+                            .toList(),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Text(
+                        'Total Cost: \GHS${getTotalCost().toStringAsFixed(2)}',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 100,
+                      child: Expanded(
+                        child: StreamBuilder<QuerySnapshot>(
+                          stream: firestore
+                              .collection('Expenses')
+                              .where('Farm', isEqualTo: selectedGroup)
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return CircularProgressIndicator();
+                            }
+
+                            List<ExpenseItem> expenseItems = [];
+                            int totalCost = 0;
+
+                            snapshot.data!.docs.forEach((doc) {
+                              final expenseName = doc['name'];
+                              final cost = doc['Cost'] as int;
+                              totalCost += cost;
+
+                              expenseItems.add(ExpenseItem(expenseName, cost));
+                            });
+
+                            return Column(
+                              children: [
+                                Expanded(
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    itemExtent: 50.0,
+                                    itemCount: expenseItems.length,
+                                    itemBuilder: (context, index) {
+                                      return SingleChildScrollView(
+                                        child: ListTile(
+                                          title: Text(expenseItems[index].name),
+                                          subtitle: Text(
+                                              'Cost: \$${expenseItems[index].cost}'),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                                Text('Total Cost: \$${totalCost.toString()}'),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            // Expanded(
+            //   child: StreamBuilder<QuerySnapshot>(
+            //     stream: firestore
+            //         .collection('Expenses')
+            //         .where('farm', isEqualTo: selectedGroup)
+            //         .snapshots(),
+            //     builder: (context, snapshot) {
+            //       if (!snapshot.hasData) {
+            //         return CircularProgressIndicator();
+            //       }
+
+            //       List<ExpenseItem> expenseItems = [];
+            //       int totalCost = 0;
+
+            //       snapshot.data!.docs.forEach((doc) {
+            //         final expenseName = doc['name'];
+            //         final cost = doc['cost'];
+            //         totalCost += int.parse(cost);
+
+            //         expenseItems.add(ExpenseItem(expenseName, cost));
+            //       });
+
+            //       return Column(
+            //         children: [
+            //           Expanded(
+            //             child: ListView.builder(
+            //               shrinkWrap: true,
+            //               itemExtent: 50.0,
+            //               itemCount: expenseItems.length,
+            //               itemBuilder: (context, index) {
+            //                 return ListTile(
+            //                   title: Text(expenseItems[index].name),
+            //                   subtitle:
+            //                       Text('Cost: \$${expenseItems[index].cost}'),
+            //                 );
+            //               },
+            //             ),
+            //           ),
+            //           Text('Total Cost: \$${totalCost.toString()}'),
+            //         ],
+            //       );
+            //     },
+            //   ),
+            // ),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Container(
+                height: 230,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  boxShadow: [
+                    BoxShadow(
+                      offset: Offset(0, 5),
+                      blurRadius: 6,
+                      color: Color(0xff000000).withOpacity(0.16),
+                    ),
+                  ],
+                ),
+                child: Column(children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 18.0),
+                    child: Text(
+                      "EXPENSE TOTAL",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: DropdownButtonFormField<String>(
+                      value: selectedExpense,
+                      onChanged: (String? newVal) {
+                        setState(() {
+                          selectedExpense = newVal!;
+                        });
+                      },
+                      items: expenses
+                          .map((expense) => expense.farmcode)
+                          .toSet()
+                          .toList()
+                          .map((farmcode) => DropdownMenuItem<String>(
+                                value: farmcode,
+                                child: Text(farmcode),
+                              ))
+                          .toList(),
+                    ),
+                  ),
+                  Text(
+                    'Total Cost: \GHS${getexpenseTotalCost().toStringAsFixed(2)}',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ]),
+              ),
+            ),
+            Column(children: [
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: DropdownButtonFormField<String>(
-                  value: selectedGroup,
-                  onChanged: (String? newValue) {
+                  value: selectedExpense,
+                  onChanged: (String? newVal) {
                     setState(() {
-                      selectedGroup = newValue!;
+                      selectedExpense = newVal!;
                     });
                   },
                   items: expenses
-                      .map((expense) => expense.group)
+                      .map((expense) => expense.farmcode)
                       .toSet()
                       .toList()
-                      .map((group) => DropdownMenuItem<String>(
-                    value: group,
-                    child: Text(group),
-                  ))
+                      .map((farmcode) => DropdownMenuItem<String>(
+                            value: farmcode,
+                            child: Text(farmcode),
+                          ))
                       .toList(),
                 ),
               ),
-            ],
-          ),
-          SizedBox(height: 16),
-          Text(
-            'Total Cost: \GHS${getTotalCost().toStringAsFixed(2)}',
-            style: TextStyle(fontSize: 18),
-          ),
-
-      Column(
-        children: [
-
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: DropdownButtonFormField<String>(
-              value: selectedExpense,
-              onChanged: (String? newVal) {
-                setState(() {
-                  selectedExpense = newVal!;
-                });
-              },
-              items: expenses
-                  .map((expense) => expense.farmcode)
-                  .toSet()
-                  .toList()
-                  .map((farmcode) => DropdownMenuItem<String>(
-                value: farmcode,
-                child: Text(farmcode),
-              ))
-                  .toList(),
-            ),
-          ),
-
-          Text(
-            'Total Cost: \GHS${getexpenseTotalCost().toStringAsFixed(2)}',
-            style: TextStyle(fontSize: 18),
-          ),
-        ]
-      ),
-
-          // Container(
-          //   height: 200,
-          //   child: ListView.builder(
-          //     itemCount: getSelectedExpenses().length,
-          //     itemBuilder: (context, index) {
-          //       final expense = getSelectedExpenses()[index];
-          //       return ListTile(
-          //         title: Text(expense.farmcode),
-          //         subtitle: Text('Cost: \$${expense.cost.toStringAsFixed(2)}'),
-          //       );
-          //     },
-          //   ),
-          // ),
-        ],
+              Text(
+                'Total Expense Cost: \GHS${getexpenseTotalCost().toStringAsFixed(2)}',
+                style: TextStyle(fontSize: 18),
+              ),
+            ]),
+            // Container(
+            //   height: 200,
+            //   child: ListView.builder(
+            //     itemCount: getSelectedExpenses().length,
+            //     itemBuilder: (context, index) {
+            //       final expense = getSelectedExpenses()[index];
+            //       return ListTile(
+            //         title: Text(expense.farmcode),
+            //         subtitle: Text('Cost: \$${expense.cost.toStringAsFixed(2)}'),
+            //       );
+            //     },
+            //   ),
+            // ),
+            //
+          ],
+        ),
       ),
     );
   }
 }
+
 class FarmCode {
   final String code;
   final double cost;
@@ -184,6 +371,14 @@ class FarmCode {
     );
   }
 }
+
+class ExpenseItem {
+  final String name;
+  final int cost;
+
+  ExpenseItem(this.name, this.cost);
+}
+
 class Expense {
   final String group;
   final double cost;
@@ -196,16 +391,18 @@ class Expense {
   String? image;
   String? description;
 
-  Expense({required this.group, this.location, required this.farmcode,this.quantity,this.name, required this.cost});
+  Expense(
+      {required this.group,
+      this.location,
+      required this.farmcode,
+      this.quantity,
+      this.name,
+      required this.cost});
 
   factory Expense.fromMap(Map<dynamic, dynamic> map) {
     return Expense(
-      group: map['Farm'],
-      cost: map['Cost'].toDouble(),
-      farmcode: map["FarmCodes"]
-    );
+        group: map['Farm'],
+        cost: map['Cost'].toDouble(),
+        farmcode: map["FarmCodes"]);
   }
 }
-
-
-

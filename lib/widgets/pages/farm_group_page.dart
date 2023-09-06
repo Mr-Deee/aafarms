@@ -89,7 +89,7 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(
-                            top: 10.0, left: 10, right: 10),
+                            top: 20.0, left: 35, right: 30),
                         child: Container(
                           padding: const EdgeInsets.only(
                             top: 0,
@@ -120,7 +120,7 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                               Row(
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(top: 18.0),
+                                    padding: const EdgeInsets.only(top: 28.0),
                                     child: Text(
                                       "Create Expense\nCategory",
                                       style: TextStyle(
@@ -131,7 +131,13 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                   ),
                                 ],
                               ),
-                              Text(name!),
+                              Text(
+                                name!,
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
+                              ),
                               Padding(
                                 padding: const EdgeInsets.all(24.0),
                                 child: GestureDetector(
