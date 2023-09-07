@@ -165,9 +165,7 @@ class _allexpensesState extends State<allexpenses> {
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                     ),
-                    SizedBox(
-                      height: 250,
-                      child: Expanded(
+                Expanded(
                         child: StreamBuilder<QuerySnapshot>(
                           stream: firestore
                               .collection('Expenses')
@@ -221,7 +219,7 @@ class _allexpensesState extends State<allexpenses> {
                           },
                         ),
                       ),
-                    ),
+
                   ],
                 ),
               ),
