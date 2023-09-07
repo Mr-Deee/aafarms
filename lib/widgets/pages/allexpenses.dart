@@ -202,12 +202,12 @@ class _allexpensesState extends State<allexpenses> {
                                     itemExtent: 50.0,
                                     itemCount: expenseItems.length,
                                     itemBuilder: (context, index) {
-                                      return SingleChildScrollView(
-                                        child: ListTile(
+                                      return
+                                         ListTile(
                                           title: Text(expenseItems[index].name),
                                           subtitle: Text(
                                               'Cost: \GHS${expenseItems[index].cost}'),
-                                        ),
+
                                       );
                                     },
                                   ),
