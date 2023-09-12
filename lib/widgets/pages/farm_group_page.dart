@@ -89,14 +89,14 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(
-                            top: 20.0, left: 35, right: 30),
+                            top: 20.0, left: 35, right: 10),
                         child: Container(
                           padding: const EdgeInsets.only(
                             top: 0,
                             left: 10,
                             right: 15,
                           ),
-                          width: 170,
+                          width: 130,
                           height: 160,
                           decoration: BoxDecoration(
                             color: Colors.white38.withOpacity(0.56),
@@ -122,7 +122,7 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                   Padding(
                                     padding: const EdgeInsets.only(top: 28.0),
                                     child: Text(
-                                      "Create Expense\nCategory",
+                                      'Create \n Expense',
                                       style: TextStyle(
                                           fontSize: 19,
                                           fontWeight: FontWeight.bold,
@@ -166,7 +166,7 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                   .start,
                                                           children: [
                                                             const Text(
-                                                              "ADD EXPENSE",
+                                                              "Create Expense",
                                                               style: TextStyle(
                                                                   fontFamily:
                                                                       "Nunito",
@@ -461,6 +461,296 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                             ],
                           ),
                         ),
+                      ),
+
+                      // farcode
+                      Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 20.0, left: 10, right: 10),
+                            child: Container(
+                              padding: const EdgeInsets.only(
+                                top: 0,
+                                left: 10,
+                                right: 15,
+                              ),
+                              width: 140,
+                              height: 160,
+                              decoration: BoxDecoration(
+                                color: Colors.white38.withOpacity(0.56),
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(16),
+                                  topRight: Radius.circular(16),
+                                  bottomLeft: Radius.circular(16),
+                                  bottomRight: Radius.circular(16),
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    offset: Offset(0, 5),
+                                    blurRadius: 6,
+                                    color: Color(0xff000000).withOpacity(0.16),
+                                  ),
+                                ],
+                              ),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 28.0),
+                                        child: Text(
+                                          "FarmCode",
+                                          style: TextStyle(
+                                              fontSize: 19,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    name!,
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(24.0),
+                                    child: GestureDetector(
+                                        onTap: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return Dialog(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              20.0)),
+                                                  //this right here
+                                                  child: Container(
+                                                      height: 300,
+                                                      child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(12.0),
+                                                          child: Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                const Text(
+                                                                  "ADD FARMCODE",
+                                                                  style: TextStyle(
+                                                                      fontFamily:
+                                                                          "Nunito",
+                                                                      fontSize:
+                                                                          35,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 10,
+                                                                ),
+                                                                Text("For"),
+                                                                Text(
+                                                                  name!,
+                                                                  style: TextStyle(
+                                                                      fontFamily:
+                                                                          "Nunito",
+                                                                      fontSize:
+                                                                          15,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold),
+                                                                ),
+                                                                Column(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  children: [
+                                                                    Container(
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        color: Colors
+                                                                            .white54,
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(12),
+                                                                        boxShadow: [
+                                                                          BoxShadow(
+                                                                            offset:
+                                                                                const Offset(0, 3),
+                                                                            blurRadius:
+                                                                                6,
+                                                                            color:
+                                                                                const Color(0xff000000).withOpacity(0.16),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                      height:
+                                                                          50,
+                                                                      child:
+                                                                          Column(
+                                                                        children: [
+                                                                          TextField(
+                                                                            textInputAction:
+                                                                                TextInputAction.next,
+                                                                            key:
+                                                                                UniqueKey(),
+                                                                            controller:
+                                                                                _newExpenseGroup,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            style:
+                                                                                const TextStyle(
+                                                                              fontFamily: "Nunito",
+                                                                              fontSize: 16,
+                                                                              color: Colors.black38,
+                                                                            ),
+                                                                            decoration:
+                                                                                InputDecoration(
+                                                                              border: InputBorder.none,
+                                                                              hintText: "Eg.NA-JN7023(Nankese|Fuel",
+                                                                              filled: true,
+                                                                              fillColor: Colors.white54,
+                                                                              hintStyle: TextStyle(
+                                                                                fontFamily: "Nunito",
+                                                                                fontSize: 16,
+                                                                                color: Colors.black38,
+                                                                              ),
+                                                                            ),
+                                                                            cursorColor:
+                                                                                Colors.black38,
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    const SizedBox(
+                                                                      height:
+                                                                          20,
+                                                                    ),
+                                                                    GestureDetector(
+                                                                      onTap:
+                                                                          () async {
+                                                                        codefordb();
+                                                                        if (_newExpenseGroup.text !=
+                                                                                null &&
+                                                                            _newExpenseGroup.text !=
+                                                                                "") {
+                                                                          try {
+                                                                            final DocumentSnapshot<Map<String, dynamic>>
+                                                                                _doc =
+                                                                                await _firestore.collection("FarmCode").doc("FarmCodeGroup").get();
+                                                                            final List<dynamic>
+                                                                                _tempList =
+                                                                                _doc.data()!['List'] as List<dynamic>;
+                                                                            if (_tempList.contains(_newExpenseGroup.text)) {
+                                                                              // _tempList
+                                                                              //     .add(_newExpenseGroup.text);
+                                                                              _firestore.collection('FarmCode').doc("FarmCodeGroup").update({
+                                                                                'List': _tempList
+                                                                              });
+                                                                              displayToast(
+                                                                                "Added Successfully",
+                                                                                context,
+                                                                              );
+                                                                              // displayToast(
+                                                                              //   "Group Name already created",
+                                                                              //   context,
+                                                                              // );
+                                                                            } else {
+                                                                              _tempList.add(_newExpenseGroup.text);
+                                                                              _firestore.collection('FarmCode').doc("FarmCodeGroup").update({
+                                                                                'List': _tempList
+                                                                              });
+                                                                              displayToast(
+                                                                                "Added Successfully",
+                                                                                context,
+                                                                              );
+                                                                            }
+                                                                          } catch (e) {
+                                                                            displayToast(
+                                                                              "An Error Occured!",
+                                                                              context,
+                                                                            );
+                                                                          }
+                                                                          // ignore: use_build_context_synchronously
+                                                                          Navigator.of(context)
+                                                                              .pop();
+                                                                          _newExpenseGroup.text =
+                                                                              "";
+                                                                        } else {
+                                                                          displayToast(
+                                                                            "Enter Valid Name!",
+                                                                            context,
+                                                                          );
+                                                                        }
+                                                                      },
+                                                                      child:
+                                                                          Container(
+                                                                        height:
+                                                                            45,
+                                                                        width:
+                                                                            90,
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(20),
+                                                                          color:
+                                                                              Colors.black,
+                                                                          boxShadow: [
+                                                                            BoxShadow(
+                                                                              offset: const Offset(0, 3),
+                                                                              blurRadius: 6,
+                                                                              color: const Color(0xff000000).withOpacity(0.16),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                        child:
+                                                                            const Center(
+                                                                          child:
+                                                                              Text(
+                                                                            "Done",
+                                                                            style:
+                                                                                TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontFamily: "Nunito",
+                                                                              color: Colors.white,
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ]))));
+                                            },
+                                          );
+                                        },
+                                        // onTap: (){
+                                        //   Navigator.pushNamed(
+                                        //       context,"/addproduct");
+                                        //
+                                        // },
+                                        child: Icon(
+                                          Icons.add,
+                                          color: Color.fromRGBO(216, 78, 16, 1),
+                                          size: 20,
+                                        )),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
