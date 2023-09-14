@@ -19,6 +19,7 @@ class FarmGroupPage extends StatefulWidget {
 }
 
 final TextEditingController _newExpenseGroup = TextEditingController();
+final TextEditingController _newFarmCode = TextEditingController();
 
 String? currentSelectedValue;
 List<String> FARMCODE = [
@@ -152,7 +153,7 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                           20.0)),
                                               //this right here
                                               child: Container(
-                                                  height: 300,
+                                                  height: 400,
                                                   child: Padding(
                                                       padding:
                                                           const EdgeInsets.all(
@@ -324,6 +325,113 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                 const SizedBox(
                                                                   height: 20,
                                                                 ),
+                                                                Column(
+                                                                  mainAxisSize:
+                                                                      MainAxisSize
+                                                                          .min,
+                                                                  children: [
+                                                                    Container(
+                                                                      decoration:
+                                                                          BoxDecoration(
+                                                                        color: Colors
+                                                                            .white54,
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(12),
+                                                                        boxShadow: [
+                                                                          BoxShadow(
+                                                                            offset:
+                                                                                const Offset(0, 3),
+                                                                            blurRadius:
+                                                                                6,
+                                                                            color:
+                                                                                const Color(0xff000000).withOpacity(0.16),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                      height:
+                                                                          50,
+                                                                      child:
+                                                                          Column(
+                                                                        children: [
+                                                                          TextField(
+                                                                            textInputAction:
+                                                                                TextInputAction.next,
+                                                                            key:
+                                                                                UniqueKey(),
+                                                                            controller:
+                                                                                _newFarmCode,
+                                                                            keyboardType:
+                                                                                TextInputType.text,
+                                                                            style:
+                                                                                const TextStyle(
+                                                                              fontFamily: "Nunito",
+                                                                              fontSize: 16,
+                                                                              color: Colors.black38,
+                                                                            ),
+                                                                            decoration:
+                                                                                InputDecoration(
+                                                                              border: InputBorder.none,
+                                                                              hintText: "Eg.NA-JN7023(Nankese|Fuel",
+                                                                              filled: true,
+                                                                              fillColor: Colors.white54,
+                                                                              hintStyle: TextStyle(
+                                                                                fontFamily: "Nunito",
+                                                                                fontSize: 16,
+                                                                                color: Colors.black38,
+                                                                              ),
+                                                                            ),
+                                                                            cursorColor:
+                                                                                Colors.black38,
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                    const SizedBox(
+                                                                      height:
+                                                                          20,
+                                                                    ),
+                                                                    // GestureDetector(
+                                                                    //   onTap:
+                                                                    //       () async {
+                                                                    //     codefordb();
+                                                                    //   },
+                                                                    //   child:
+                                                                    //       Container(
+                                                                    //     height:
+                                                                    //         45,
+                                                                    //     width:
+                                                                    //         90,
+                                                                    //     decoration:
+                                                                    //         BoxDecoration(
+                                                                    //       borderRadius:
+                                                                    //           BorderRadius.circular(20),
+                                                                    //       color:
+                                                                    //           Colors.black,
+                                                                    //       boxShadow: [
+                                                                    //         BoxShadow(
+                                                                    //           offset: const Offset(0, 3),
+                                                                    //           blurRadius: 6,
+                                                                    //           color: const Color(0xff000000).withOpacity(0.16),
+                                                                    //         ),
+                                                                    //       ],
+                                                                    //     ),
+                                                                    //     child:
+                                                                    //         const Center(
+                                                                    //       child:
+                                                                    //           Text(
+                                                                    //         "Done",
+                                                                    //         style:
+                                                                    //             TextStyle(
+                                                                    //           fontSize: 15,
+                                                                    //           fontFamily: "Nunito",
+                                                                    //           color: Colors.white,
+                                                                    //         ),
+                                                                    //       ),
+                                                                    //     ),
+                                                                    //   ),
+                                                                    // ),
+                                                                  ],
+                                                                ),
                                                                 GestureDetector(
                                                                   onTap:
                                                                       () async {
@@ -372,6 +480,78 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                                   'ExpenseList')
                                                                               .doc(
                                                                                   "ExpenseGroup")
+                                                                              .update({
+                                                                            'List':
+                                                                                _tempList
+                                                                          });
+                                                                          displayToast(
+                                                                            "Added Successfully",
+                                                                            context,
+                                                                          );
+                                                                        }
+                                                                      } catch (e) {
+                                                                        displayToast(
+                                                                          "An Error Occured!",
+                                                                          context,
+                                                                        );
+                                                                      }
+                                                                      // ignore: use_build_context_synchronously
+                                                                      Navigator.of(
+                                                                              context)
+                                                                          .pop();
+                                                                      _newExpenseGroup
+                                                                          .text = "";
+                                                                    } else {
+                                                                      displayToast(
+                                                                        "Enter Valid Name!",
+                                                                        context,
+                                                                      );
+                                                                    }
+
+                                                                    if (_newExpenseGroup.text !=
+                                                                            null &&
+                                                                        _newExpenseGroup.text !=
+                                                                            "") {
+                                                                      try {
+                                                                        final DocumentSnapshot<
+                                                                            Map<String,
+                                                                                dynamic>> _doc = await _firestore
+                                                                            .collection("NewFarmCode")
+                                                                            .doc("FarmCodeGroup")
+                                                                            .get();
+                                                                        final List<dynamic>
+                                                                            _tempList =
+                                                                            _doc.data()!['List']
+                                                                                as List<dynamic>;
+                                                                        if (_tempList
+                                                                            .contains(_newExpenseGroup.text)) {
+                                                                          // _tempList
+                                                                          //     .add(_newExpenseGroup.text);
+                                                                          _firestore
+                                                                              .collection(
+                                                                                  'NewFarmCode')
+                                                                              .doc(
+                                                                                  "FarmCodeGroup")
+                                                                              .update({
+                                                                            'List':
+                                                                                _tempList
+                                                                          });
+                                                                          displayToast(
+                                                                            "Added Successfully",
+                                                                            context,
+                                                                          );
+                                                                          // displayToast(
+                                                                          //   "Group Name already created",
+                                                                          //   context,
+                                                                          // );
+                                                                        } else {
+                                                                          _tempList
+                                                                              .add(_newExpenseGroup.text);
+                                                                          _firestore
+                                                                              .collection(
+                                                                                  'NewFarmCode')
+                                                                              .doc(
+                                                                                  "FarmCodeGroup")
                                                                               .update({
                                                                             'List':
                                                                                 _tempList
@@ -640,22 +820,22 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                     GestureDetector(
                                                                       onTap:
                                                                           () async {
-                                                                        codefordb();
-                                                                        if (_newExpenseGroup.text !=
+                                                                        // codefordb();
+                                                                        if (_newFarmCode.text !=
                                                                                 null &&
-                                                                            _newExpenseGroup.text !=
+                                                                            _newFarmCode.text !=
                                                                                 "") {
                                                                           try {
                                                                             final DocumentSnapshot<Map<String, dynamic>>
                                                                                 _doc =
-                                                                                await _firestore.collection("FarmCode").doc("FarmCodeGroup").get();
+                                                                                await _firestore.collection("NewFarmCode").doc("FarmCodeGroup").get();
                                                                             final List<dynamic>
                                                                                 _tempList =
                                                                                 _doc.data()!['List'] as List<dynamic>;
-                                                                            if (_tempList.contains(_newExpenseGroup.text)) {
+                                                                            if (_tempList.contains(_newFarmCode.text)) {
                                                                               // _tempList
                                                                               //     .add(_newExpenseGroup.text);
-                                                                              _firestore.collection('FarmCode').doc("FarmCodeGroup").update({
+                                                                              _firestore.collection('NewFarmCode').doc("FarmCodeGroup").update({
                                                                                 'List': _tempList
                                                                               });
                                                                               displayToast(
@@ -667,8 +847,8 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                               //   context,
                                                                               // );
                                                                             } else {
-                                                                              _tempList.add(_newExpenseGroup.text);
-                                                                              _firestore.collection('FarmCode').doc("FarmCodeGroup").update({
+                                                                              _tempList.add(_newFarmCode.text);
+                                                                              _firestore.collection('NewFarmCode').doc("FarmCodeGroup").update({
                                                                                 'List': _tempList
                                                                               });
                                                                               displayToast(
@@ -685,7 +865,7 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                           // ignore: use_build_context_synchronously
                                                                           Navigator.of(context)
                                                                               .pop();
-                                                                          _newExpenseGroup.text =
+                                                                          _newFarmCode.text =
                                                                               "";
                                                                         } else {
                                                                           displayToast(
@@ -848,6 +1028,7 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
       'FarmCode': currentSelectedValue,
       'ExpenseName': _newExpenseGroup.text,
       'FarmName': name!,
+      'FarmCode': _newFarmCode.text,
       // 'Gender': Gender,
       // 'Date Of Birth': birthDate,
     });

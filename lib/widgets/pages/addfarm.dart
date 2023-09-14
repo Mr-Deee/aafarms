@@ -14,13 +14,14 @@ import '../../toast.dart';
 import '../progressDialog.dart';
 
 class addfarm extends StatefulWidget {
-  const addfarm({Key? key, this.group, this.Farm,this.FinalCode}) : super(key: key);
+  const addfarm({Key? key, this.group, this.Farm, this.FinalCode})
+      : super(key: key);
   final String? group;
   final String? FinalCode;
   final String? Farm;
 
   @override
-  State<addfarm> createState() => _addfarmState(group, Farm,FinalCode);
+  State<addfarm> createState() => _addfarmState(group, Farm, FinalCode);
 }
 
 class _addfarmState extends State<addfarm> {
@@ -29,7 +30,6 @@ class _addfarmState extends State<addfarm> {
     super.initState();
     generateCode();
     FinalCode;
-
   }
 
   String? FinalCode;
@@ -39,7 +39,7 @@ class _addfarmState extends State<addfarm> {
   String? group;
   String? farm;
 
-  _addfarmState(this.group, this.farm,this.FinalCode);
+  _addfarmState(this.group, this.farm, this.FinalCode);
 
   // final picker = ImagePicker();
   double val = 0;
@@ -63,8 +63,6 @@ class _addfarmState extends State<addfarm> {
 
   String generatedCode = '';
 
-
-
   String generateCode() {
     // Retrieve farm type and group type from Firestore
     String? farmType = group; // Replace with Firestore document instance
@@ -73,7 +71,7 @@ class _addfarmState extends State<addfarm> {
     // Extract first and third letters of farm type
     String firstLetter = farmType!.substring(0, 1);
     String thirdLetter = farmType.substring(2, 3).toUpperCase();
-    String firsttwo=groupType!.substring(0,2).toUpperCase();
+    String firsttwo = groupType!.substring(0, 2).toUpperCase();
 
     // Generate random code
     Random random = Random();
@@ -83,11 +81,10 @@ class _addfarmState extends State<addfarm> {
     }
 
     // Concatenate farm type letters, random code, and group type
-    String finalCode =firsttwo+"-"+ firstLetter + thirdLetter + randomCode  ;
+    String finalCode = firsttwo + "-" + firstLetter + thirdLetter + randomCode;
 
     return finalCode;
   }
-
 
   String? currentSelectedValue;
   List<String> FARMCODE = [
@@ -156,11 +153,12 @@ class _addfarmState extends State<addfarm> {
               // 'image': url,
               'ExpenseType': group,
               //'FarmCodep': currentSelectedValue.toString(),
-               'FarmCodes':FinalCode,
+              'FarmCodes': FinalCode,
 
-                  //newProduct.name.toString(),
+              //newProduct.name.toString(),
               'description': newProduct.description.toString(),
               'Farm': farm,
+              'name': group,
               'Company': newProduct.company.toString(),
               'Cost': newProduct.cost,
               'location': farm,
@@ -184,20 +182,17 @@ class _addfarmState extends State<addfarm> {
         ),
       ),
       body: Container(
-
-
         height: double.infinity,
         width: double.infinity,
         decoration: BoxDecoration(
-
           image: DecorationImage(
-            image: AssetImage('assets/images/backdrop.png'), // Replace with your image path
+            image: AssetImage(
+                'assets/images/backdrop.png'), // Replace with your image path
             fit: BoxFit.cover,
-          ),),
-
+          ),
+        ),
         child: SafeArea(
           child: Container(
-
             height: double.infinity,
             width: double.infinity,
             child: Column(
@@ -372,49 +367,49 @@ class _addfarmState extends State<addfarm> {
                                         SizedBox(
                                           height: 10,
                                         ),
-                                    // Container(
-                                    //       decoration: BoxDecoration(
-                                    //         color: ColorPalette.white,
-                                    //         borderRadius:
-                                    //             BorderRadius.circular(12),
-                                    //         boxShadow: [
-                                    //           BoxShadow(
-                                    //             offset: const Offset(0, 3),
-                                    //             blurRadius: 6,
-                                    //             color: ColorPalette.nileBlue
-                                    //                 .withOpacity(0.1),
-                                    //           ),
-                                    //         ],
-                                    //       ),
-                                    //       height: 50,
-                                    //       child: TextFormField(
-                                    //         initialValue: newProduct.name ?? '',
-                                    //         onChanged: (value) {
-                                    //           newProduct.name = value;
-                                    //         },
-                                    //         textInputAction:
-                                    //             TextInputAction.next,
-                                    //         key: UniqueKey(),
-                                    //         keyboardType: TextInputType.text,
-                                    //         style: const TextStyle(
-                                    //           fontFamily: "Nunito",
-                                    //           fontSize: 16,
-                                    //           color: Colors.black,
-                                    //         ),
-                                    //         decoration: InputDecoration(
-                                    //           border: InputBorder.none,
-                                    //           hintText: "Product Name",
-                                    //           filled: true,
-                                    //           fillColor: Colors.transparent,
-                                    //           hintStyle: TextStyle(
-                                    //             fontFamily: "Nunito",
-                                    //             fontSize: 16,
-                                    //             color: Colors.grey,
-                                    //           ),
-                                    //         ),
-                                    //         cursorColor: Colors.black,
-                                    //       ),
-                                    //     ),
+                                        // Container(
+                                        //       decoration: BoxDecoration(
+                                        //         color: ColorPalette.white,
+                                        //         borderRadius:
+                                        //             BorderRadius.circular(12),
+                                        //         boxShadow: [
+                                        //           BoxShadow(
+                                        //             offset: const Offset(0, 3),
+                                        //             blurRadius: 6,
+                                        //             color: ColorPalette.nileBlue
+                                        //                 .withOpacity(0.1),
+                                        //           ),
+                                        //         ],
+                                        //       ),
+                                        //       height: 50,
+                                        //       child: TextFormField(
+                                        //         initialValue: newProduct.name ?? '',
+                                        //         onChanged: (value) {
+                                        //           newProduct.name = value;
+                                        //         },
+                                        //         textInputAction:
+                                        //             TextInputAction.next,
+                                        //         key: UniqueKey(),
+                                        //         keyboardType: TextInputType.text,
+                                        //         style: const TextStyle(
+                                        //           fontFamily: "Nunito",
+                                        //           fontSize: 16,
+                                        //           color: Colors.black,
+                                        //         ),
+                                        //         decoration: InputDecoration(
+                                        //           border: InputBorder.none,
+                                        //           hintText: "Product Name",
+                                        //           filled: true,
+                                        //           fillColor: Colors.transparent,
+                                        //           hintStyle: TextStyle(
+                                        //             fontFamily: "Nunito",
+                                        //             fontSize: 16,
+                                        //             color: Colors.grey,
+                                        //           ),
+                                        //         ),
+                                        //         cursorColor: Colors.black,
+                                        //       ),
+                                        //     ),
                                         const SizedBox(
                                           height: 20,
                                         ),
@@ -636,7 +631,6 @@ class _addfarmState extends State<addfarm> {
                                           ),
                                         ),
                                         const SizedBox(height: 20),
-
                                       ],
                                     ),
                                   ),
@@ -811,7 +805,7 @@ class _addfarmState extends State<addfarm> {
     //String? url = await  uploadImage(selectedImagePath!);
     Map userDataMap = {
       'ProductImage': url.toString(),
-      'name':group,
+      'name': group,
       //newProduct.name.toString(),
       'description': newProduct.description.toString(),
       'group': newProduct.group.toString(),
