@@ -482,10 +482,10 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                               .doc("FarmCodeGroup")
                                                                               .get();
                                                                           final List<dynamic>
-                                                                              _tempList =
+                                                                              _temp1List =
                                                                               _doc.data()!['List']
                                                                                   as List<dynamic>;
-                                                                          if (_tempList
+                                                                          if ( _temp1List
                                                                               .contains(_newFarmCode.text)) {
                                                                             // _tempList
                                                                             //     .add(_newExpenseGroup.text);
@@ -496,7 +496,7 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                                     "FarmCodeGroup")
                                                                                 .update({
                                                                               'List':
-                                                                                  _tempList
+                                                                              _temp1List
                                                                             });
                                                                             displayToast(
                                                                               "Added Successfully",
@@ -507,7 +507,7 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                             //   context,
                                                                             // );
                                                                           } else {
-                                                                            _tempList
+                                                                            _temp1List
                                                                                 .add(_newFarmCode.text);
                                                                             _firestore
                                                                                 .collection(
@@ -516,7 +516,7 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                                     "FarmCodeGroup")
                                                                                 .update({
                                                                               'List':
-                                                                                  _tempList
+                                                                              _temp1List
                                                                             });
                                                                             displayToast(
                                                                               "Added Successfully",
