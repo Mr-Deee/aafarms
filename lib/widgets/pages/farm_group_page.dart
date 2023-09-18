@@ -20,7 +20,7 @@ class FarmGroupPage extends StatefulWidget {
 
 final TextEditingController _newExpenseGroup = TextEditingController();
 final TextEditingController _newFarmCode = TextEditingController();
-
+List<String> farmCodeList = [];
 String? currentSelectedValue;
 List<String> FARMCODE = [
   "NA-JNJ028(Nankese|Pesticide)",
@@ -46,6 +46,13 @@ final addedFarm newProduct = addedFarm();
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 class _FarmGroupPageState extends State<FarmGroupPage> {
+  @override
+  void initState() {
+    super.initState();
+    // Fetch farm codes when the widget is initialized
+    fetchFarmCodes();
+  }
+
   _FarmGroupPageState(
     this.name,
   );
@@ -157,8 +164,8 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                     height: 400,
                                                     child: Padding(
                                                         padding:
-                                                            const EdgeInsets.all(
-                                                                12.0),
+                                                            const EdgeInsets
+                                                                .all(12.0),
                                                         child: Column(
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
@@ -172,7 +179,8 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                 style: TextStyle(
                                                                     fontFamily:
                                                                         "Nunito",
-                                                                    fontSize: 35,
+                                                                    fontSize:
+                                                                        35,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .bold),
@@ -186,7 +194,8 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                 style: TextStyle(
                                                                     fontFamily:
                                                                         "Nunito",
-                                                                    fontSize: 15,
+                                                                    fontSize:
+                                                                        15,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .bold),
@@ -205,50 +214,51 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                               30)),
                                                                   child:
                                                                       DropdownButtonHideUnderline(
-                                                                          child: DropdownButton<
-                                                                              String>(
-                                                                    icon: Visibility(
+                                                                    child: DropdownButton<
+                                                                        String>(
+                                                                      icon:
+                                                                          Visibility(
                                                                         visible:
                                                                             false,
                                                                         child: Icon(
-                                                                            Icons
-                                                                                .arrow_downward)),
-                                                                    iconSize: 4,
-                                                                    elevation:
-                                                                        16, // game changer
-                                                                    hint: Padding(
-                                                                      padding:
-                                                                          const EdgeInsets.all(
-                                                                              8.0),
-                                                                      child: const Text(
-                                                                          "Select A Code"),
-                                                                    ),
-                                                                    value:
-                                                                        currentSelectedValue,
-                                                                    onChanged:
-                                                                        (String?
-                                                                            newValue) {
-                                                                      setState(
-                                                                          () {
-                                                                        currentSelectedValue =
-                                                                            newValue;
-                                                                        newValue =
-                                                                            newProduct
-                                                                                .farmcode;
-                                                                      });
-                                                                    },
-                                                                    items: FARMCODE.map<
-                                                                        DropdownMenuItem<
-                                                                            String>>((String
-                                                                        value) {
-                                                                      return DropdownMenuItem<
-                                                                              String>(
+                                                                            Icons.arrow_downward),
+                                                                      ),
+                                                                      iconSize:
+                                                                          4,
+                                                                      elevation:
+                                                                          16,
+                                                                      hint:
+                                                                          Padding(
+                                                                        padding:
+                                                                            const EdgeInsets.all(8.0),
+                                                                        child: const Text(
+                                                                            "Select A Code"),
+                                                                      ),
+                                                                      value:
+                                                                          currentSelectedValue,
+                                                                      onChanged:
+                                                                          (String?
+                                                                              newValue) {
+                                                                        setState(
+                                                                            () {
+                                                                          currentSelectedValue =
+                                                                              newValue;
+                                                                        });
+                                                                      },
+                                                                      items: farmCodeList.map<
+                                                                          DropdownMenuItem<
+                                                                              String>>((String
+                                                                          value) {
+                                                                        return DropdownMenuItem<
+                                                                            String>(
                                                                           value:
                                                                               value,
-                                                                          child: Text(
-                                                                              value));
-                                                                    }).toList(),
-                                                                  )),
+                                                                          child:
+                                                                              Text(value),
+                                                                        );
+                                                                      }).toList(),
+                                                                    ),
+                                                                  ),
                                                                 );
                                                               }),
                                                               Column(
@@ -271,13 +281,14 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                               3),
                                                                           blurRadius:
                                                                               6,
-                                                                          color: const Color(0xff000000)
-                                                                              .withOpacity(0.16),
+                                                                          color:
+                                                                              const Color(0xff000000).withOpacity(0.16),
                                                                         ),
                                                                       ],
                                                                     ),
                                                                     height: 50,
-                                                                    child: Column(
+                                                                    child:
+                                                                        Column(
                                                                       children: [
                                                                         TextField(
                                                                           textInputAction:
@@ -309,12 +320,9 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                                 Colors.white54,
                                                                             hintStyle:
                                                                                 TextStyle(
-                                                                              fontFamily:
-                                                                                  "Nunito",
-                                                                              fontSize:
-                                                                                  16,
-                                                                              color:
-                                                                                  Colors.black38,
+                                                                              fontFamily: "Nunito",
+                                                                              fontSize: 16,
+                                                                              color: Colors.black38,
                                                                             ),
                                                                           ),
                                                                           cursorColor:
@@ -334,18 +342,15 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                       Container(
                                                                         decoration:
                                                                             BoxDecoration(
-                                                                          color: Colors
-                                                                              .white54,
+                                                                          color:
+                                                                              Colors.white54,
                                                                           borderRadius:
                                                                               BorderRadius.circular(12),
                                                                           boxShadow: [
                                                                             BoxShadow(
-                                                                              offset:
-                                                                                  const Offset(0, 3),
-                                                                              blurRadius:
-                                                                                  6,
-                                                                              color:
-                                                                                  const Color(0xff000000).withOpacity(0.16),
+                                                                              offset: const Offset(0, 3),
+                                                                              blurRadius: 6,
+                                                                              color: const Color(0xff000000).withOpacity(0.16),
                                                                             ),
                                                                           ],
                                                                         ),
@@ -355,22 +360,16 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                             Column(
                                                                           children: [
                                                                             TextField(
-                                                                              textInputAction:
-                                                                                  TextInputAction.next,
-                                                                              key:
-                                                                                  UniqueKey(),
-                                                                              controller:
-                                                                                  _newFarmCode,
-                                                                              keyboardType:
-                                                                                  TextInputType.text,
-                                                                              style:
-                                                                                  const TextStyle(
+                                                                              textInputAction: TextInputAction.next,
+                                                                              key: UniqueKey(),
+                                                                              controller: _newFarmCode,
+                                                                              keyboardType: TextInputType.text,
+                                                                              style: const TextStyle(
                                                                                 fontFamily: "Nunito",
                                                                                 fontSize: 16,
                                                                                 color: Colors.black38,
                                                                               ),
-                                                                              decoration:
-                                                                                  InputDecoration(
+                                                                              decoration: InputDecoration(
                                                                                 border: InputBorder.none,
                                                                                 hintText: "Eg.NA-JN7023(Nankese|Fuel)",
                                                                                 filled: true,
@@ -381,8 +380,7 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                                   color: Colors.black38,
                                                                                 ),
                                                                               ),
-                                                                              cursorColor:
-                                                                                  Colors.black38,
+                                                                              cursorColor: Colors.black38,
                                                                             ),
                                                                           ],
                                                                         ),
@@ -391,13 +389,13 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                         height:
                                                                             20,
                                                                       ),
-
                                                                     ],
                                                                   ),
                                                                   GestureDetector(
                                                                     onTap:
                                                                         () async {
                                                                       codefordb();
+                                                                      addfarmCode();
                                                                       if (_newExpenseGroup.text !=
                                                                               null &&
                                                                           _newExpenseGroup.text !=
@@ -411,20 +409,13 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                               .get();
                                                                           final List<dynamic>
                                                                               _tempList =
-                                                                              _doc.data()!['List']
-                                                                                  as List<dynamic>;
+                                                                              _doc.data()!['List'] as List<dynamic>;
                                                                           if (_tempList
                                                                               .contains(_newExpenseGroup.text)) {
                                                                             // _tempList
                                                                             //     .add(_newExpenseGroup.text);
-                                                                            _firestore
-                                                                                .collection(
-                                                                                    'ExpenseList')
-                                                                                .doc(
-                                                                                    "ExpenseGroup")
-                                                                                .update({
-                                                                              'List':
-                                                                                  _tempList
+                                                                            _firestore.collection('ExpenseList').doc("ExpenseGroup").update({
+                                                                              'List': _tempList
                                                                             });
                                                                             displayToast(
                                                                               "Added Successfully",
@@ -435,16 +426,9 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                             //   context,
                                                                             // );
                                                                           } else {
-                                                                            _tempList
-                                                                                .add(_newExpenseGroup.text);
-                                                                            _firestore
-                                                                                .collection(
-                                                                                    'ExpenseList')
-                                                                                .doc(
-                                                                                    "ExpenseGroup")
-                                                                                .update({
-                                                                              'List':
-                                                                                  _tempList
+                                                                            _tempList.add(_newExpenseGroup.text);
+                                                                            _firestore.collection('ExpenseList').doc("ExpenseGroup").update({
+                                                                              'List': _tempList
                                                                             });
                                                                             displayToast(
                                                                               "Added Successfully",
@@ -458,83 +442,10 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                           );
                                                                         }
                                                                         // ignore: use_build_context_synchronously
-                                                                        Navigator.of(
-                                                                                context)
+                                                                        Navigator.of(context)
                                                                             .pop();
-                                                                        _newExpenseGroup
-                                                                            .text = "";
-                                                                      } else {
-                                                                        displayToast(
-                                                                          "Enter Valid Name!",
-                                                                          context,
-                                                                        );
-                                                                      }
-
-                                                                      if (_newFarmCode.text !=
-                                                                              null &&
-                                                                          _newFarmCode.text !=
-                                                                              "") {
-                                                                        try {
-                                                                          final DocumentSnapshot<
-                                                                              Map<String,
-                                                                                  dynamic>> _doc = await _firestore
-                                                                              .collection("NewFarmCode")
-                                                                              .doc("FarmCodeGroup")
-                                                                              .get();
-                                                                          final List<dynamic>
-                                                                              _temp1List =
-                                                                              _doc.data()!['List']
-                                                                                  as List<dynamic>;
-                                                                          if ( _temp1List
-                                                                              .contains(_newFarmCode.text)) {
-                                                                            // _tempList
-                                                                            //     .add(_newExpenseGroup.text);
-                                                                            _firestore
-                                                                                .collection(
-                                                                                    'NewFarmCode')
-                                                                                .doc(
-                                                                                    "FarmCodeGroup")
-                                                                                .update({
-                                                                              'List':
-                                                                              _temp1List
-                                                                            });
-                                                                            displayToast(
-                                                                              "Added Successfully",
-                                                                              context,
-                                                                            );
-                                                                            // displayToast(
-                                                                            //   "Group Name already created",
-                                                                            //   context,
-                                                                            // );
-                                                                          } else {
-                                                                            _temp1List
-                                                                                .add(_newFarmCode.text);
-                                                                            _firestore
-                                                                                .collection(
-                                                                                    'NewFarmGroup')
-                                                                                .doc(
-                                                                                    "FarmCodeGroup")
-                                                                                .update({
-                                                                              'List':
-                                                                              _temp1List
-                                                                            });
-                                                                            displayToast(
-                                                                              "Added Successfully",
-                                                                              context,
-                                                                            );
-                                                                          }
-                                                                        } catch (e) {
-                                                                          displayToast(
-                                                                            "An Error Occured!",
-                                                                            context,
-                                                                          );
-                                                                        }
-                                                                        // ignore: use_build_context_synchronously
-                                                                        Navigator.of(
-                                                                                context)
-                                                                            .pop();
-                                                                        _newFarmCode
-                                                                            .text = "";
+                                                                        _newExpenseGroup.text =
+                                                                            "";
                                                                       } else {
                                                                         displayToast(
                                                                           "Enter Valid Name!",
@@ -544,20 +455,19 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                     },
                                                                     child:
                                                                         Container(
-                                                                      height: 45,
+                                                                      height:
+                                                                          45,
                                                                       width: 90,
                                                                       decoration:
                                                                           BoxDecoration(
                                                                         borderRadius:
-                                                                            BorderRadius.circular(
-                                                                                20),
+                                                                            BorderRadius.circular(20),
                                                                         color: Colors
                                                                             .black,
                                                                         boxShadow: [
                                                                           BoxShadow(
-                                                                            offset: const Offset(
-                                                                                0,
-                                                                                3),
+                                                                            offset:
+                                                                                const Offset(0, 3),
                                                                             blurRadius:
                                                                                 6,
                                                                             color:
@@ -631,7 +541,8 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                     BoxShadow(
                                       offset: Offset(0, 5),
                                       blurRadius: 6,
-                                      color: Color(0xff000000).withOpacity(0.16),
+                                      color:
+                                          Color(0xff000000).withOpacity(0.16),
                                     ),
                                   ],
                                 ),
@@ -669,10 +580,12 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                               context: context,
                                               builder: (BuildContext context) {
                                                 return Dialog(
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                20.0)),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20.0)),
                                                     //this right here
                                                     child: Container(
                                                         height: 300,
@@ -696,8 +609,7 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                         fontSize:
                                                                             35,
                                                                         fontWeight:
-                                                                            FontWeight
-                                                                                .bold),
+                                                                            FontWeight.bold),
                                                                   ),
                                                                   SizedBox(
                                                                     height: 10,
@@ -711,8 +623,7 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                         fontSize:
                                                                             15,
                                                                         fontWeight:
-                                                                            FontWeight
-                                                                                .bold),
+                                                                            FontWeight.bold),
                                                                   ),
                                                                   Column(
                                                                     mainAxisSize:
@@ -722,18 +633,15 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                       Container(
                                                                         decoration:
                                                                             BoxDecoration(
-                                                                          color: Colors
-                                                                              .white54,
+                                                                          color:
+                                                                              Colors.white54,
                                                                           borderRadius:
                                                                               BorderRadius.circular(12),
                                                                           boxShadow: [
                                                                             BoxShadow(
-                                                                              offset:
-                                                                                  const Offset(0, 3),
-                                                                              blurRadius:
-                                                                                  6,
-                                                                              color:
-                                                                                  const Color(0xff000000).withOpacity(0.16),
+                                                                              offset: const Offset(0, 3),
+                                                                              blurRadius: 6,
+                                                                              color: const Color(0xff000000).withOpacity(0.16),
                                                                             ),
                                                                           ],
                                                                         ),
@@ -743,22 +651,16 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                             Column(
                                                                           children: [
                                                                             TextField(
-                                                                              textInputAction:
-                                                                                  TextInputAction.next,
-                                                                              key:
-                                                                                  UniqueKey(),
-                                                                              controller:
-                                                                                  _newExpenseGroup,
-                                                                              keyboardType:
-                                                                                  TextInputType.text,
-                                                                              style:
-                                                                                  const TextStyle(
+                                                                              textInputAction: TextInputAction.next,
+                                                                              key: UniqueKey(),
+                                                                              controller: _newExpenseGroup,
+                                                                              keyboardType: TextInputType.text,
+                                                                              style: const TextStyle(
                                                                                 fontFamily: "Nunito",
                                                                                 fontSize: 16,
                                                                                 color: Colors.black38,
                                                                               ),
-                                                                              decoration:
-                                                                                  InputDecoration(
+                                                                              decoration: InputDecoration(
                                                                                 border: InputBorder.none,
                                                                                 hintText: "Eg.NA-JN7023(Nankese|Fuel",
                                                                                 filled: true,
@@ -769,8 +671,7 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                                   color: Colors.black38,
                                                                                 ),
                                                                               ),
-                                                                              cursorColor:
-                                                                                  Colors.black38,
+                                                                              cursorColor: Colors.black38,
                                                                             ),
                                                                           ],
                                                                         ),
@@ -783,17 +684,11 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                         onTap:
                                                                             () async {
                                                                           // codefordb();
-                                                                          if (_newFarmCode.text !=
-                                                                                  null &&
-                                                                              _newFarmCode.text !=
-                                                                                  "") {
+                                                                          if (_newFarmCode.text != null &&
+                                                                              _newFarmCode.text != "") {
                                                                             try {
-                                                                              final DocumentSnapshot<Map<String, dynamic>>
-                                                                                  _doc =
-                                                                                  await _firestore.collection("NewFarmCode").doc("FarmCodeGroup").get();
-                                                                              final List<dynamic>
-                                                                                  _tempList =
-                                                                                  _doc.data()!['List'] as List<dynamic>;
+                                                                              final DocumentSnapshot<Map<String, dynamic>> _doc = await _firestore.collection("NewFarmCode").doc("FarmCodeGroup").get();
+                                                                              final List<dynamic> _tempList = _doc.data()!['List'] as List<dynamic>;
                                                                               if (_tempList.contains(_newFarmCode.text)) {
                                                                                 // _tempList
                                                                                 //     .add(_newExpenseGroup.text);
@@ -825,8 +720,7 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                               );
                                                                             }
                                                                             // ignore: use_build_context_synchronously
-                                                                            Navigator.of(context)
-                                                                                .pop();
+                                                                            Navigator.of(context).pop();
                                                                             _newFarmCode.text =
                                                                                 "";
                                                                           } else {
@@ -861,8 +755,7 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                                                             child:
                                                                                 Text(
                                                                               "Done",
-                                                                              style:
-                                                                                  TextStyle(
+                                                                              style: TextStyle(
                                                                                 fontSize: 15,
                                                                                 fontFamily: "Nunito",
                                                                                 color: Colors.white,
@@ -884,7 +777,8 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                           // },
                                           child: Icon(
                                             Icons.add,
-                                            color: Color.fromRGBO(216, 78, 16, 1),
+                                            color:
+                                                Color.fromRGBO(216, 78, 16, 1),
                                             size: 20,
                                           )),
                                     ),
@@ -914,15 +808,16 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                               filter: ImageFilter.blur(
                                   sigmaX: _sigmaX, sigmaY: _sigmaY),
                               child: Container(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 10.0),
                                 decoration: BoxDecoration(
                                     color: Color.fromRGBO(0, 0, 0, 1)
                                         .withOpacity(_opacity),
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(30))),
                                 width: MediaQuery.of(context).size.width * 0.9,
-                                height: MediaQuery.of(context).size.height * 0.6,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.6,
                                 child: Container(
                                   height:
                                       MediaQuery.of(context).size.height * 0.6,
@@ -933,12 +828,14 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                                     builder: (
                                       BuildContext context,
                                       AsyncSnapshot<
-                                              QuerySnapshot<Map<String, dynamic>>>
+                                              QuerySnapshot<
+                                                  Map<String, dynamic>>>
                                           snapshot,
                                     ) {
                                       if (snapshot.hasData) {
                                         final List<dynamic> _productGroups =
-                                            snapshot.data!.docs[0].data()['List']
+                                            snapshot.data!.docs[0]
+                                                    .data()['List']
                                                 as List<dynamic>;
                                         _productGroups.sort();
                                         return Padding(
@@ -984,6 +881,43 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
                 ))));
   }
 
+  addfarmCode() async {
+    if (_newFarmCode.text.isNotEmpty) {
+      try {
+        final DocumentSnapshot<Map<String, dynamic>> _doc = await _firestore
+            .collection("NewFarmGroup") // Ensure consistent collection name
+            .doc("FarmCodeGroup")
+            .get();
+        final List<dynamic> _temp1List = _doc.data()?['List'] as List<dynamic>;
+
+        if (_temp1List.contains(_newFarmCode.text)) {
+          // Farm code already exists, update the Firestore document
+          _firestore.collection('NewFarmGroup').doc("FarmCodeGroup").update({
+            'List': _temp1List,
+          });
+          displayToast("Added FarmCode Successfully", context);
+        } else {
+          // Farm code doesn't exist, add it to the list and update Firestore
+          _temp1List.add(_newFarmCode.text);
+          _firestore.collection('NewFarmGroup').doc("FarmCodeGroup").update({
+            'List': _temp1List,
+          });
+          displayToast("Added FarmCode Successfully", context);
+        }
+      } catch (e) {
+        displayToast("An Error Occurred!", context);
+      }
+
+      // Close the current screen or do any other necessary navigation logic
+      Navigator.of(context).pop();
+      _newFarmCode.text = ""; // Clear the text input field
+    } else {
+      displayToast("Enter Valid Name!", context);
+    }
+
+// Make sure to replace 'NewFarmCode' and 'FarmCodeGroup' with your actual Firestore collection and document names, and ensure that the displayToast function is defined in your code.
+  }
+
   codefordb() {
     FirebaseFirestore.instance.collection('FarmCode').doc().set({
       // 'MobileNumber': _mobileNumber.toString().trim(),
@@ -999,5 +933,26 @@ class _FarmGroupPageState extends State<FarmGroupPage> {
     //String? url = await  uploadImage(selectedImagePath!);
 
     // Farms.child("Farm").set(userDataMap);
+  }
+
+  // Function to fetch farm codes from Firestore
+  Future<void> fetchFarmCodes() async {
+    try {
+      final DocumentSnapshot<Map<String, dynamic>> _doc = await _firestore
+          .collection("NewFarmGroup")
+          .doc("FarmCodeGroup")
+          .get();
+
+      if (_doc.exists) {
+        final List<dynamic> _temp1List = _doc.data()?['List'] as List<dynamic>;
+
+        setState(() {
+          farmCodeList = List<String>.from(_temp1List);
+        });
+      }
+    } catch (e) {
+      // Handle any errors here
+      print("Error fetching farm codes: $e");
+    }
   }
 }

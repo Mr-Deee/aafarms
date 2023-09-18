@@ -4,7 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:excel/excel.dart';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
 import '../../models/addedFarm.dart';
 
 class allexpenses extends StatefulWidget {
@@ -89,6 +91,53 @@ class _allexpensesState extends State<allexpenses> {
     return totalCost;
   }
 
+  Future<void> exportToExcel(List<Expense> expenses) async {
+    final excel = Excel.createExcel();
+    final sheet = excel['Sheet1'];
+
+    // Add headers
+    sheet.cell(CellIndex.indexByString("A1")).value = "Group";
+    sheet.cell(CellIndex.indexByString("B1")).value = "Cost";
+    sheet.cell(CellIndex.indexByString("C1")).value = "Name";
+    sheet.cell(CellIndex.indexByString("D1")).value = "Farm Code";
+    sheet.cell(CellIndex.indexByString("E1")).value = "Location";
+    sheet.cell(CellIndex.indexByString("F1")).value = "Company";
+    sheet.cell(CellIndex.indexByString("G1")).value = "Quantity";
+    sheet.cell(CellIndex.indexByString("H1")).value = "Image";
+    sheet.cell(CellIndex.indexByString("I1")).value = "Description";
+
+    // Add data
+    for (int i = 0; i < expenses.length; i++) {
+      final expense = expenses[i];
+      sheet.cell(CellIndex.indexByString("A${i + 2}")).value = expense.group;
+      sheet.cell(CellIndex.indexByString("B${i + 2}")).value = expense.cost;
+      sheet.cell(CellIndex.indexByString("C${i + 2}")).value =
+          expense.name ?? '';
+      sheet.cell(CellIndex.indexByString("D${i + 2}")).value = expense.farmcode;
+      sheet.cell(CellIndex.indexByString("E${i + 2}")).value =
+          expense.location ?? '';
+      sheet.cell(CellIndex.indexByString("F${i + 2}")).value =
+          expense.company ?? '';
+      sheet.cell(CellIndex.indexByString("G${i + 2}")).value =
+          expense.quantity ?? '';
+      sheet.cell(CellIndex.indexByString("H${i + 2}")).value =
+          expense.image ?? '';
+      sheet.cell(CellIndex.indexByString("I${i + 2}")).value =
+          expense.description ?? '';
+    }
+
+    // Save the Excel file
+    final directory = await getExternalStorageDirectory();
+    final filePath = '${directory!.path}/expenses.xlsx';
+    final file = File(filePath);
+    final bytes = await excel.encode();
+    await file.writeAsBytes(bytes!); // Use the ! operator to assert non-null
+    // Open the Excel file
+    // You can use the file path to open the file or share it with users
+    // For example, you can use the `open_file` package to open it:
+    // await OpenFile.open(filePath);
+  }
+
   @override
   Widget build(BuildContext context) {
     final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -165,61 +214,58 @@ class _allexpensesState extends State<allexpenses> {
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                     ),
-                Expanded(
-                        child: StreamBuilder<QuerySnapshot>(
-                          stream: firestore
-                              .collection('Expenses')
-                              .where('Farm', isEqualTo: selectedGroup)
-                              .snapshots(),
-                          builder: (context, snapshot) {
-                            if (!snapshot.hasData) {
-                              return CircularProgressIndicator();
-                            }
+                    Expanded(
+                      child: StreamBuilder<QuerySnapshot>(
+                        stream: firestore
+                            .collection('Expenses')
+                            .where('Farm', isEqualTo: selectedGroup)
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return CircularProgressIndicator();
+                          }
 
-                            List<ExpenseItem> expenseItems = [];
-                            int totalCost = 0;
+                          List<ExpenseItem> expenseItems = [];
+                          int totalCost = 0;
 
-                            snapshot.data!.docs.forEach((doc) {
-                              final expenseName = doc['name'];
-                              final cost = doc['Cost'] as int;
-                              totalCost += cost;
+                          snapshot.data!.docs.forEach((doc) {
+                            final expenseName = doc['name'];
+                            final cost = doc['Cost'] as int;
+                            totalCost += cost;
 
-                              expenseItems.add(ExpenseItem(expenseName, cost));
-                            });
+                            expenseItems.add(ExpenseItem(expenseName, cost));
+                          });
 
-                            return Column(
-                              children: [
-                                Divider(),
-                                Text(
-                                  "Cost Per Item",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                          return Column(
+                            children: [
+                              Divider(),
+                              Text(
+                                "Cost Per Item",
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              Expanded(
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  itemExtent: 50.0,
+                                  itemCount: expenseItems.length,
+                                  itemBuilder: (context, index) {
+                                    return ListTile(
+                                      title: Text(expenseItems[index].name),
+                                      subtitle: Text(
+                                          'Cost: \GHS${expenseItems[index].cost}'),
+                                    );
+                                  },
                                 ),
-                                Expanded(
-                                  child: ListView.builder(
-                                    shrinkWrap: true,
-                                    itemExtent: 50.0,
-                                    itemCount: expenseItems.length,
-                                    itemBuilder: (context, index) {
-                                      return
-                                         ListTile(
-                                          title: Text(expenseItems[index].name),
-                                          subtitle: Text(
-                                              'Cost: \GHS${expenseItems[index].cost}'),
-
-                                      );
-                                    },
-                                  ),
-                                ),
-                                Text(
-                                  'Total Cost: \GHS${totalCost.toString()}',
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            );
-                          },
-                        ),
+                              ),
+                              Text(
+                                'Total Cost: \GHS${totalCost.toString()}',
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          );
+                        },
                       ),
-
+                    ),
                   ],
                 ),
               ),
@@ -277,6 +323,13 @@ class _allexpensesState extends State<allexpenses> {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          exportToExcel(expenses);
+        },
+        tooltip: 'Export to Excel',
+        child: Icon(Icons.file_download), // Use an appropriate icon
       ),
     );
   }
