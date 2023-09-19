@@ -47,7 +47,7 @@ dependencies:
   firebase_database:
   cloud_firestore:
   excel: ^2.0.4
-
+  open_file: ^3.3.2
   firebase_messaging:
   firebase_auth:
 

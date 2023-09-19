@@ -8,6 +8,9 @@ import 'package:excel/excel.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import '../../models/addedFarm.dart';
+import 'package:open_file/open_file.dart';
+
+import 'homepage.dart';
 
 class allexpenses extends StatefulWidget {
   const allexpenses({Key? key}) : super(key: key);
@@ -22,6 +25,8 @@ class _allexpensesState extends State<allexpenses> {
   List<Expense> expenses = [];
   String selectedGroup = '';
   String selectedExpense = '';
+  String selectedperExpense = '';
+
   List<FarmCode> farmCodes = [];
   String selectedFarmCode = '';
   double farmCodeCost = 0.0;
@@ -31,6 +36,7 @@ class _allexpensesState extends State<allexpenses> {
     super.initState();
 
     getexpenseTotalCost();
+    getTotalCostperexpese();
     getSelectedExpenses();
 
     _farmCodesRef = FirebaseFirestore.instance.collection('farmCodes');
@@ -43,6 +49,7 @@ class _allexpensesState extends State<allexpenses> {
         expenses = expenseList;
         selectedGroup = expenses.isNotEmpty ? expenses[0].group : '';
         selectedExpense = expenses.isNotEmpty ? expenses[0].farmcode : '';
+        selectedperExpense= (expenses.isNotEmpty ? expenses[0].name :'')!;
       });
     });
 
@@ -91,51 +98,75 @@ class _allexpensesState extends State<allexpenses> {
     return totalCost;
   }
 
-  Future<void> exportToExcel(List<Expense> expenses) async {
-    final excel = Excel.createExcel();
-    final sheet = excel['Sheet1'];
 
-    // Add headers
-    sheet.cell(CellIndex.indexByString("A1")).value = "Group";
-    sheet.cell(CellIndex.indexByString("B1")).value = "Cost";
-    sheet.cell(CellIndex.indexByString("C1")).value = "Name";
-    sheet.cell(CellIndex.indexByString("D1")).value = "Farm Code";
-    sheet.cell(CellIndex.indexByString("E1")).value = "Location";
-    sheet.cell(CellIndex.indexByString("F1")).value = "Company";
-    sheet.cell(CellIndex.indexByString("G1")).value = "Quantity";
-    sheet.cell(CellIndex.indexByString("H1")).value = "Image";
-    sheet.cell(CellIndex.indexByString("I1")).value = "Description";
 
-    // Add data
-    for (int i = 0; i < expenses.length; i++) {
-      final expense = expenses[i];
-      sheet.cell(CellIndex.indexByString("A${i + 2}")).value = expense.group;
-      sheet.cell(CellIndex.indexByString("B${i + 2}")).value = expense.cost;
-      sheet.cell(CellIndex.indexByString("C${i + 2}")).value =
-          expense.name ?? '';
-      sheet.cell(CellIndex.indexByString("D${i + 2}")).value = expense.farmcode;
-      sheet.cell(CellIndex.indexByString("E${i + 2}")).value =
-          expense.location ?? '';
-      sheet.cell(CellIndex.indexByString("F${i + 2}")).value =
-          expense.company ?? '';
-      sheet.cell(CellIndex.indexByString("G${i + 2}")).value =
-          expense.quantity ?? '';
-      sheet.cell(CellIndex.indexByString("H${i + 2}")).value =
-          expense.image ?? '';
-      sheet.cell(CellIndex.indexByString("I${i + 2}")).value =
-          expense.description ?? '';
+  double getTotalCostperexpese() {
+    double totalCost = 0.0;
+    print('Selected Farm Code: $selectedperExpense');
+    for (var expense in expenses) {
+      print('Expense - Farm Code: ${expense.farmcode}, Cost: ${expense.cost}');
+      if (expense.name == selectedperExpense) {
+        totalCost += expense.cost;
+      }
     }
+    print('Total Expense Per Cost: $totalCost');
+    return totalCost;
+  }
 
-    // Save the Excel file
-    final directory = await getExternalStorageDirectory();
-    final filePath = '${directory!.path}/expenses.xlsx';
-    final file = File(filePath);
-    final bytes = await excel.encode();
-    await file.writeAsBytes(bytes!); // Use the ! operator to assert non-null
-    // Open the Excel file
-    // You can use the file path to open the file or share it with users
-    // For example, you can use the `open_file` package to open it:
-    // await OpenFile.open(filePath);
+
+
+  Future<void> exportToExcel(List<Expense> expenses) async {
+    try {
+      // Create a new Excel workbook and add a sheet
+      final excel = Excel.createExcel();
+      final sheet = excel['Sheet1'];
+
+      // Add headers
+      sheet
+        ..cell(CellIndex.indexByString("A1")).value = "Group"
+        ..cell(CellIndex.indexByString("B1")).value = "Cost"
+        ..cell(CellIndex.indexByString("C1")).value = "Name"
+        ..cell(CellIndex.indexByString("D1")).value = "Farm Code"
+        ..cell(CellIndex.indexByString("E1")).value = "Location"
+        ..cell(CellIndex.indexByString("F1")).value = "Company"
+        ..cell(CellIndex.indexByString("G1")).value = "Quantity"
+        ..cell(CellIndex.indexByString("H1")).value = "Image"
+        ..cell(CellIndex.indexByString("I1")).value = "Description";
+
+      // Add data
+      for (int i = 0; i < expenses.length; i++) {
+        final expense = expenses[i];
+        sheet
+          ..cell(CellIndex.indexByString("A${i + 2}")).value = expense.group
+          ..cell(CellIndex.indexByString("B${i + 2}")).value = expense.cost
+          ..cell(CellIndex.indexByString("C${i + 2}")).value = expense.name ?? ''
+          ..cell(CellIndex.indexByString("D${i + 2}")).value = expense.farmcode
+          ..cell(CellIndex.indexByString("E${i + 2}")).value = expense.location ?? ''
+          ..cell(CellIndex.indexByString("F${i + 2}")).value = expense.company ?? ''
+          ..cell(CellIndex.indexByString("G${i + 2}")).value = expense.quantity ?? ''
+          ..cell(CellIndex.indexByString("H${i + 2}")).value = expense.image ?? ''
+          ..cell(CellIndex.indexByString("I${i + 2}")).value = expense.description ?? '';
+      }
+
+      // Save the Excel file
+      final directory = await getExternalStorageDirectory();
+      if (directory != null) {
+        final filePath = '${directory.path}/expenses.xlsx';
+        final file = File(filePath);
+        final bytes = await excel.encode();
+        await file.writeAsBytes(bytes!);
+        print('File Path: $filePath');
+        displayToast('File Path: $filePath', context);
+
+        // Open the Excel file
+        await OpenFile.open(filePath);
+      } else {
+        throw Exception('External storage directory not available.');
+      }
+    } catch (e) {
+      print('Error exporting to Excel: $e');
+      // Handle the error as needed
+    }
   }
 
   @override
@@ -321,6 +352,8 @@ class _allexpensesState extends State<allexpenses> {
                 ]),
               ),
             ),
+
+
           ],
         ),
       ),
